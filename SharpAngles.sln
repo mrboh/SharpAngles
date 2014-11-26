@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "ellipsoid.org.SharpAngles", "ellipsoid.org.SharpAngles\ellipsoid.org.SharpAngles.fsproj", "{4013E157-23F7-4D33-BA33-73213B7809B2}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "ellipsoid.org.SharpAngles.Samples", "ellipsoid.org.SharpAngles.Samples\ellipsoid.org.SharpAngles.Samples.fsproj", "{7F9497D1-3703-4CF1-B4C6-0FBE360307A7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C14A9BD8-04BB-491E-948B-7EF40E27B30E}"
+	ProjectSection(SolutionItems) = preProject
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		README.md = README.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4013E157-23F7-4D33-BA33-73213B7809B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4013E157-23F7-4D33-BA33-73213B7809B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4013E157-23F7-4D33-BA33-73213B7809B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4013E157-23F7-4D33-BA33-73213B7809B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F9497D1-3703-4CF1-B4C6-0FBE360307A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F9497D1-3703-4CF1-B4C6-0FBE360307A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F9497D1-3703-4CF1-B4C6-0FBE360307A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F9497D1-3703-4CF1-B4C6-0FBE360307A7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
