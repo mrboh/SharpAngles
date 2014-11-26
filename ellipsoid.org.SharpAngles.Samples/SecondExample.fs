@@ -12,6 +12,7 @@ module Client =
     let Main =
         Angular
             .Module("project", [| "ngRoute" |])
+            .factory("Projects", )
             .config(("$routeProvider",
                         fun (routeProvider: Angular.Route.IRouteProvider) ->
                             routeProvider
