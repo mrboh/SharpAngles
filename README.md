@@ -6,7 +6,7 @@ WebSharper bindings for Angular
 ## Overview
 
 Experimental WebSharper bindings for Angular JS plus sample project showing their implementation based on the examples
-available on the [Angular website][1]. This makes it possible to construct single page apps entirely in F#. Angular 
+available on the [Angular website][1]. SharpAngles makes it possible to construct single page apps entirely in F#. Angular 
 modules currently implemented:
 
 * angular: **partially**

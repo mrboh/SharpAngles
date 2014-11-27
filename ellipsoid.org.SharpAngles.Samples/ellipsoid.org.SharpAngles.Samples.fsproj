@@ -14,6 +14,7 @@
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <NuGetPackageImportStamp>a637a2d8</NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -35,7 +36,7 @@
     <Name>ellipsoid.org.SharpAngles.Samples</Name>
     <RootNamespace>DogBotherer.Web</RootNamespace>
     <AssemblyName>ellipsoid.org.SharpAngles.Samples</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <WarningLevel>3</WarningLevel>
   </PropertyGroup>
   <!-- F# targets -->
@@ -108,10 +109,8 @@
   <ItemGroup>
     <Compile Include="FirstExample.fs" />
     <Compile Include="SecondExample.fs" />
+    <Compile Include="ThirdExample.fs" />
     <Compile Include="Main.fs" />
-    <Content Include="Content\bootstrap\js\bootstrap.js" />
-    <Content Include="Content\bootstrap\js\bootstrap.min.js" />
-    <Content Include="Content\bootstrap\js\npm.js" />
     <Content Include="Global.asax" />
     <Content Include="Content\bootstrap\css\bootstrap-theme.css" />
     <Content Include="Content\bootstrap\css\bootstrap-theme.css.map" />
@@ -119,6 +118,13 @@
     <Content Include="Content\bootstrap\css\bootstrap.css" />
     <Content Include="Content\bootstrap\css\bootstrap.css.map" />
     <Content Include="Content\bootstrap\css\bootstrap.min.css" />
+    <Content Include="Content\bootstrap\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\bootstrap\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Content\bootstrap\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Content\bootstrap\js\bootstrap.js" />
+    <Content Include="Content\bootstrap\js\bootstrap.min.js" />
+    <Content Include="Content\bootstrap\js\npm.js" />
     <Content Include="Content\ellipsoid.org.SharpAngles.Samples.css" />
     <Content Include="Content\ellipsoid.org.SharpAngles.Samples.d.ts" />
     <Content Include="Content\ellipsoid.org.SharpAngles.Samples.head.html" />
@@ -130,6 +136,7 @@
     <Content Include="second-example.html" />
     <Content Include="list.html" />
     <Content Include="detail.html" />
+    <Content Include="third.example.html" />
     <Content Include="Web.config" />
     <Content Include="packages.config" />
   </ItemGroup>
@@ -139,7 +146,7 @@
     </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="System" />
-    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions.dll" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Web" />
     <ProjectReference Include="..\ellipsoid.org.SharpAngles\ellipsoid.org.SharpAngles.fsproj">
@@ -147,17 +154,10 @@
       <Project>{4013e157-23f7-4d33-ba33-73213b7809b2}</Project>
       <Private>True</Private>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Content\bootstrap\fonts\glyphicons-halflings-regular.eot" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Content\bootstrap\fonts\glyphicons-halflings-regular.svg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Content\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Content\bootstrap\fonts\glyphicons-halflings-regular.woff" />
+    <Reference Include="System.Web.ApplicationServices.dll" />
+    <Reference Include="System.Web.DynamicData.dll" />
+    <Reference Include="System.Web.Entity.dll" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq.dll" />
   </ItemGroup>
 </Project>

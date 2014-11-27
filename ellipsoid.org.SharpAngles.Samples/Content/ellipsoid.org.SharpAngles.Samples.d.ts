@@ -3186,6 +3186,13 @@ declare module ellipsoid {
     module org {
         module SharpAngles {
             module Samples {
+                module ThirdExample {
+                    module Client {
+                        var Main : {
+                            (): void;
+                        };
+                    }
+                }
                 module SecondExample {
                     module Client {
                         interface Project {

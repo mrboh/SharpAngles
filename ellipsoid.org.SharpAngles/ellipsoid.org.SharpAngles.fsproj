@@ -10,6 +10,7 @@
     <RootNamespace>ellipsoid.org.SharpAngles</RootNamespace>
     <AssemblyName>ellipsoid.org.SharpAngles</AssemblyName>
     <NuGetPackageImportStamp>656b17dc</NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -28,7 +29,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <WarningLevel>3</WarningLevel>
   </PropertyGroup>
   <!-- F# targets -->

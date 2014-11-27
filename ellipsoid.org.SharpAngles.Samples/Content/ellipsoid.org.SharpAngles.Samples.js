@@ -12149,7 +12149,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
 
 (function()
 {
- var Global=this,Runtime=this.IntelliFactory.Runtime,angular,WebSharper,Remoting,Arrays,Firebase,ellipsoid,org,SharpAngles,Samples,FirstExample,Client,SecondExample,Client1;
+ var Global=this,Runtime=this.IntelliFactory.Runtime,angular,WebSharper,Remoting,Arrays,Firebase,ellipsoid,org,SharpAngles,Samples,FirstExample,Client,SecondExample,Client1,ThirdExample,Client2;
  Runtime.Define(Global,{
   ellipsoid:{
    org:{
@@ -12287,6 +12287,14 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
          }
         })
        }
+      },
+      ThirdExample:{
+       Client:{
+        Main:Runtime.Field(function()
+        {
+         return null;
+        })
+       }
       }
      }
     }
@@ -12307,10 +12315,13 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   FirstExample=Runtime.Safe(Samples.FirstExample);
   Client=Runtime.Safe(FirstExample.Client);
   SecondExample=Runtime.Safe(Samples.SecondExample);
-  return Client1=Runtime.Safe(SecondExample.Client);
+  Client1=Runtime.Safe(SecondExample.Client);
+  ThirdExample=Runtime.Safe(Samples.ThirdExample);
+  return Client2=Runtime.Safe(ThirdExample.Client);
  });
  Runtime.OnLoad(function()
  {
+  Client2.Main();
   Client1.Main();
   Client.Main();
   return;
