@@ -35,6 +35,15 @@ module Definition =
     // Used because WebSharper does not lowercase interface elements (despite doing so for classes)
     let (=>|) x y = x => y |> WithSourceName x   
     let (=?|) x y = x =? y |> WithSourceName x
+    let (=!|) x y = x =! y |> WithSourceName x
+    let (=@|) x y = x =@ y |> WithSourceName x
+    let (=%|) x y = x =% y |> WithSourceName x
+
+    let (=>|!) x y = x => y |> WithSourceName (x.TrimStart('$'))      // For dollarised members
+    let (=?|!) x y = x =? y |> WithSourceName (x.TrimStart('$'))      // For dollarised members
+    let (=!|!) x y = x =! y |> WithSourceName (x.TrimStart('$'))      // For dollarised members
+    let (=@|!) x y = x =@ y |> WithSourceName (x.TrimStart('$'))      // For dollarised members
+    let (=%|!) x y = x =% y |> WithSourceName (x.TrimStart('$'))      // For dollarised members
 
     (*
         Type definitions: core
@@ -79,7 +88,6 @@ module Definition =
     let IHttpBackendService = Type.New ()
     let IHttpHeadersGetter = Type.New ()
     let IHttpPromise = Type.New ()
-    let IHttpPromiseCallback = Type.New ()
     let IHttpPromiseCallbackArg = Type.New ()
     let IHttpProvider = Type.New ()
     let IHttpProviderDefaults = Type.New ()
@@ -128,6 +136,19 @@ module Definition =
     let IWindowService = Type.New ()
 
     (*
+        Type definitions: resource
+        ==========================
+    *)
+
+    let IResourceOptions = Type.New ()
+    let IResourceService = Type.New ()
+    let IActionDescriptor = Type.New ()
+    let IResourceClass<'T> = Type.New ()
+    let IResource<'T> = Type.New ()
+    let IResourceArray<'T> = Type.New ()
+    let IArray<'T> = Type.New ()
+
+    (*
         Type definitions: route
         =======================
     *)
@@ -139,9 +160,97 @@ module Definition =
     let IRouteProvider = Type.New ()
 
     (*
+        Generic definitions
+        ===================
+    *)
+
+    let IHttpPromiseInterface =
+        Generic / fun t1 ->
+            let iHttpPromiseCallback ofType = ofType * Number * IHttpHeadersGetter * IRequestConfig ^-> Void
+
+            Interface "ng.IHttpPromise"
+            // |=> Extends [ IPromise.[t1] ] // TODO: figure out how to extend generic types
+            |=> IHttpPromise
+            |+> [
+                "success"           =>| iHttpPromiseCallback t1 ^-> IHttpPromise.[t1]
+                "error"             =>| iHttpPromiseCallback Any ^-> IHttpPromise.[t1]
+                Generic - fun t2 ->
+                    "then"          =>| (IHttpPromiseCallbackArg.[t1] ^-> IPromise.[t2]) * (IHttpPromiseCallbackArg.[Any] ^-> Any) ^-> IPromise.[t2]
+                Generic - fun t2 ->
+                    "then"          =>| (IHttpPromiseCallbackArg.[t1] ^-> t2) * (IHttpPromiseCallbackArg.[Any] ^-> Any) ^-> IPromise.[t2]
+            ]
+
+    let IPromiseInterface =
+        Generic / fun t1 ->
+            Interface "ng.IPromise"
+            |=> IPromise
+            |+> [
+                Generic - fun t2 ->
+                    "then"          =>| (t1 ^-> IHttpPromise.[t2]) * Optional (Any ^-> Any) * Optional (Any ^-> Any) ^-> IPromise.[t2]
+                Generic - fun t2 ->
+                    "then"          =>| (t1 ^-> IPromise.[t2]) * Optional (Any ^-> Any) * Optional (Any ^-> Any) ^-> IPromise.[t2]
+                Generic - fun t2 ->
+                    "then"          =>| (t1 ^-> t2) * Optional (Any ^-> t2) * Optional (Any ^-> Any) ^-> IPromise.[t2]
+                Generic - fun t2 ->
+                    "catch"         =>| (Any ^-> IHttpPromise.[t2]) ^-> IPromise.[t2]
+                Generic - fun t2 ->
+                    "catch"         =>| (Any ^-> IHttpPromise.[t2]) ^-> IPromise.[t2]
+                Generic - fun t2 ->
+                    "catch"         =>| (Any ^-> t2) ^-> IPromise.[t2]
+                Generic - fun t2 ->
+                    "finally"       =>| (Void ^-> Any) ^-> IPromise.[t2]
+            ]
+
+    let IResourceClassInterface =
+        Generic / fun t ->
+            let successCallbackType = Void ^-> Void
+            let errorCallbackType = Optional (Void ^-> Void)
+            let zeroDef returnType = successCallbackType * errorCallbackType ^-> returnType
+            let oneDef returnType = Object * successCallbackType * errorCallbackType ^-> returnType
+            let twoDef returnType = Object * Object * successCallbackType * errorCallbackType ^-> returnType
+            let resClass name returnType =
+                [
+                    name            =>| Void ^-> returnType :> CodeModel.IInterfaceMember
+                    name            =>| Object ^-> returnType :> CodeModel.IInterfaceMember
+                    name            =>| zeroDef returnType :> CodeModel.IInterfaceMember
+                    name            =>| oneDef returnType :> CodeModel.IInterfaceMember
+                    name            =>| twoDef returnType :> CodeModel.IInterfaceMember
+                ]
+            let interfaceDef =
+                [ ("get", t); ("query", IResourceArray<_>); ("save", t); ("remove", t); ("delete", t) ]     // TODO: make IResourceArray<_> appear as the appropriate type
+                |> List.map (fun e ->
+                    match e with
+                        | (s, returnType) -> resClass s returnType
+                )
+                |> List.collect (fun e -> e)
+
+            Interface "ng.resource.IResourceClass"
+            |=> IResourceClass
+            |+> [] // TODO: implement new(..)
+            |+> interfaceDef
+
+    let IResourceInterface =
+        Generic / fun t ->
+            let successCallbackType = Optional (Void ^-> Void)
+            let errorCallbackType = Optional (Void ^-> Void)
+            let zeroDef returnType = successCallbackType * errorCallbackType ^-> returnType
+            let oneDef returnType = Optional Object * successCallbackType * errorCallbackType ^-> returnType
+            let res name returnType =
+                [
+                    // name            =>|! Void ^-> IPromise.[t] :> CodeModel.IInterfaceMember
+                ]
+
+            Interface "ng.resource.IResource"
+            |=> IResource
+            |+> [
+                "$get"              =>|! Void ^-> IPromise.[t]
+            ]
+
+    (*
         Angular definitions
         ===================
     *)
+
 
     let Angular =
         Class "angular"
@@ -242,6 +351,10 @@ module Definition =
                 "factory"               =>| String * Function ^-> IModule
                 "factory"               =>| String * ArrayOf Any ^-> IModule
                 "factory"               =>| Object ^-> IModule
+                Generic - fun t ->
+                    "factory"           =>| String * (IResourceService ^-> IResourceClass<_>) ^-> IModule   // Imported from angular-resource (method signature questionable)
+                Generic - fun t ->
+                    "factory"           =>| String * (IResourceService ^-> t) ^-> IModule                   // Imported from angular-resource (method signature questionable)
                 "filter"                =>| String * Function ^-> IModule
                 "filter"                =>| String * ArrayOf Any ^-> IModule
                 "filter"                =>| Object ^-> IModule
@@ -268,6 +381,33 @@ module Definition =
             Interface "ng.IFormController"
             |=> IFormController
             // ...
+
+            Generic - IPromiseInterface
+            Generic - IHttpPromiseInterface
+
+            Interface "ng.ILocationService"
+            |=> ILocationService
+            |+> [
+                "absUrl"                =>| Void ^-> String
+                "hash"                  =>| Void ^-> String
+                "hash"                  =>| String ^-> ILocationService
+                "host"                  =>| Void ^-> String
+                "path"                  =>| Void ^-> String
+                "path"                  =>| String ^-> ILocationService
+                "port"                  =>| Void ^-> Number
+                "protocol"              =>| Void ^-> String
+                "replace"               =>| Void ^-> ILocationService
+                "search"                =>| Void ^-> Any
+                "search"                =>| Any ^-> ILocationService
+                "search"                =>| String * String ^-> ILocationService
+                "search"                =>| String * Number ^-> ILocationService
+                "search"                =>| String * ArrayOf String ^-> ILocationService
+                "search"                =>| String * Bool ^-> ILocationService
+                "state"                 =>| Void ^-> Any
+                "state"                 =>| Any ^-> ILocationService
+                "url"                   =>| Void ^-> String
+                "url"                   =>| String ^-> ILocationService
+            ]
 
         ]
         |=> Nested [    // Cannot nest both classes an interfaces together above (huh?)
@@ -318,7 +458,7 @@ module Definition =
                 "version"               => IAngularStaticVersion  // Some creative licence used here
             ]
 
-            Class "ng.auto"
+            Class "auto"
             |=> Nested [
                 Interface "ng.auto.IInjectorService"
                 |=> IAutoInjectorService
@@ -329,12 +469,41 @@ module Definition =
                 // ...
             ]            
 
+            Class "resource"
+            |=> Nested [
+                Interface "ng.resource.IResourceOptions"
+                |=> IResourceOptions
+                |+> [
+                    "stripTrailingSlashes"  =@| Bool
+                ]
+
+                Interface "ng.resource.IResourceService"
+                |=> IResourceService
+                // ...
+                // Unclear how to implement this signature
+
+                Interface "ng.resource.IActionDescriptor"
+                |=> IActionDescriptor
+                |+> [
+                    "method"                =?| String
+                    "isArray"               =?| Bool
+                    "params"                =?| Any
+                    "headers"               =?| Any
+                ]
+
+                Generic - IResourceClassInterface
+                Generic - IResourceInterface
+            ]
+
             Class "route"
             |=> Nested [
-                Interface "ng.route.IRouteParamsService"
+                Class "ng.route.IRouteParamsService"
                 |=> IRouteParamsService
-                // ...
-
+                |+> [
+                    "item"                  =@ Any |> Indexed String
+                ]
+            ]
+            |=> Nested [
                 Interface "ng.route.IRouteService"
                 |=> IRouteService
                 |+> [
@@ -403,6 +572,7 @@ module Definition =
             ]
             Namespace "ellipsoid.org.SharpAngles.Resources" [
                 AngularJs
+                AngularJsResource
                 AngularJsRoute
             ]
         ]

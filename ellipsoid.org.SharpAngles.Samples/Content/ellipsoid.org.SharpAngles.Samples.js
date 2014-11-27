@@ -12149,7 +12149,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
 
 (function()
 {
- var Global=this,Runtime=this.IntelliFactory.Runtime,angular,WebSharper,Remoting,Arrays,ellipsoid,org,SharpAngles,Samples,FirstExample,Client,SecondExample,Client1;
+ var Global=this,Runtime=this.IntelliFactory.Runtime,angular,WebSharper,Remoting,Arrays,Firebase,ellipsoid,org,SharpAngles,Samples,FirstExample,Client,SecondExample,Client1;
  Runtime.Define(Global,{
   ellipsoid:{
    org:{
@@ -12193,9 +12193,18 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
       },
       SecondExample:{
        Client:{
+        DataSource:Runtime.Class({},{
+         New:function()
+         {
+          return Runtime.New(this,{});
+         }
+        }),
         Main:Runtime.Field(function()
         {
-         return angular.module("project",["ngRoute"]).config(["$routeProvider",function(routeProvider)
+         return angular.module("project",["ngRoute","firebase"]).value("fbURL","https://angularjs-projects.firebaseio.com/").factory("Projects",["$firebase","fbURL",Runtime.Tupled(function(tupledArg)
+         {
+          return tupledArg[0].call(null,new Firebase(tupledArg[1])).$asArray();
+         })]).config(["$routeProvider",function(routeProvider)
          {
           return routeProvider.when("/",{
            controller:"ListCtrl",
@@ -12209,7 +12218,73 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
           }).otherwise({
            redirectTo:"/"
           });
-         }]);
+         }]).controller("ListCtrl",["$scope","Projects",Runtime.Tupled(function(tupledArg)
+         {
+          tupledArg[0].projects=tupledArg[1];
+          return;
+         })]).controller("CreateCtrl",["$scope","$location","Projects",Runtime.Tupled(function(tupledArg)
+         {
+          var scope,location,projects;
+          scope=tupledArg[0];
+          location=tupledArg[1];
+          projects=tupledArg[2];
+          scope.save=function()
+          {
+           projects.$add(scope.project).then(function()
+           {
+            return location.path("/");
+           });
+          };
+          return;
+         })]).controller("EditCtrl",["$scope","$location","$routeParams","Projects",Runtime.Tupled(function(tupledArg)
+         {
+          var scope,location,routeParams,projects,projectIndex;
+          scope=tupledArg[0];
+          location=tupledArg[1];
+          routeParams=tupledArg[2];
+          projects=tupledArg[3];
+          projectIndex=projects.$indexFor(routeParams.projectId);
+          scope.projects=projects;
+          scope.project=scope.projects[projectIndex];
+          scope.destroy=function()
+          {
+           scope.projects.$remove(scope.project).then(function()
+           {
+            return location.path("/");
+           });
+          };
+          scope.save=function()
+          {
+           scope.projects.$save(scope.project).then(function()
+           {
+            return location.path("/");
+           });
+          };
+          return;
+         })]);
+        }),
+        Project:Runtime.Class({
+         get_$id:function()
+         {
+          return"";
+         },
+         get_description:function()
+         {
+          return"";
+         },
+         get_name:function()
+         {
+          return"";
+         },
+         get_site:function()
+         {
+          return"";
+         }
+        },{
+         New:function()
+         {
+          return Runtime.New(this,{});
+         }
         })
        }
       }
@@ -12224,6 +12299,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   WebSharper=Runtime.Safe(Global.IntelliFactory.WebSharper);
   Remoting=Runtime.Safe(WebSharper.Remoting);
   Arrays=Runtime.Safe(WebSharper.Arrays);
+  Firebase=Runtime.Safe(Global.Firebase);
   ellipsoid=Runtime.Safe(Global.ellipsoid);
   org=Runtime.Safe(ellipsoid.org);
   SharpAngles=Runtime.Safe(org.SharpAngles);

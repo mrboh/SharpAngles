@@ -12,16 +12,11 @@ modules currently implemented:
 * angular: **partially**
 * angular-animate: **no**
 * angular-cookies: **no**
-* angular-mock-tests: **no**
-* angular-nocks: **no**
-* angular-resource-tests: **no**
-* angular-resource: **no**
-* angular-route-tests: **no**
+* angular-mocks: **no**
+* angular-resource: **partially**
 * angular-route: **yes**
-* angular-sanitize-tests: **no**
 * angular-sanitize: **no**
 * angular-scenario: **no**
-* angular-tests: **no**
 
 ## Usage
 
@@ -75,6 +70,8 @@ module Client =
                                             |> Array.filter (fun t -> not t.``done``)
             ))
 ```
+
+For further details and examples, see the sample project.
 
 ## Licensing
 

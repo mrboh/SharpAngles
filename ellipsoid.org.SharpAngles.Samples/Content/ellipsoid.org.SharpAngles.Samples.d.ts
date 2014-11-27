@@ -3188,6 +3188,17 @@ declare module ellipsoid {
             module Samples {
                 module SecondExample {
                     module Client {
+                        interface Project {
+                            get_$id(): string;
+                            get_site(): string;
+                            get_name(): string;
+                            get_description(): string;
+                        }
+                        interface DataSource {
+                        }
+                        interface RouteParams {
+                            projectId: number;
+                        }
                         var Main : {
                             (): __ABBREV.__Angular.IModule;
                         };

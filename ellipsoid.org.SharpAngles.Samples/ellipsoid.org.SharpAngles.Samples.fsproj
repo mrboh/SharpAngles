@@ -109,7 +109,16 @@
     <Compile Include="FirstExample.fs" />
     <Compile Include="SecondExample.fs" />
     <Compile Include="Main.fs" />
+    <Content Include="Content\bootstrap\js\bootstrap.js" />
+    <Content Include="Content\bootstrap\js\bootstrap.min.js" />
+    <Content Include="Content\bootstrap\js\npm.js" />
     <Content Include="Global.asax" />
+    <Content Include="Content\bootstrap\css\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap\css\bootstrap-theme.css.map" />
+    <Content Include="Content\bootstrap\css\bootstrap-theme.min.css" />
+    <Content Include="Content\bootstrap\css\bootstrap.css" />
+    <Content Include="Content\bootstrap\css\bootstrap.css.map" />
+    <Content Include="Content\bootstrap\css\bootstrap.min.css" />
     <Content Include="Content\ellipsoid.org.SharpAngles.Samples.css" />
     <Content Include="Content\ellipsoid.org.SharpAngles.Samples.d.ts" />
     <Content Include="Content\ellipsoid.org.SharpAngles.Samples.head.html" />
@@ -119,6 +128,8 @@
     <Content Include="index.html" />
     <Content Include="first-example.html" />
     <Content Include="second-example.html" />
+    <Content Include="list.html" />
+    <Content Include="detail.html" />
     <Content Include="Web.config" />
     <Content Include="packages.config" />
   </ItemGroup>
@@ -136,5 +147,17 @@
       <Project>{4013e157-23f7-4d33-ba33-73213b7809b2}</Project>
       <Private>True</Private>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap\fonts\glyphicons-halflings-regular.eot" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap\fonts\glyphicons-halflings-regular.svg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap\fonts\glyphicons-halflings-regular.woff" />
   </ItemGroup>
 </Project>
