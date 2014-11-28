@@ -136,7 +136,9 @@
     <Content Include="second-example.html" />
     <Content Include="list.html" />
     <Content Include="detail.html" />
-    <Content Include="third.example.html" />
+    <Content Include="third-example.html" />
+    <Content Include="tabs-directive.html" />
+    <Content Include="pane-directive.html" />
     <Content Include="Web.config" />
     <Content Include="packages.config" />
   </ItemGroup>

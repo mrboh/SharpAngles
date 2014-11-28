@@ -3188,8 +3188,49 @@ declare module ellipsoid {
             module Samples {
                 module ThirdExample {
                     module Client {
+                        interface Pane {
+                            selected: boolean;
+                            title: string;
+                        }
+                        interface PaneScopeSelector {
+                            title: string;
+                        }
+                        interface TabsController {
+                            addPane: {
+                                (x: any): void;
+                            };
+                        }
+                        interface BeerForms {
+                            0: string;
+                            one: string;
+                            few: string;
+                            other: string;
+                        }
+                        var Templatify : {
+                            (element: __ABBREV.__Html.IPagelet): string;
+                        };
+                        var NgRepeat : {
+                            (): {
+                                (x: string): __ABBREV.__Html.IPagelet;
+                            };
+                        };
+                        var NgClass : {
+                            (): {
+                                (x: string): __ABBREV.__Html.IPagelet;
+                            };
+                        };
+                        var NgClick : {
+                            (): {
+                                (x: string): __ABBREV.__Html.IPagelet;
+                            };
+                        };
+                        var NgTransclude : {
+                            (): {
+                                (x: string): __ABBREV.__Html.IPagelet;
+                            };
+                        };
                         var Main : {
-                            (): void;
+                            (): __ABBREV.__Angular.IModule;
                         };
                     }
                 }
@@ -3230,6 +3271,7 @@ declare module ellipsoid {
 }
 declare module __ABBREV {
     
+    export import __Html = IntelliFactory.WebSharper.Html;
     export import __Angular = ellipsoid.org.SharpAngles.Angular;
 }
 

@@ -411,6 +411,20 @@ module Definition =
 
         ]
         |=> Nested [    // Cannot nest both classes an interfaces together above (huh?)
+            
+            // Some interfaces have to be implemented as 'pseudointerfaces' (i.e. classes) because the default
+            // representation of a property in an interface appears to be get_Property() and set_Property()
+            // rather than just property = xyz
+
+            Class "ng.ILocaleService"
+            |=> ILocaleService
+            |+> Protocol [
+                "id"                    =?| String
+                "NUMBER_FORMATS"        =?| ILocaleNumberFormatDescriptor
+                "DATETIME_FORMATS"      =?| ILocaleDateTimeFormatDescriptor
+                "pluralCat"             =?| Any ^-> String
+            ]
+
             Class "ng.IAngularStatic"
             |=> IAngularStatic
             |+> [
@@ -562,6 +576,30 @@ module Definition =
         }
         |=> Implements [ IRoute ]
 
+    let DirectiveConfig =
+        Pattern.Config "DirectiveConfig" {
+            Required = []
+            Optional =
+            [
+                "compile", IDirectiveCompileFn
+                "controller", Any
+                "controllerAs", String
+                "bindToController", Bool
+                "link", IDirectiveLinkFn
+                "name", String
+                "priority", Number
+                "replace", Bool
+                "require", Any
+                "restrict", String
+                "scope", Any
+                "template", Any
+                "templateUrl", Any
+                "terminal", Bool
+                "transclude", Any
+            ]
+        }
+        |=> Implements [ IDirective ]
+
     let Assembly =
         Assembly [
             Namespace "ellipsoid.org.SharpAngles" [
@@ -569,6 +607,7 @@ module Definition =
 
                 // Configuration objects
                 RouteConfig
+                DirectiveConfig
             ]
             Namespace "ellipsoid.org.SharpAngles.Resources" [
                 AngularJs

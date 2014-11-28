@@ -12149,7 +12149,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
 
 (function()
 {
- var Global=this,Runtime=this.IntelliFactory.Runtime,angular,WebSharper,Remoting,Arrays,Firebase,ellipsoid,org,SharpAngles,Samples,FirstExample,Client,SecondExample,Client1,ThirdExample,Client2;
+ var Global=this,Runtime=this.IntelliFactory.Runtime,angular,WebSharper,Remoting,Arrays,Firebase,Html,Operators,Default,List,ellipsoid,org,SharpAngles,Samples,ThirdExample,Client,IntrinsicFunctionProxy,Seq,Operators1,FirstExample,Client1,SecondExample,Client2;
  Runtime.Define(Global,{
   ellipsoid:{
    org:{
@@ -12292,8 +12292,117 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
        Client:{
         Main:Runtime.Field(function()
         {
-         return null;
-        })
+         var x,tabsTemplate,x1,paneTemplate,componentsModule,tabsController;
+         x=Operators.add(Default.Div(List.ofArray([Default.Attr().Class("tabbable")])),List.ofArray([Operators.add(Default.UL(List.ofArray([Default.Attr().Class("nav nav-tabs")])),List.ofArray([Operators.add(Default.LI(List.ofArray([(Client.NgRepeat())("pane in panes"),(Client.NgClass())("{active:pane.selected}")])),List.ofArray([Operators.add(Default.A(List.ofArray([Default.HRef(""),(Client.NgClick())("select(pane)")])),List.ofArray([Default.Text("{{pane.title}}")]))]))])),Default.Div(List.ofArray([Default.Attr().Class("tab-content"),(Client.NgTransclude())("")]))]));
+         tabsTemplate=Client.Templatify(x);
+         x1=Default.Div(List.ofArray([Default.Attr().Class("tab-pane"),(Client.NgClass())("{active: selected}"),(Client.NgTransclude())("")]));
+         paneTemplate=Client.Templatify(x1);
+         componentsModule=angular.module("components",[]);
+         tabsController=componentsModule.controller("TabsCtrl",["$scope","$element",function(scope)
+         {
+          scope.panes=[];
+          scope.select=function(pane)
+          {
+           Arrays.iter(function(p)
+           {
+            p.selected=false;
+            return;
+           },scope.panes);
+           pane.selected=true;
+           return;
+          };
+          this.addPane=function(pane)
+          {
+           var self,ps;
+           if(IntrinsicFunctionProxy.GetLength(scope.panes)===0)
+            {
+             scope.select.call(null,pane);
+            }
+           self=scope.panes;
+           ps=[pane];
+           self.push.apply(self,[].concat(ps));
+           return;
+          };
+          return;
+         }]);
+         componentsModule.directive("tabs",function()
+         {
+          return{
+           restrict:"E",
+           transclude:true,
+           scope:{},
+           controller:"TabsCtrl",
+           template:tabsTemplate,
+           replace:true
+          };
+         }).directive("pane",function()
+         {
+          return{
+           require:"^tabs",
+           restrict:"E",
+           transclude:true,
+           scope:{
+            title:"@"
+           },
+           link:Runtime.Tupled(function(tupledArg)
+           {
+            return tupledArg[3].addPane.call(null,tupledArg[0]);
+           }),
+           template:paneTemplate,
+           replace:true
+          };
+         });
+         return angular.module("app",["components"]).controller("BeerCounter",["$scope","$locale",Runtime.Tupled(function(tupledArg)
+         {
+          var scope,locale;
+          scope=tupledArg[0];
+          locale=tupledArg[1];
+          scope.beers=Seq.toArray(Operators1.range(0,6));
+          return locale.id==="en-us"?void(scope.beerForms={
+           "0":"no beers",
+           one:"{} beer",
+           few:"{} beer",
+           other:"{} beers"
+          }):void(scope.beerForms={
+           "0":"\ufffdiadne pivo",
+           one:"{} pivo",
+           few:"{} piv\ufffd",
+           other:"{} p\ufffdv"
+          });
+         })]);
+        }),
+        NgClass:Runtime.Field(function()
+        {
+         return function(arg10)
+         {
+          return Default.Attr().NewAttr("ng-class",arg10);
+         };
+        }),
+        NgClick:Runtime.Field(function()
+        {
+         return function(arg10)
+         {
+          return Default.Attr().NewAttr("ng-click",arg10);
+         };
+        }),
+        NgRepeat:Runtime.Field(function()
+        {
+         return function(arg10)
+         {
+          return Default.Attr().NewAttr("ng-repeat",arg10);
+         };
+        }),
+        NgTransclude:Runtime.Field(function()
+        {
+         return function(arg10)
+         {
+          return Default.Attr().NewAttr("ng-transclude",arg10);
+         };
+        }),
+        Templatify:function(element)
+        {
+         return Default.Div(List.ofArray([element])).get_Html();
+        }
        }
       }
      }
@@ -12308,22 +12417,33 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   Remoting=Runtime.Safe(WebSharper.Remoting);
   Arrays=Runtime.Safe(WebSharper.Arrays);
   Firebase=Runtime.Safe(Global.Firebase);
+  Html=Runtime.Safe(WebSharper.Html);
+  Operators=Runtime.Safe(Html.Operators);
+  Default=Runtime.Safe(Html.Default);
+  List=Runtime.Safe(WebSharper.List);
   ellipsoid=Runtime.Safe(Global.ellipsoid);
   org=Runtime.Safe(ellipsoid.org);
   SharpAngles=Runtime.Safe(org.SharpAngles);
   Samples=Runtime.Safe(SharpAngles.Samples);
-  FirstExample=Runtime.Safe(Samples.FirstExample);
-  Client=Runtime.Safe(FirstExample.Client);
-  SecondExample=Runtime.Safe(Samples.SecondExample);
-  Client1=Runtime.Safe(SecondExample.Client);
   ThirdExample=Runtime.Safe(Samples.ThirdExample);
-  return Client2=Runtime.Safe(ThirdExample.Client);
+  Client=Runtime.Safe(ThirdExample.Client);
+  IntrinsicFunctionProxy=Runtime.Safe(WebSharper.IntrinsicFunctionProxy);
+  Seq=Runtime.Safe(WebSharper.Seq);
+  Operators1=Runtime.Safe(WebSharper.Operators);
+  FirstExample=Runtime.Safe(Samples.FirstExample);
+  Client1=Runtime.Safe(FirstExample.Client);
+  SecondExample=Runtime.Safe(Samples.SecondExample);
+  return Client2=Runtime.Safe(SecondExample.Client);
  });
  Runtime.OnLoad(function()
  {
+  Client.NgTransclude();
+  Client.NgRepeat();
+  Client.NgClick();
+  Client.NgClass();
+  Client.Main();
   Client2.Main();
   Client1.Main();
-  Client.Main();
   return;
  });
 }());
