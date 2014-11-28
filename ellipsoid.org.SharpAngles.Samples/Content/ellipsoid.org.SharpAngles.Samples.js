@@ -12164,10 +12164,13 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
           scope.todos=Remoting.Call("ellipsoid.org.SharpAngles.Samples:0",[]);
           scope.addTodo=function()
           {
-           scope.todos=[{
+           var self,ps;
+           self=scope.todos;
+           ps=[{
             text:scope.todoText,
             done:false
-           }].concat(scope.todos);
+           }];
+           self.push.apply(self,[].concat(ps));
            scope.todoText="";
            return;
           };
@@ -12292,13 +12295,13 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
        Client:{
         Main:Runtime.Field(function()
         {
-         var x,tabsTemplate,x1,paneTemplate,componentsModule,tabsController;
+         var x,_tabsTemplate_49_1,x1,_paneTemplate_60_1,_componentsModule_64_1,_tabsController_65_4;
          x=Operators.add(Default.Div(List.ofArray([Default.Attr().Class("tabbable")])),List.ofArray([Operators.add(Default.UL(List.ofArray([Default.Attr().Class("nav nav-tabs")])),List.ofArray([Operators.add(Default.LI(List.ofArray([(Client.NgRepeat())("pane in panes"),(Client.NgClass())("{active:pane.selected}")])),List.ofArray([Operators.add(Default.A(List.ofArray([Default.HRef(""),(Client.NgClick())("select(pane)")])),List.ofArray([Default.Text("{{pane.title}}")]))]))])),Default.Div(List.ofArray([Default.Attr().Class("tab-content"),(Client.NgTransclude())("")]))]));
-         tabsTemplate=Client.Templatify(x);
+         _tabsTemplate_49_1=Client.Templatify(x);
          x1=Default.Div(List.ofArray([Default.Attr().Class("tab-pane"),(Client.NgClass())("{active: selected}"),(Client.NgTransclude())("")]));
-         paneTemplate=Client.Templatify(x1);
-         componentsModule=angular.module("components",[]);
-         tabsController=componentsModule.controller("TabsCtrl",["$scope","$element",function(scope)
+         _paneTemplate_60_1=Client.Templatify(x1);
+         _componentsModule_64_1=angular.module("components",[]);
+         _tabsController_65_4=_componentsModule_64_1.controller("TabsCtrl",["$scope","$element",function(scope)
          {
           scope.panes=[];
           scope.select=function(pane)
@@ -12325,14 +12328,14 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
           };
           return;
          }]);
-         componentsModule.directive("tabs",function()
+         _componentsModule_64_1.directive("tabs",function()
          {
           return{
            restrict:"E",
            transclude:true,
            scope:{},
            controller:"TabsCtrl",
-           template:tabsTemplate,
+           template:_tabsTemplate_49_1,
            replace:true
           };
          }).directive("pane",function()
@@ -12348,7 +12351,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
            {
             return tupledArg[3].addPane.call(null,tupledArg[0]);
            }),
-           template:paneTemplate,
+           template:_paneTemplate_60_1,
            replace:true
           };
          });
