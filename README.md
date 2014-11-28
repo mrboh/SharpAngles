@@ -38,13 +38,14 @@ module Server =
     
 [<JavaScript>]
 module Client =
+    open Server
     
     [<AbstractClass>]
     type TodoScope =
         [<DefaultValue>] val mutable todos: Server.Todo array
-        [<DefaultValue>] val mutable addTodo: (unit -> unit)
-        [<DefaultValue>] val mutable remaining: (unit -> int)
-        [<DefaultValue>] val mutable archive: (unit -> unit)
+        [<DefaultValue>] val mutable addTodo: unit -> unit
+        [<DefaultValue>] val mutable remaining: unit -> int
+        [<DefaultValue>] val mutable archive: unit -> unit
         [<DefaultValue>] val mutable todoText: string
         
     let Main =
@@ -56,7 +57,7 @@ module Client =
                                 scope.todos <- Server.GetTodos ()
                                 scope.addTodo <-
                                     fun _ ->
-                                        scope.todos <- Array.append [| { text = scope.todoText; ``done`` = false } |] scope.todos
+                                        scope.todos.ToEcma().Push({ text = scope.todoText; ``done`` = false }) |> ignore
                                         scope.todoText <- ""
                                 scope.remaining <-
                                     fun _ ->
