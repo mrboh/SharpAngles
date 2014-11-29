@@ -14,15 +14,15 @@ module Client =
     
     type DataSource () =
         [<Inline "$this.$add($project)">]
-        member this.Add(project) = X<Angular.IPromise<Project>>
+        member this.Add(project) = X<Angular.Promise<Project>>
         [<Inline "$this.$indexFor($projectId)">]
         member this.IndexFor(projectId) = X<obj>
         member this.Item
             with [<Inline "$this[$index]">] get(index) = X<Project>
         [<Inline "$this.$remove($project)">]
-        member this.Remove(project) = X<Angular.IPromise<Project>>
+        member this.Remove(project) = X<Angular.Promise<Project>>
         [<Inline "$this.$save($project)">]
-        member this.Save(project) = X<Angular.IPromise<Project>>
+        member this.Save(project) = X<Angular.Promise<Project>>
 
     [<Inline "$firebase(new Firebase($url)).$asArray()">]
     let Firebase(firebase, url) = X<DataSource>
@@ -49,36 +49,36 @@ module Client =
     let Main =
         Angular
             .Module("project", [| "ngRoute"; "firebase" |])
-            .value("fbURL", "https://angularjs-projects.firebaseio.com/")
-            .factory("Projects", (
+            .Value("fbURL", "https://angularjs-projects.firebaseio.com/")
+            .Factory("Projects", (
                         "$firebase", "fbURL",
                         fun (firebase, fbUrl) ->    // Note that function arguments have to be tupled for Angular to interact with them properly
                             Firebase (firebase, fbUrl)
             ))
-            .config(("$routeProvider",
-                        fun (routeProvider: Angular.Route.IRouteProvider) ->
+            .Config(("$routeProvider",
+                        fun (routeProvider: Angular.Route.RouteProvider) ->
                             routeProvider
-                                .``when``("/", RouteConfig(Controller = "ListCtrl", TemplateUrl = "list.html"))
-                                .``when``("/edit/:projectId", RouteConfig(Controller = "EditCtrl", TemplateUrl = "detail.html"))
-                                .``when``("/new", RouteConfig(Controller = "CreateCtrl", TemplateUrl = "detail.html"))
-                                .otherwise(RouteConfig(RedirectTo = "/"))
+                                .When("/", RouteConfig(Controller = "ListCtrl", TemplateUrl = "list.html"))
+                                .When("/edit/:projectId", RouteConfig(Controller = "EditCtrl", TemplateUrl = "detail.html"))
+                                .When("/new", RouteConfig(Controller = "CreateCtrl", TemplateUrl = "detail.html"))
+                                .Otherwise(RouteConfig(RedirectTo = "/"))
             ))
-            .controller("ListCtrl", (
+            .Controller("ListCtrl", (
                             "$scope", "Projects", 
                             fun (scope: ListScope, projects) ->
                                 scope.projects <- projects
             ))
-            .controller("CreateCtrl", (
+            .Controller("CreateCtrl", (
                             "$scope", "$location", "Projects", 
-                            fun (scope: CreateScope, location: Angular.ILocationService, projects: DataSource) ->
+                            fun (scope: CreateScope, location: Angular.LocationService, projects: DataSource) ->
                                 scope.save <-
                                     fun _ ->
                                         projects.Add(scope.project)
-                                                .``then``(fun data -> location.path("/")) |> ignore
+                                                .Then(fun _ -> location.Path("/")) |> ignore
             ))
-            .controller("EditCtrl", (
+            .Controller("EditCtrl", (
                             "$scope", "$location", "$routeParams", "Projects", 
-                            fun (scope: EditScope, location: Angular.ILocationService, routeParams: RouteParams, projects: DataSource) ->
+                            fun (scope: EditScope, location: Angular.LocationService, routeParams: RouteParams, projects: DataSource) ->
                                 let projectId = routeParams.projectId
                                 let projectIndex = projects.IndexFor(projectId)
 
@@ -87,9 +87,9 @@ module Client =
                                 scope.destroy <-
                                     fun _ ->
                                         scope.projects.Remove(scope.project)
-                                                  .``then``(fun data -> location.path("/")) |> ignore
+                                                      .Then(fun data -> location.Path("/")) |> ignore
                                 scope.save <-
                                     fun _ ->
                                         scope.projects.Save(scope.project)
-                                                  .``then``(fun data -> location.path("/")) |> ignore
+                                                      .Then(fun data -> location.Path("/")) |> ignore
             ))

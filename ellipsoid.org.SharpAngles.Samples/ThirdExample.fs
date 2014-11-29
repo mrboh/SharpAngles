@@ -64,7 +64,7 @@ module Client =
         let componentsModule = Angular.Module("components", [||])
         let tabsController =
             componentsModule
-                .controller("TabsCtrl", (
+                .Controller("TabsCtrl", (
                                 "$scope", "$element",
                                 System.Action<TabsController, TabsScope, JQuery>(
                                     fun controller scope element ->
@@ -80,7 +80,7 @@ module Client =
                 )))
         let tabsDirective =
             componentsModule
-                .directive("tabs", fun _ ->
+                .Directive("tabs", fun _ ->
                     DirectiveConfig(
                         Restrict = "E",
                         Transclude = true,
@@ -90,7 +90,7 @@ module Client =
                         Replace = true
                     )
                 )
-                .directive("pane", fun _ ->
+                .Directive("pane", fun _ ->
                     DirectiveConfig(
                         Require = "^tabs",
                         Restrict = "E",
@@ -107,11 +107,11 @@ module Client =
 
         Angular
             .Module("app", [| "components" |])
-            .controller("BeerCounter", (
+            .Controller("BeerCounter", (
                             "$scope", "$locale",
-                            fun (scope: BeerCounterScope, locale: Angular.ILocaleService) ->
+                            fun (scope: BeerCounterScope, locale: Angular.LocaleService) ->
                                 scope.beers <- [| 0..6 |]
-                                if locale.id = "en-us" then
+                                if locale.Id = "en-us" then
                                     scope.beerForms <-
                                         { ``0`` = "no beers"
                                           one = "{} beer"

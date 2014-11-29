@@ -51,7 +51,7 @@ module Client =
     let Main =
         Angular
             .Module("todoApp", [||])
-            .controller("TodoController", (
+            .Controller("TodoController", (
                             "$scope", 
                             fun (scope: TodoScope) -> 
                                 scope.todos <- Server.GetTodos ()

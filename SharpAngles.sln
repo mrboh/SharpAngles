@@ -11,8 +11,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.gitattributes = .gitattributes
 		.gitignore = .gitignore
-		ellipsoid.org.SharpAngles.0.0.1.nupkg = ellipsoid.org.SharpAngles.0.0.1.nupkg
 		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuget", "nuget", "{C1E02FCD-1742-486E-88EB-C973755F90F8}"
+	ProjectSection(SolutionItems) = preProject
+		nuget\ellipsoid.org.SharpAngles.0.0.1.nupkg = nuget\ellipsoid.org.SharpAngles.0.0.1.nupkg
 	EndProjectSection
 EndProject
 Global

@@ -3230,7 +3230,7 @@ declare module ellipsoid {
                             };
                         };
                         var Main : {
-                            (): __ABBREV.__Angular.IModule;
+                            (): __ABBREV.__Angular.Module;
                         };
                     }
                 }
@@ -3248,14 +3248,14 @@ declare module ellipsoid {
                             projectId: number;
                         }
                         var Main : {
-                            (): __ABBREV.__Angular.IModule;
+                            (): __ABBREV.__Angular.Module;
                         };
                     }
                 }
                 module FirstExample {
                     module Client {
                         var Main : {
-                            (): __ABBREV.__Angular.IModule;
+                            (): __ABBREV.__Angular.Module;
                         };
                     }
                     module Server {
