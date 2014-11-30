@@ -14,15 +14,15 @@ module Client =
     
     type DataSource () =
         [<Inline "$this.$add($project)">]
-        member this.Add(project) = X<Angular.Promise<Project>>
+        member this.Add(project) = X<Promise<Project>>
         [<Inline "$this.$indexFor($projectId)">]
         member this.IndexFor(projectId) = X<obj>
         member this.Item
             with [<Inline "$this[$index]">] get(index) = X<Project>
         [<Inline "$this.$remove($project)">]
-        member this.Remove(project) = X<Angular.Promise<Project>>
+        member this.Remove(project) = X<Promise<Project>>
         [<Inline "$this.$save($project)">]
-        member this.Save(project) = X<Angular.Promise<Project>>
+        member this.Save(project) = X<Promise<Project>>
 
     [<Inline "$firebase(new Firebase($url)).$asArray()">]
     let Firebase(firebase, url) = X<DataSource>
@@ -56,12 +56,12 @@ module Client =
                             Firebase (firebase, fbUrl)
             ))
             .Config(("$routeProvider",
-                        fun (routeProvider: Angular.Route.RouteProvider) ->
+                        fun (routeProvider: Route.RouteProvider) ->
                             routeProvider
-                                .When("/", RouteConfig(Controller = "ListCtrl", TemplateUrl = "list.html"))
-                                .When("/edit/:projectId", RouteConfig(Controller = "EditCtrl", TemplateUrl = "detail.html"))
-                                .When("/new", RouteConfig(Controller = "CreateCtrl", TemplateUrl = "detail.html"))
-                                .Otherwise(RouteConfig(RedirectTo = "/"))
+                                .When("/", Route.RouteConfig(Controller = "ListCtrl", TemplateUrl = "list.html"))
+                                .When("/edit/:projectId", Route.RouteConfig(Controller = "EditCtrl", TemplateUrl = "detail.html"))
+                                .When("/new", Route.RouteConfig(Controller = "CreateCtrl", TemplateUrl = "detail.html"))
+                                .Otherwise(Route.RouteConfig(RedirectTo = "/"))
             ))
             .Controller("ListCtrl", (
                             "$scope", "Projects", 
@@ -70,7 +70,7 @@ module Client =
             ))
             .Controller("CreateCtrl", (
                             "$scope", "$location", "Projects", 
-                            fun (scope: CreateScope, location: Angular.LocationService, projects: DataSource) ->
+                            fun (scope: CreateScope, location: LocationService, projects: DataSource) ->
                                 scope.save <-
                                     fun _ ->
                                         projects.Add(scope.project)
@@ -78,7 +78,7 @@ module Client =
             ))
             .Controller("EditCtrl", (
                             "$scope", "$location", "$routeParams", "Projects", 
-                            fun (scope: EditScope, location: Angular.LocationService, routeParams: RouteParams, projects: DataSource) ->
+                            fun (scope: EditScope, location: LocationService, routeParams: RouteParams, projects: DataSource) ->
                                 let projectId = routeParams.projectId
                                 let projectIndex = projects.IndexFor(projectId)
 

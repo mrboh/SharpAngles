@@ -55,6 +55,7 @@
   </Target>
   <ItemGroup>
     <Compile Include="Resources.fs" />
+    <Compile Include="Common.fs" />
     <Compile Include="Definition.fs" />
     <Content Include="packages.config" />
   </ItemGroup>

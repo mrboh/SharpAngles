@@ -109,7 +109,7 @@ module Client =
             .Module("app", [| "components" |])
             .Controller("BeerCounter", (
                             "$scope", "$locale",
-                            fun (scope: BeerCounterScope, locale: Angular.LocaleService) ->
+                            fun (scope: BeerCounterScope, locale: LocaleService) ->
                                 scope.beers <- [| 0..6 |]
                                 if locale.Id = "en-us" then
                                     scope.beerForms <-

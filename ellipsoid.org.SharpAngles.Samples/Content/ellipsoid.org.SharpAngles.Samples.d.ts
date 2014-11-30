@@ -3230,7 +3230,7 @@ declare module ellipsoid {
                             };
                         };
                         var Main : {
-                            (): __ABBREV.__Angular.Module;
+                            (): __ABBREV.__SharpAngles.Module;
                         };
                     }
                 }
@@ -3248,14 +3248,14 @@ declare module ellipsoid {
                             projectId: number;
                         }
                         var Main : {
-                            (): __ABBREV.__Angular.Module;
+                            (): __ABBREV.__SharpAngles.Module;
                         };
                     }
                 }
                 module FirstExample {
                     module Client {
                         var Main : {
-                            (): __ABBREV.__Angular.Module;
+                            (): __ABBREV.__SharpAngles.Module;
                         };
                     }
                     module Server {
@@ -3272,6 +3272,6 @@ declare module ellipsoid {
 declare module __ABBREV {
     
     export import __Html = IntelliFactory.WebSharper.Html;
-    export import __Angular = ellipsoid.org.SharpAngles.Angular;
+    export import __SharpAngles = ellipsoid.org.SharpAngles;
 }
 

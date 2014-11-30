@@ -1,36 +1,11 @@
 namespace ellipsoid.org.SharpAngles
 
+open ellipsoid.org.SharpAngles.Common
 open ellipsoid.org.SharpAngles.Resources
-open IntelliFactory.WebSharper.Dom
 open IntelliFactory.WebSharper.InterfaceGenerator
-open IntelliFactory.WebSharper.JQuery
 
 module Definition =
 
-    (*
-        Helper definitions
-        ==================
-    *)
-
-    let Any = T<obj>
-    let Bool = T<bool>
-    let Dictionary t1 t2 = T<System.Collections.Generic.Dictionary<_,_>>.[t1,t2]
-    let Document = T<Document>
-    let Element = T<Element>
-    let Function = T<obj>
-    let Int = T<int>
-    let JQuery = T<JQuery>
-    let Number = T<float>
-    let Object = T<obj>
-    let Config = T<obj> // Expressed by {}
-    let String = T<string>
-    let Void = T<unit>
-
-    let Optional x = !? x
-    let ArrayOf x = Type.ArrayOf x    
-    let ParamArrayOf x = !+ x
-    let FunctionOf x y z = x -* y ^-> z
-    
     (*
         Type definitions: core
         ======================
@@ -124,28 +99,28 @@ module Definition =
         ==========================
     *)
 
-    let ResourceOptions = Type.New ()
-    let ResourceService = Type.New ()
     let ActionDescriptor = Type.New ()
+    let Array<'T> = Type.New ()
     let _ResourceClass<'T> = Type.New ()
     let Resource<'T> = Type.New ()
     let ResourceArray<'T> = Type.New ()
-    let Array<'T> = Type.New ()
+    let ResourceOptions = Type.New ()
+    let ResourceService = Type.New ()
 
     (*
         Type definitions: route
         =======================
     *)
 
-    let RouteParamsService = Type.New ()
-    let RouteService = Type.New ()
-    let Route = Type.New ()
     let CurrentRoute = Type.New ()
+    let Route = Type.New ()
+    let RouteParamsService = Type.New ()
     let RouteProvider = Type.New ()
+    let RouteService = Type.New ()
 
     (*
-        Generic definitions
-        ===================
+        Generic definitions: core
+        =========================
     *)
 
     let PromiseClass =
@@ -209,6 +184,11 @@ module Definition =
                     "then"          => (HttpPromiseCallbackArg.[t1]?response ^-> t2)?successCallback * (HttpPromiseCallbackArg.[Any]?response ^-> Any)?errorCallback ^-> Promise.[t2]
             ]
 
+    (*
+        Generic definitions: resource
+        =============================
+    *)
+
     let ResourceClassClass =
         Generic / fun t ->
             let successCallbackType = Void ^-> Void
@@ -255,8 +235,8 @@ module Definition =
             ]
 
     (*
-        Angular definitions
-        ===================
+        Angular definitions: core
+        =========================
     *)
 
     let Angular =
@@ -296,196 +276,210 @@ module Definition =
             "uppercase"             => String?str ^-> String
             "version"               =? AngularStaticVersion  // Some creative licence used here
         ]
-        |=> Nested [
 
-            Class "ng.AngularStaticVersion"
-            |=> AngularStaticVersion
-            |+> Protocol [
-                "full"                  =? String
-                "major"                 =? Number
-                "minor"                 =? Number
-                "dot"                   =? Number
-                "codeName"              =? String
-            ]
-
-            Class "ng.Attributes"
-            |=> Attributes
-            // ...
-
-            Class "ng.Module"
-            |=> Module
-            |+> Protocol [
-                "animation"             => String?name * Function?animationFactory ^-> Module
-                "animation"             => String?name * (ArrayOf Any)?inlineAnnotatedFunction ^-> Module
-                "animation"             => Object?``object`` ^-> Module
-                "config"                => Function?configFn ^-> Module
-                "config"                => (ArrayOf Any)?inlineAnnotatedFunction ^-> Module
-                "constant"              => String?name * Any?value ^-> Module
-                "constant"              => Object?``object`` ^-> Module
-                "controller"            => String?name * Function?controllerConstructor ^-> Module
-                "controller"            => String?name * (ArrayOf Any)?inlineAnnotatedConstructor ^-> Module
-                "controller"            => Object?``object`` ^-> Module
-                "directive"             => String?name * DirectiveFactory?directiveFactory ^-> Module
-                "directive"             => String?name * (ArrayOf Any)?inlineAnnotatedFunction ^-> Module
-                "directive"             => Object?``object`` ^-> Module
-                "factory"               => String?name * Function?getFn ^-> Module
-                "factory"               => String?name * (ArrayOf Any)?inlineAnnotatedFunction ^-> Module
-                "factory"               => Object?``object`` ^-> Module
-                Generic - fun t ->
-                    "factory"           => String * (ResourceService ^-> ResourceClass t) ^-> Module     // Imported from angular-resource (method signature questionable)
-                Generic - fun t ->
-                    "factory"           => String * (ResourceService ^-> t) ^-> Module                   // Imported from angular-resource (method signature questionable)
-                "filter"                => String?name * Function?filterFactoryFunction ^-> Module
-                "filter"                => String?name * (ArrayOf Any)?inlineAnnotatedFunction ^-> Module
-                "filter"                => Object?``object`` ^-> Module
-                "provider"              => String?name * (ParamArrayOf Any ^-> ServiceProvider)?serviceProviderFactory ^-> Module    // IServiceProviderFactory
-                "provider"              => String?name * ServiceProvider?serviceProviderConstructor ^-> Module
-                "provider"              => String?name * (ArrayOf Any)?inlineAnnotatedConstructor ^-> Module
-                "provider"              => String?name * ServiceProvider?providerObject ^-> Module
-                "provider"              => Object?``object`` ^-> Module
-                "run"                   => Function?initialisationFunction ^-> Module
-                "run"                   => (ArrayOf Any)?inlineAnnonatedFunction ^-> Module
-                "service"               => String?name * Function?serviceConstructor ^-> Module
-                "service"               => String?name * (ArrayOf Any)?inlineAnnonatedConstructor ^-> Module
-                "service"               => Object?``object`` ^-> Module
-                "value"                 => String?name * Any?value ^-> Module
-                "value"                 => Object?``object`` ^-> Module
-                "name"                  =? String
-                "requires"              =? ArrayOf String
-            ]
-
-            Class "ng.FormController"
-            |=> FormController
-            // ...
-
-            Generic - HttpPromiseClass
-
-            Class "ng.LocationService"
-            |=> LocationService
-            |+> Protocol [
-                "absUrl"                => Void ^-> String
-                "hash"                  => Void ^-> String
-                "hash"                  => String ^-> LocationService
-                "host"                  => Void ^-> String
-                "path"                  => Void ^-> String
-                "path"                  => String ^-> LocationService
-                "port"                  => Void ^-> Number
-                "protocol"              => Void ^-> String
-                "replace"               => Void ^-> LocationService
-                "search"                => Void ^-> Any
-                "search"                => Any ^-> LocationService
-                "search"                => String * String ^-> LocationService
-                "search"                => String * Number ^-> LocationService
-                "search"                => String * ArrayOf String ^-> LocationService
-                "search"                => String * Bool ^-> LocationService
-                "state"                 => Void ^-> Any
-                "state"                 => Any ^-> LocationService
-                "url"                   => Void ^-> String
-                "url"                   => String ^-> LocationService
-            ]
-
-            Class "ng.LocaleService"
-            |=> LocaleService
-            |+> Protocol [
-                "id"                    =? String
-                "NUMBER_FORMATS"        =? LocaleNumberFormatDescriptor
-                "DATETIME_FORMATS"      =? LocaleDateTimeFormatDescriptor
-                "pluralCat"             =? Any ^-> String
-            ]
-
-            Generic - PromiseClass
-
-            Class "ng.ServiceProvider"
-            |=> ServiceProvider
-            |+> Protocol [
-                "$get"                   =? Any
-            ]
-
-            Class "ng.auto"
-            |=> Nested [
-                Class "ng.auto.InjectorService"
-                |=> AutoInjectorService
-                // ...
-
-                Class "ng.auto.ProvideService"
-                |=> AutoProvideService
-                // ...
-            ]            
-
-            Class "ng.resource"
-            |=> Nested [
-                Class "ng.resource.ResourceOptions"
-                |=> ResourceOptions
-                |+> Protocol [
-                    "stripTrailingSlashes"  =@ Bool
-                ]
-
-                Class "ng.resource.ResourceService"
-                |=> ResourceService
-                // ...
-                // Unclear how to implement this signature
-
-                Class "ng.resource.ActionDescriptor"
-                |=> ActionDescriptor
-                |+> Protocol [
-                    "method"                =? String
-                    "isArray"               =? Bool
-                    "params"                =? Any
-                    "headers"               =? Any
-                ]
-
-                Generic - ResourceClassClass
-                Generic - ResourceClass
-            ]
-
-            Class "ng.route"
-            |=> Nested [
-                Class "ng.route.RouteParamsService"
-                |=> RouteParamsService
-                |+> Protocol [
-                    "item"                  =@ Any |> Indexed String
-                ]
-            ]
-            |=> Nested [
-                Class "ng.route.RouteService"
-                |=> RouteService
-                |+> Protocol [
-                    "reload"                => Void ^-> Void
-                    "routes"                =? Any
-                    "current"               =? CurrentRoute
-                ]
-
-                Class "ng.route.Route"
-                |=> Route
-                |+> Protocol [
-                    "controller"            =? Any
-                    "controllerAs"          =? String
-                    "name"                  =? String
-                    "template"              =? String
-                    "templateUrl"           =? Any
-                    "resolve"               =? Dictionary String Any
-                    "redirectTo"            =? Any
-                    "reloadOnSearch"        =? Bool
-                    "caseInsensitiveMatch"  =? Bool
-                ]
-
-                Class "ng.route.CurrentRoute"
-                |=> CurrentRoute
-                |=> Inherits Route
-                |+> Protocol [
-                    "locals"                =? Any // Needs proper implementation
-                    "params"                =? Any
-                ]
-
-                Class "ng.route.RouteProvider"
-                |=> RouteProvider
-                |=> Inherits ServiceProvider
-                |+> Protocol [
-                    "otherwise"             => Route ^-> RouteProvider
-                    "when"                  => String * Route ^-> RouteProvider
-                ]
-            ]        
+    let AngularStaticVersionClass =
+        Class "ng.AngularStaticVersion"
+        |=> AngularStaticVersion
+        |+> Protocol [
+            "full"                  =? String
+            "major"                 =? Number
+            "minor"                 =? Number
+            "dot"                   =? Number
+            "codeName"              =? String
         ]
+
+    let AttributesClass =
+        Class "ng.Attributes"
+        |=> Attributes
+        // ...
+
+    let FormControllerClass =
+        Class "ng.FormController"
+        |=> FormController
+        // ...
+
+    let ModuleClass =
+        Class "ng.Module"
+        |=> Module
+        |+> Protocol [
+            "animation"             => String?name * Function?animationFactory ^-> Module
+            "animation"             => String?name * (ArrayOf Any)?inlineAnnotatedFunction ^-> Module
+            "animation"             => Object?``object`` ^-> Module
+            "config"                => Function?configFn ^-> Module
+            "config"                => (ArrayOf Any)?inlineAnnotatedFunction ^-> Module
+            "constant"              => String?name * Any?value ^-> Module
+            "constant"              => Object?``object`` ^-> Module
+            "controller"            => String?name * Function?controllerConstructor ^-> Module
+            "controller"            => String?name * (ArrayOf Any)?inlineAnnotatedConstructor ^-> Module
+            "controller"            => Object?``object`` ^-> Module
+            "directive"             => String?name * DirectiveFactory?directiveFactory ^-> Module
+            "directive"             => String?name * (ArrayOf Any)?inlineAnnotatedFunction ^-> Module
+            "directive"             => Object?``object`` ^-> Module
+            "factory"               => String?name * Function?getFn ^-> Module
+            "factory"               => String?name * (ArrayOf Any)?inlineAnnotatedFunction ^-> Module
+            "factory"               => Object?``object`` ^-> Module
+            Generic - fun t ->
+                "factory"           => String * (ResourceService ^-> ResourceClass t) ^-> Module     // Imported from angular-resource (method signature questionable)
+            Generic - fun t ->
+                "factory"           => String * (ResourceService ^-> t) ^-> Module                   // Imported from angular-resource (method signature questionable)        
+            "filter"                => String?name * Function?filterFactoryFunction ^-> Module
+            "filter"                => String?name * (ArrayOf Any)?inlineAnnotatedFunction ^-> Module
+            "filter"                => Object?``object`` ^-> Module
+            "provider"              => String?name * (ParamArrayOf Any ^-> ServiceProvider)?serviceProviderFactory ^-> Module    // IServiceProviderFactory
+            "provider"              => String?name * ServiceProvider?serviceProviderConstructor ^-> Module
+            "provider"              => String?name * (ArrayOf Any)?inlineAnnotatedConstructor ^-> Module
+            "provider"              => String?name * ServiceProvider?providerObject ^-> Module
+            "provider"              => Object?``object`` ^-> Module
+            "run"                   => Function?initialisationFunction ^-> Module
+            "run"                   => (ArrayOf Any)?inlineAnnonatedFunction ^-> Module
+            "service"               => String?name * Function?serviceConstructor ^-> Module
+            "service"               => String?name * (ArrayOf Any)?inlineAnnonatedConstructor ^-> Module
+            "service"               => Object?``object`` ^-> Module
+            "value"                 => String?name * Any?value ^-> Module
+            "value"                 => Object?``object`` ^-> Module
+            "name"                  =? String
+            "requires"              =? ArrayOf String
+        ]
+
+    let LocationServiceClass =
+        Class "ng.LocationService"
+        |=> LocationService
+        |+> Protocol [
+            "absUrl"                => Void ^-> String
+            "hash"                  => Void ^-> String
+            "hash"                  => String ^-> LocationService
+            "host"                  => Void ^-> String
+            "path"                  => Void ^-> String
+            "path"                  => String ^-> LocationService
+            "port"                  => Void ^-> Number
+            "protocol"              => Void ^-> String
+            "replace"               => Void ^-> LocationService
+            "search"                => Void ^-> Any
+            "search"                => Any ^-> LocationService
+            "search"                => String * String ^-> LocationService
+            "search"                => String * Number ^-> LocationService
+            "search"                => String * ArrayOf String ^-> LocationService
+            "search"                => String * Bool ^-> LocationService
+            "state"                 => Void ^-> Any
+            "state"                 => Any ^-> LocationService
+            "url"                   => Void ^-> String
+            "url"                   => String ^-> LocationService
+        ]
+
+    let LocaleServiceClass =
+        Class "ng.LocaleService"
+        |=> LocaleService
+        |+> Protocol [
+            "id"                    =? String
+            "NUMBER_FORMATS"        =? LocaleNumberFormatDescriptor
+            "DATETIME_FORMATS"      =? LocaleDateTimeFormatDescriptor
+            "pluralCat"             =? Any ^-> String
+        ]
+
+    let ServiceProviderClass =
+        Class "ng.ServiceProvider"
+        |=> ServiceProvider
+        |+> Protocol [
+            "$get"                   =? Any
+        ]
+
+    let InjectorServiceClass =
+        Class "ng.auto.InjectorService"
+        |=> AutoInjectorService
+        // ...
+
+    let ProvideServiceClass =
+        Class "ng.auto.ProvideService"
+        |=> AutoProvideService
+        // ...
+
+    (*
+        Angular definitions: resource
+        =============================
+    *)
+
+    let ActionDescriptorClass =
+        Class "ng.resource.ActionDescriptor"
+        |=> ActionDescriptor
+        |+> Protocol [
+            "method"                =? String
+            "isArray"               =? Bool
+            "params"                =? Any
+            "headers"               =? Any
+        ]
+
+    let ResourceOptionsClass =
+        Class "ng.resource.ResourceOptions"
+        |=> ResourceOptions
+        |+> Protocol [
+            "stripTrailingSlashes"  =@ Bool
+        ]
+
+    let ResourceServiceClass =
+        Class "ng.resource.ResourceService"
+        |=> ResourceService
+        // ...
+        // Unclear how to implement this signature
+
+    (*
+        Angular definitions: route
+        ==========================
+    *)
+
+    let CurrentRouteClass =
+        Class "ng.route.CurrentRoute"
+        |=> CurrentRoute
+        |=> Inherits Route
+        |+> Protocol [
+            "locals"                =? Any // Needs proper implementation
+            "params"                =? Any
+        ]
+
+    let RouteClass =
+        Class "ng.route.Route"
+        |=> Route
+        |+> Protocol [
+            "controller"            =? Any
+            "controllerAs"          =? String
+            "name"                  =? String
+            "template"              =? String
+            "templateUrl"           =? Any
+            "resolve"               =? Dictionary String Any
+            "redirectTo"            =? Any
+            "reloadOnSearch"        =? Bool
+            "caseInsensitiveMatch"  =? Bool
+        ]
+
+    let RouteParamsServiceClass =
+        Class "ng.route.RouteParamsService"
+        |=> RouteParamsService
+        |+> Protocol [
+            "item"                  =@ Any |> Indexed String
+        ]
+            
+    let RouteProviderClass =
+        Class "ng.route.RouteProvider"
+        |=> RouteProvider
+        |=> Inherits ServiceProvider
+        |+> Protocol [
+            "otherwise"             => Route ^-> RouteProvider
+            "when"                  => String * Route ^-> RouteProvider
+        ]
+
+    let RouteServiceClass =
+        Class "ng.route.RouteService"
+        |=> RouteService
+        |+> Protocol [
+            "reload"                => Void ^-> Void
+            "routes"                =? Any
+            "current"               =? CurrentRoute
+        ]
+
+
+    (*
+        Configuration objects: core
+        ===========================
+    *)
 
     let AngularBootstrapConfigConfig =
         Pattern.Config "AngularBootstrapConfig" {
@@ -521,6 +515,11 @@ module Definition =
         }
         |=> Inherits Directive
 
+    (*
+        Configuration objects: route
+        ============================
+    *)
+
     let RouteConfig =
         Pattern.Config "RouteConfig" {
             Required = []
@@ -545,8 +544,40 @@ module Definition =
                 Angular
 
                 // Configuration objects
-                RouteConfig
+                AngularBootstrapConfigConfig
                 DirectiveConfig
+            ]
+            Namespace "ellipsoid.org.SharpAngles" [
+                AngularStaticVersionClass
+                AttributesClass
+                FormControllerClass
+                Generic - HttpPromiseClass
+                ModuleClass
+                LocationServiceClass
+                LocaleServiceClass
+                Generic - PromiseClass
+                ServiceProviderClass
+            ]
+            Namespace "ellipsoid.org.SharpAngles.Auto" [
+                InjectorServiceClass
+                ProvideServiceClass
+            ]
+            Namespace "ellipsoid.org.SharpAngles.Resource" [
+                ActionDescriptorClass
+                Generic - ResourceClassClass
+                Generic - ResourceClass
+                ResourceOptionsClass
+                ResourceServiceClass
+            ]
+            Namespace "ellipsoid.org.SharpAngles.Route" [
+                 CurrentRouteClass
+                 RouteClass
+                 RouteParamsServiceClass
+                 RouteProviderClass
+                 RouteServiceClass
+
+                 // Configuration objects
+                 RouteConfig
             ]
             Namespace "ellipsoid.org.SharpAngles.Resources" [
                 AngularJs
@@ -554,7 +585,7 @@ module Definition =
                 AngularJsRoute
             ]
         ]
-        |> Requires [ AngularJs; AngularJsRoute ]
+        |> Requires [ AngularJs; AngularJsResource; AngularJsRoute ]
 
 open IntelliFactory.WebSharper.InterfaceGenerator
 
