@@ -20,7 +20,7 @@ are based on the [DefinitelyTyped Angular definitions][2] for TypeScript. Angula
 
 ## Usage
 
-The general idea is to implement Angular in a manner that matches the regular JavaScript usuage as closely as possible.
+The general idea is to implement Angular in a manner that matches the regular JavaScript usage as closely as possible.
 Below is an example of the first (very simple) example found on the Angular website, translated into F#:
 
 ```F#

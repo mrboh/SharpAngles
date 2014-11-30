@@ -113,8 +113,8 @@ module Definition =
     *)
 
     let CurrentRoute = Type.New ()
+    let CurrentRouteLocals = Type.New ()
     let Route = Type.New ()
-    let RouteParamsService = Type.New ()
     let RouteProvider = Type.New ()
     let RouteService = Type.New ()
 
@@ -431,8 +431,16 @@ module Definition =
         |=> CurrentRoute
         |=> Inherits Route
         |+> Protocol [
-            "locals"                =? Any // Needs proper implementation
+            "locals"                =? CurrentRouteLocals
             "params"                =? Any
+        ]
+
+    let CurrentRouteLocalsClass =
+        Class "ng.route.CurrentRouteLocals"
+        |=> CurrentRouteLocals
+        |+> Protocol [
+            "$scope"                =? Scope
+            "$template"             =? String
         ]
 
     let RouteClass =
@@ -450,20 +458,13 @@ module Definition =
             "caseInsensitiveMatch"  =? Bool
         ]
 
-    let RouteParamsServiceClass =
-        Class "ng.route.RouteParamsService"
-        |=> RouteParamsService
-        |+> Protocol [
-            "item"                  =@ Any |> Indexed String
-        ]
-            
     let RouteProviderClass =
         Class "ng.route.RouteProvider"
         |=> RouteProvider
         |=> Inherits ServiceProvider
         |+> Protocol [
-            "otherwise"             => Route ^-> RouteProvider
-            "when"                  => String * Route ^-> RouteProvider
+            "otherwise"             => Route?``params`` ^-> RouteProvider
+            "when"                  => String?path * Route?route ^-> RouteProvider
         ]
 
     let RouteServiceClass =
@@ -572,7 +573,6 @@ module Definition =
             Namespace "ellipsoid.org.SharpAngles.Route" [
                  CurrentRouteClass
                  RouteClass
-                 RouteParamsServiceClass
                  RouteProviderClass
                  RouteServiceClass
 
