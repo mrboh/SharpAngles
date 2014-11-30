@@ -36,7 +36,7 @@
     <Name>ellipsoid.org.SharpAngles.Samples</Name>
     <RootNamespace>DogBotherer.Web</RootNamespace>
     <AssemblyName>ellipsoid.org.SharpAngles.Samples</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <WarningLevel>3</WarningLevel>
   </PropertyGroup>
   <!-- F# targets -->
