@@ -42,6 +42,7 @@ module Client =
     
     [<AbstractClass>]
     type TodoScope =
+        inherit Scope
         [<DefaultValue>] val mutable todos: Server.Todo array
         [<DefaultValue>] val mutable addTodo: unit -> unit
         [<DefaultValue>] val mutable remaining: unit -> int
@@ -73,6 +74,12 @@ module Client =
 ```
 
 For further details and examples, see the sample project.
+
+## Random Helpful Information
+
+* When using $resource as a dependency, a ResourceFactory object is returned, featuring a 'Create' method. The 'Create' method
+  is equivalent to using the $resource object, i.e. $resource('http://www.test.com/api/test') === 
+  resource.Create("http://www.test.com/api/test")
 
 ## Licensing
 

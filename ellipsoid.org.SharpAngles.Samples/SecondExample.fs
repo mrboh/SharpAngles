@@ -29,15 +29,18 @@ module Client =
         
     [<AbstractClass>]
     type ListScope =
+        inherit Scope
         [<DefaultValue>] val mutable projects: DataSource
 
     [<AbstractClass>]
     type CreateScope =
+        inherit Scope
         [<DefaultValue>] val mutable save: unit -> unit
         [<DefaultValue>] val mutable project: Project
 
     [<AbstractClass>]
     type EditScope =
+        inherit Scope
         [<DefaultValue>] val mutable projects: DataSource
         [<DefaultValue>] val mutable project: Project
         [<DefaultValue>] val mutable destroy: unit -> unit

@@ -26,11 +26,13 @@ module Client =
 
     [<AbstractClass>]
     type TabsScope =
+        inherit Scope
         [<DefaultValue>] val mutable panes: Pane array
         [<DefaultValue>] val mutable select: Pane -> unit
 
     [<AbstractClass>]
     type BeerCounterScope =
+        inherit Scope
         [<DefaultValue>] val mutable beers: int array
         [<DefaultValue>] val mutable beerForms: BeerForms
 

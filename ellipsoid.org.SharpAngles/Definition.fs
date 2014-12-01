@@ -376,6 +376,38 @@ module Definition =
             "reset"                 => Void ^-> Void
         ]
 
+    let LocationServiceClass =
+        Class "ng.LocationService"
+        |=> LocationService
+        |+> Protocol [
+            "absUrl"                => Void ^-> String
+            "hash"                  => Void ^-> String
+            "hash"                  => String?newHash ^-> LocationService
+            "host"                  => Void ^-> String
+            "path"                  => Void ^-> String
+            "path"                  => String?path ^-> LocationService
+            "port"                  => Void ^-> Number
+            "protocol"              => Void ^-> String
+            "replace"               => Void ^-> LocationService
+            "search"                => Void ^-> Any
+            "search"                => Any?search ^-> LocationService
+            "search"                => String?search * (String + Number + ArrayOf String + Bool)?paramValue ^-> LocationService
+            "state"                 => Void ^-> Any
+            "state"                 => Any?state ^-> LocationService
+            "url"                   => Void ^-> String
+            "url"                   => String?url ^-> LocationService
+        ]
+
+    let LocaleServiceClass =
+        Class "ng.LocaleService"
+        |=> LocaleService
+        |+> Protocol [
+            "id"                    =? String
+            "NUMBER_FORMATS"        =? LocaleNumberFormatDescriptor
+            "DATETIME_FORMATS"      =? LocaleDateTimeFormatDescriptor
+            "pluralCat"             =? Any ^-> String
+        ]
+
     let ModuleClass =
         let resourceLhs = String?url * Optional Any?paramDefaults * Optional Any?actions * Optional ResourceOptions?options
 
@@ -421,40 +453,43 @@ module Definition =
             "requires"              =? ArrayOf String
         ]
 
-    let LocationServiceClass =
-        Class "ng.LocationService"
-        |=> LocationService
+    let RootScopeServiceClass =
+        Class "ng.RootScopeService"
+        |=> RootScopeService
         |+> Protocol [
-            "absUrl"                => Void ^-> String
-            "hash"                  => Void ^-> String
-            "hash"                  => String ^-> LocationService
-            "host"                  => Void ^-> String
-            "path"                  => Void ^-> String
-            "path"                  => String ^-> LocationService
-            "port"                  => Void ^-> Number
-            "protocol"              => Void ^-> String
-            "replace"               => Void ^-> LocationService
-            "search"                => Void ^-> Any
-            "search"                => Any ^-> LocationService
-            "search"                => String * String ^-> LocationService
-            "search"                => String * Number ^-> LocationService
-            "search"                => String * ArrayOf String ^-> LocationService
-            "search"                => String * Bool ^-> LocationService
-            "state"                 => Void ^-> Any
-            "state"                 => Any ^-> LocationService
-            "url"                   => Void ^-> String
-            "url"                   => String ^-> LocationService
+            "item"                  =@ Any |> Indexed String
+            "$apply"                => Void ^-> Any
+            "$apply"                => String?exp ^-> Any
+            "$apply"                => (Scope?scope ^-> Any)?exp ^-> Any
+            "$applyAsync"           => Void ^-> Any
+            "$applyAsync"           => String?exp ^-> Any
+            "$applyAsync"           => (Scope?scope ^-> Any)?exp ^-> Any
+            "$broadcast"            => String?name *+ Any ^-> AngularEvent
+            "$destroy"              => Void ^-> Void
+            "$digest"               => Void ^-> Void
+            "$emit"                 => String?name *+ Any ^-> AngularEvent
+            "$eval"                 => Void ^-> Any
+            "$eval"                 => String?expression * Optional Object?locals ^-> Any
+            "$eval"                 => (Scope?scope ^-> Any)?expression * Optional Object?locals ^-> Any
+            "$evalAsync"            => Void ^-> Any
+            "$evalAsync"            => String?expression * Optional Object?locals ^-> Any
+            "$evalAsync"            => (Scope?scope ^-> Any)?expression * Optional Object?locals ^-> Any
+            "$new"                  => Optional Bool?isolate * Optional Scope?parent ^-> Scope
+            "$on"                   => String?name * (AngularEvent?event *+ Any ^-> Any)?listener ^-> Function
+            "$watch"                => (String + (Scope?scope ^-> Any))?watchExpression * Optional (String + (Any?newValue * Any?oldValue * Scope?scope ^-> Any))?listener * Optional Bool?objectEquality ^-> Function
+            "$watchCollection"      => (String + (Scope?scope ^-> Any))?watchExpression * (Any?newValue * Any?oldValue * Scope?scope ^-> Any)?listener ^-> Function
+            "$watchGroup"           => ArrayOf Any * (Any?newValue * Any?oldValue * Scope?scope ^-> Any)?listener ^-> Function      // Has another override but it (?) amounts to the same thing
+            "$parent"               =? Scope
+            "$root"                 =? RootScopeService
+            "$id"                   =? Number
+            "$$isolateBindings"     =? Any
+            "$$phase"               =? Any
         ]
 
-    let LocaleServiceClass =
-        Class "ng.LocaleService"
-        |=> LocaleService
-        |+> Protocol [
-            "id"                    =? String
-            "NUMBER_FORMATS"        =? LocaleNumberFormatDescriptor
-            "DATETIME_FORMATS"      =? LocaleDateTimeFormatDescriptor
-            "pluralCat"             =? Any ^-> String
-        ]
+    let ScopeClass =
+        Class "ng.Scope"
+        |=> Inherits RootScopeService
+        |=> Scope
 
     let ServiceProviderClass =
         Class "ng.ServiceProvider"
@@ -693,6 +728,8 @@ module Definition =
                 LogCallClass
                 LogServiceClass
                 Generic - PromiseClass
+                RootScopeServiceClass
+                ScopeClass
                 ServiceProviderClass
                 TimeoutServiceClass
 

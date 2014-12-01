@@ -12149,7 +12149,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
 
 (function()
 {
- var Global=this,Runtime=this.IntelliFactory.Runtime,angular,WebSharper,Remoting,Arrays,Firebase,JavaScript,String,Html,Operators,Default,List,ellipsoid,org,SharpAngles,Samples,ThirdExample,Client,IntrinsicFunctionProxy,Seq,Operators1,FirstExample,Client1,SecondExample,Client2,Tests;
+ var Global=this,Runtime=this.IntelliFactory.Runtime,angular,WebSharper,Remoting,Arrays,Firebase,Html,Operators,Default,List,ellipsoid,org,SharpAngles,Samples,ThirdExample,Client,IntrinsicFunctionProxy,Seq,Operators1,FirstExample,Client1,SecondExample,Client2,Tests;
  Runtime.Define(Global,{
   ellipsoid:{
    org:{
@@ -12294,14 +12294,9 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
       Tests:{
        TestsApp:Runtime.Field(function()
        {
-        return angular.module("testsApp",[]).config(["$resource",function(resource)
+        return angular.module("testsApp",[]).config(["$resource",function()
         {
-         var test;
-         test=resource("http://www.test.com/api/v2/win");
-         return JavaScript.Log(function()
-         {
-          return String(test);
-         });
+         return null;
         }]);
        })
       },
@@ -12309,13 +12304,13 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
        Client:{
         Main:Runtime.Field(function()
         {
-         var x,_tabsTemplate_49_1,x1,_paneTemplate_60_1,_componentsModule_64_1,_tabsController_65_4;
+         var x,_tabsTemplate_51_1,x1,_paneTemplate_62_1,_componentsModule_66_1,_tabsController_67_4;
          x=Operators.add(Default.Div(List.ofArray([Default.Attr().Class("tabbable")])),List.ofArray([Operators.add(Default.UL(List.ofArray([Default.Attr().Class("nav nav-tabs")])),List.ofArray([Operators.add(Default.LI(List.ofArray([(Client.NgRepeat())("pane in panes"),(Client.NgClass())("{active:pane.selected}")])),List.ofArray([Operators.add(Default.A(List.ofArray([Default.HRef(""),(Client.NgClick())("select(pane)")])),List.ofArray([Default.Text("{{pane.title}}")]))]))])),Default.Div(List.ofArray([Default.Attr().Class("tab-content"),(Client.NgTransclude())("")]))]));
-         _tabsTemplate_49_1=Client.Templatify(x);
+         _tabsTemplate_51_1=Client.Templatify(x);
          x1=Default.Div(List.ofArray([Default.Attr().Class("tab-pane"),(Client.NgClass())("{active: selected}"),(Client.NgTransclude())("")]));
-         _paneTemplate_60_1=Client.Templatify(x1);
-         _componentsModule_64_1=angular.module("components",[]);
-         _tabsController_65_4=_componentsModule_64_1.controller("TabsCtrl",["$scope","$element",function(scope)
+         _paneTemplate_62_1=Client.Templatify(x1);
+         _componentsModule_66_1=angular.module("components",[]);
+         _tabsController_67_4=_componentsModule_66_1.controller("TabsCtrl",["$scope","$element",function(scope)
          {
           scope.panes=[];
           scope.select=function(pane)
@@ -12342,14 +12337,14 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
           };
           return;
          }]);
-         _componentsModule_64_1.directive("tabs",function()
+         _componentsModule_66_1.directive("tabs",function()
          {
           return{
            restrict:"E",
            transclude:true,
            scope:{},
            controller:"TabsCtrl",
-           template:_tabsTemplate_49_1,
+           template:_tabsTemplate_51_1,
            replace:true
           };
          }).directive("pane",function()
@@ -12365,7 +12360,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
            {
             return tupledArg[3].addPane.call(null,tupledArg[0]);
            }),
-           template:_paneTemplate_60_1,
+           template:_paneTemplate_62_1,
            replace:true
           };
          });
@@ -12434,8 +12429,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   Remoting=Runtime.Safe(WebSharper.Remoting);
   Arrays=Runtime.Safe(WebSharper.Arrays);
   Firebase=Runtime.Safe(Global.Firebase);
-  JavaScript=Runtime.Safe(WebSharper.JavaScript);
-  String=Runtime.Safe(Global.String);
   Html=Runtime.Safe(WebSharper.Html);
   Operators=Runtime.Safe(Html.Operators);
   Default=Runtime.Safe(Html.Default);

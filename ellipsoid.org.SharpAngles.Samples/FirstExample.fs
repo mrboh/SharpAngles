@@ -21,6 +21,7 @@ module Client =
     
     [<AbstractClass>]
     type TodoScope =
+        inherit Scope
         [<DefaultValue>] val mutable todos: Server.Todo array
         [<DefaultValue>] val mutable addTodo: unit -> unit
         [<DefaultValue>] val mutable remaining: unit -> int
