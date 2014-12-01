@@ -376,6 +376,17 @@ module Definition =
             "reset"                 => Void ^-> Void
         ]
 
+    let LocationProviderClass =
+        Class "ng.LocationProvider"
+        |=> Inherits ServiceProvider
+        |=> LocationProvider
+        |+> Protocol [
+            "hashPrefix"            => Void ^-> String
+            "hashPrefix"            => String?prefix ^-> LocationProvider
+            "html5Mode"             => Void ^-> Bool
+            "html5Mode"             => Bool?active ^-> LocationProvider
+        ]
+
     let LocationServiceClass =
         Class "ng.LocationService"
         |=> LocationService
@@ -723,6 +734,7 @@ module Definition =
                 HttpBackendServiceClass
                 IntervalServiceClass
                 ModuleClass
+                LocationProviderClass
                 LocationServiceClass
                 LocaleServiceClass
                 LogCallClass
