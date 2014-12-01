@@ -110,7 +110,6 @@
     <Compile Include="FirstExample.fs" />
     <Compile Include="SecondExample.fs" />
     <Compile Include="ThirdExample.fs" />
-    <Compile Include="Main.fs" />
     <Content Include="Global.asax" />
     <Content Include="Content\bootstrap\css\bootstrap-theme.css" />
     <Content Include="Content\bootstrap\css\bootstrap-theme.css.map" />
@@ -141,6 +140,8 @@
     <Content Include="pane-directive.html" />
     <Content Include="Web.config" />
     <Content Include="packages.config" />
+    <Compile Include="Tests.fs" />
+    <Compile Include="Main.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="IntelliFactory.WebSharper.Web">

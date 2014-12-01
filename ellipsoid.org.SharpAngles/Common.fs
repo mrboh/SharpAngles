@@ -1,6 +1,7 @@
 ﻿namespace ellipsoid.org.SharpAngles
 
 open IntelliFactory.WebSharper.Dom
+open IntelliFactory.WebSharper.EcmaScript
 open IntelliFactory.WebSharper.InterfaceGenerator
 open IntelliFactory.WebSharper.JQuery
 
@@ -13,6 +14,7 @@ module Common =
 
     let Any = T<obj>
     let Bool = T<bool>
+    let Date = T<Date>
     let Dictionary t1 t2 = T<System.Collections.Generic.Dictionary<_,_>>.[t1,t2]
     let Document = T<Document>
     let Element = T<Element>

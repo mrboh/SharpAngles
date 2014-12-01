@@ -95,15 +95,25 @@ module Definition =
     let WindowService = Type.New ()
 
     (*
+        Type definitions: mocks
+        =======================
+    *)
+
+    let ExceptionHandlerProvider = Type.New ()
+    let MockStatic = Type.New ()
+    let RequestHandler = Type.New ()
+
+    (*
         Type definitions: resource
         ==========================
     *)
 
     let ActionDescriptor = Type.New ()
-    let Array<'T> = Type.New ()
-    let _ResourceClass<'T> = Type.New ()
-    let Resource<'T> = Type.New ()
-    let ResourceArray<'T> = Type.New ()
+    let Array = Type.New ()
+    let _ResourceClass = Type.New ()
+    let Resource = Type.New ()
+    let ResourceArray = Type.New ()
+    let ResourceFactory = Type.New ()
     let ResourceOptions = Type.New ()
     let ResourceService = Type.New ()
 
@@ -189,10 +199,39 @@ module Definition =
         =============================
     *)
 
+    let ResourceArrayClass =
+        Generic / fun t ->
+            Class "ng.resource.ResourceArray"
+            |=> ResourceArray
+            // ...
+
+    let ResourceClass =
+        Generic / fun t ->
+            let successCallbackType = Optional (Void ^-> Void)?success
+            let errorCallbackType = Optional (Void ^-> Void)?error
+            let resClass name returnType =
+                [
+                    name            => Void ^-> PromiseClass returnType :> CodeModel.Member
+                    name            => successCallbackType * Optional errorCallbackType ^-> returnType :> CodeModel.Member
+                    name            => Object?``params`` * Optional successCallbackType * Optional errorCallbackType ^-> PromiseClass returnType :> CodeModel.Member
+                ]
+            let classDef =
+                [ "$get"; "$query"; "$save"; "$remove"; "$delete" ]
+                |> List.map (fun e ->
+                    match e with
+                        | s when s <> "query" -> resClass s (PromiseClass t)
+                        | s -> resClass s (PromiseClass (ResourceArrayClass t))
+                )
+                |> List.collect (fun e -> e)
+
+            Class "ng.resource.Resource"
+            |=> Resource
+            |+> Protocol classDef
+
     let ResourceClassClass =
         Generic / fun t ->
-            let successCallbackType = Void ^-> Void
-            let errorCallbackType = Optional (Void ^-> Void)
+            let successCallbackType = (Void ^-> Void)?success
+            let errorCallbackType = Optional (Void ^-> Void)?error
             let zeroDef returnType = successCallbackType * errorCallbackType ^-> returnType
             let oneDef returnType = Object * successCallbackType * errorCallbackType ^-> returnType
             let twoDef returnType = Object * Object * successCallbackType * errorCallbackType ^-> returnType
@@ -205,10 +244,11 @@ module Definition =
                     name            => twoDef returnType :> CodeModel.Member
                 ]
             let classDef =
-                [ ("get", t); ("query", ResourceArray<_>); ("save", t); ("remove", t); ("delete", t) ]     // TODO: make IResourceArray<_> appear as the appropriate type
+                [ "get"; "query"; "save"; "remove"; "delete" ]
                 |> List.map (fun e ->
                     match e with
-                        | (s, returnType) -> resClass s returnType
+                        | s when s <> "query" -> resClass s t
+                        | s -> resClass s (ResourceArrayClass t)
                 )
                 |> List.collect (fun e -> e)
 
@@ -217,23 +257,21 @@ module Definition =
             |+> [] // TODO: implement new(..)
             |+> Protocol classDef
 
-    let ResourceClass =
+    let ResourceFactoryClass =
         Generic / fun t ->
-            let successCallbackType = Optional (Void ^-> Void)
-            let errorCallbackType = Optional (Void ^-> Void)
-            let zeroDef returnType = successCallbackType * errorCallbackType ^-> returnType
-            let oneDef returnType = Optional Object * successCallbackType * errorCallbackType ^-> returnType
-            let res name returnType =
-                [
-                    // name            =>! Void ^-> Promise.[t] :> CodeModel.IInterfaceMember
-                ]
-
-            Class "ng.resource.Resource"
-            |=> Resource
+            Class "ng.resource.ResourceFactory"
+            |=> ResourceFactory
             |+> Protocol [
-                "$get"              => Void ^-> Promise.[t]
+                "create"                => String?url ^-> ResourceClassClass t
+                |> WithInline "$this($url)"
+                "create"                => String?url * Any?paramDefaults ^-> ResourceClassClass t
+                |> WithInline "$this($url, $paramDefaults)"
+                "create"                => String?url * Any?paramDefaults * Any?actions ^-> ResourceClassClass t
+                |> WithInline "$this($url, $paramDefaults, $actions)"
+                "create"                => String?url * Any?paramDefaults * Any?actions * ResourceOptions?options ^-> ResourceClassClass t
+                |> WithInline "$this($url, $paramDefaults, $actions, $options)"
             ]
-
+            
     (*
         Angular definitions: core
         =========================
@@ -275,6 +313,9 @@ module Definition =
             "toJson"                => Any?obj * Optional Bool?pretty ^-> String
             "uppercase"             => String?str ^-> String
             "version"               =? AngularStaticVersion  // Some creative licence used here
+
+            // angular-mocks extensions
+            "mock"                  =? MockStatic
         ]
 
     let AngularStaticVersionClass =
@@ -298,7 +339,46 @@ module Definition =
         |=> FormController
         // ...
 
+    let HttpBackendServiceClass =
+        Class "ng.HttpBackendService"
+        |=> HttpBackendService
+        |+> Protocol [
+            // angular-mocks extensions
+            "flush"                             => Optional Number?count ^-> Void
+            "resetExpectations"                 => Void ^-> Void
+            "verifyNoOutstandingExpectation"    => Void ^-> Void
+            "verifyNoOutstandingRequest"        => Void ^-> Void
+            // ...
+        ]
+
+    let IntervalServiceClass =
+        Class "ng.IntervalService"
+        |=> IntervalService
+        |+> Protocol [
+            // angular-mocks extensions
+            "flush"                 => Optional Number?millis ^-> Number
+        ]
+
+    let LogCallClass =
+        Class "ng.LogCall"
+        |=> LogCall
+        |+> Protocol [
+            // angular-mocks extensions
+            "logs"                  =? ArrayOf String
+        ]
+
+    let LogServiceClass =
+        Class "ng.LogService"
+        |=> LogService
+        |+> Protocol [
+            // angular-mocks extensions
+            "assertEmpty"           => Void ^-> Void
+            "reset"                 => Void ^-> Void
+        ]
+
     let ModuleClass =
+        let resourceLhs = String?url * Optional Any?paramDefaults * Optional Any?actions * Optional ResourceOptions?options
+
         Class "ng.Module"
         |=> Module
         |+> Protocol [
@@ -319,9 +399,9 @@ module Definition =
             "factory"               => String?name * (ArrayOf Any)?inlineAnnotatedFunction ^-> Module
             "factory"               => Object?``object`` ^-> Module
             Generic - fun t ->
-                "factory"           => String * (ResourceService ^-> ResourceClass t) ^-> Module     // Imported from angular-resource (method signature questionable)
-            Generic - fun t ->
-                "factory"           => String * (ResourceService ^-> t) ^-> Module                   // Imported from angular-resource (method signature questionable)        
+                "factory"           => String?name * ((resourceLhs ^-> (t + ResourceClassClass t + ResourceClassClass (ResourceClass t)))?``$resource`` ^-> ResourceClassClass t)?resourceServiceFactoryFunction ^-> Module     // Imported from angular-resource (method signature questionable)
+            // Generic - fun t ->
+            //     "factory"           => String * (ResourceService ^-> t) ^-> Module                  // Imported from angular-resource (method signature questionable); probably not necessary because of generic above
             "filter"                => String?name * Function?filterFactoryFunction ^-> Module
             "filter"                => String?name * (ArrayOf Any)?inlineAnnotatedFunction ^-> Module
             "filter"                => Object?``object`` ^-> Module
@@ -383,6 +463,16 @@ module Definition =
             "$get"                   =? Any
         ]
 
+    let TimeoutServiceClass =
+        Class "ng.TimeoutService"
+        |=> TimeoutService
+        |+> Protocol [
+            // angular-mocks extensions
+            "flush"                 => Optional Number?delay ^-> Void
+            "flushNext"             => Optional Number?expectedDelay ^-> Void
+            "verifyNoPendingTasks"  => Void ^-> Void
+        ]
+
     let InjectorServiceClass =
         Class "ng.auto.InjectorService"
         |=> AutoInjectorService
@@ -392,6 +482,40 @@ module Definition =
         Class "ng.auto.ProvideService"
         |=> AutoProvideService
         // ...
+
+    (*
+        Angular definitions: mocks
+        ==========================
+    *)
+
+    let ExceptionHandlerProviderClass =
+        Class "ng.ExceptionHandlerProvider"
+        |=> Inherits ServiceProvider
+        |=> ExceptionHandlerProvider
+        |+> [
+            "mode"                  => String?mode ^-> Void
+        ]
+
+    let MockStaticClass =
+        Class "ng.MockStatic"
+        |=> MockStatic
+        |+> Protocol [
+            "dump"                  => Any?obj ^-> String
+            "inject"                => ParamArrayOf Function ^-> Any
+            "inject"                => ParamArrayOf Any ^-> Any
+            "module"                => ParamArrayOf Any ^-> Any
+            "TzDate"                => Number?offset * (Number + String)?timestamp ^-> Date
+        ]
+
+    let RequestHandlerClass =
+        Class "ng.mocks.RequestHandler"
+        |=> RequestHandler
+        |+> Protocol [
+            "respond"               => Function?func ^-> Void
+            "respond"               => Any?data * Optional Any?headers ^-> Void
+            "respond"               => Number?status * Optional Any?data * Optional Any?headers ^-> Void
+            "passThrough"           => Void ^-> Void
+        ]
 
     (*
         Angular definitions: resource
@@ -414,12 +538,6 @@ module Definition =
         |+> Protocol [
             "stripTrailingSlashes"  =@ Bool
         ]
-
-    let ResourceServiceClass =
-        Class "ng.resource.ResourceService"
-        |=> ResourceService
-        // ...
-        // Unclear how to implement this signature
 
     (*
         Angular definitions: route
@@ -476,7 +594,6 @@ module Definition =
             "current"               =? CurrentRoute
         ]
 
-
     (*
         Configuration objects: core
         ===========================
@@ -517,6 +634,21 @@ module Definition =
         |=> Inherits Directive
 
     (*
+        Configuration objects: resource
+        ===============================
+    *)
+
+    let ResourceOptionsConfig =
+        Pattern.Config "ResourceOptionsConfig" {
+            Required = []
+            Optional =
+            [
+                "stripTrailingSlashes", Bool
+            ]
+        }
+        |=> Inherits ResourceOptions
+
+    (*
         Configuration objects: route
         ============================
     *)
@@ -553,22 +685,34 @@ module Definition =
                 AttributesClass
                 FormControllerClass
                 Generic - HttpPromiseClass
+                HttpBackendServiceClass
+                IntervalServiceClass
                 ModuleClass
                 LocationServiceClass
                 LocaleServiceClass
+                LogCallClass
+                LogServiceClass
                 Generic - PromiseClass
                 ServiceProviderClass
+                TimeoutServiceClass
+
+                // angular-mocks extensions
+                ExceptionHandlerProviderClass
+                MockStaticClass
             ]
             Namespace "ellipsoid.org.SharpAngles.Auto" [
                 InjectorServiceClass
                 ProvideServiceClass
             ]
+            Namespace "ellipsoid.org.SharpAngles.Mock" [
+                RequestHandlerClass
+            ]
             Namespace "ellipsoid.org.SharpAngles.Resource" [
                 ActionDescriptorClass
                 Generic - ResourceClassClass
                 Generic - ResourceClass
+                Generic - ResourceFactoryClass
                 ResourceOptionsClass
-                ResourceServiceClass
             ]
             Namespace "ellipsoid.org.SharpAngles.Route" [
                  CurrentRouteClass
@@ -585,7 +729,7 @@ module Definition =
                 AngularJsRoute
             ]
         ]
-        |> Requires [ AngularJs; AngularJsResource; AngularJsRoute ]
+        |> Requires [ AngularJs; AngularJsMocks; AngularJsResource; AngularJsRoute ]
 
 open IntelliFactory.WebSharper.InterfaceGenerator
 

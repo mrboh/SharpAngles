@@ -12149,7 +12149,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
 
 (function()
 {
- var Global=this,Runtime=this.IntelliFactory.Runtime,angular,WebSharper,Remoting,Arrays,Firebase,Html,Operators,Default,List,ellipsoid,org,SharpAngles,Samples,ThirdExample,Client,IntrinsicFunctionProxy,Seq,Operators1,FirstExample,Client1,SecondExample,Client2;
+ var Global=this,Runtime=this.IntelliFactory.Runtime,angular,WebSharper,Remoting,Arrays,Firebase,JavaScript,String,Html,Operators,Default,List,ellipsoid,org,SharpAngles,Samples,ThirdExample,Client,IntrinsicFunctionProxy,Seq,Operators1,FirstExample,Client1,SecondExample,Client2,Tests;
  Runtime.Define(Global,{
   ellipsoid:{
    org:{
@@ -12291,6 +12291,20 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
         })
        }
       },
+      Tests:{
+       TestsApp:Runtime.Field(function()
+       {
+        return angular.module("testsApp",[]).config(["$resource",function(resource)
+        {
+         var test;
+         test=resource("http://www.test.com/api/v2/win");
+         return JavaScript.Log(function()
+         {
+          return String(test);
+         });
+        }]);
+       })
+      },
       ThirdExample:{
        Client:{
         Main:Runtime.Field(function()
@@ -12420,6 +12434,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   Remoting=Runtime.Safe(WebSharper.Remoting);
   Arrays=Runtime.Safe(WebSharper.Arrays);
   Firebase=Runtime.Safe(Global.Firebase);
+  JavaScript=Runtime.Safe(WebSharper.JavaScript);
+  String=Runtime.Safe(Global.String);
   Html=Runtime.Safe(WebSharper.Html);
   Operators=Runtime.Safe(Html.Operators);
   Default=Runtime.Safe(Html.Default);
@@ -12436,7 +12452,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   FirstExample=Runtime.Safe(Samples.FirstExample);
   Client1=Runtime.Safe(FirstExample.Client);
   SecondExample=Runtime.Safe(Samples.SecondExample);
-  return Client2=Runtime.Safe(SecondExample.Client);
+  Client2=Runtime.Safe(SecondExample.Client);
+  return Tests=Runtime.Safe(Samples.Tests);
  });
  Runtime.OnLoad(function()
  {
@@ -12445,6 +12462,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   Client.NgClick();
   Client.NgClass();
   Client.Main();
+  Tests.TestsApp();
   Client2.Main();
   Client1.Main();
   return;

@@ -12,7 +12,7 @@ are based on the [DefinitelyTyped Angular definitions][2] for TypeScript. Angula
 * angular: **partially**
 * angular-animate: **no**
 * angular-cookies: **no**
-* angular-mocks: **no**
+* angular-mocks: **partially**
 * angular-resource: **partially**
 * angular-route: **yes**
 * angular-sanitize: **no**

@@ -60,7 +60,7 @@ module Client =
         let paneTemplate =
             Div [ Attr.Class "tab-pane"; NgClass "{active: selected}"; NgTransclude "" ]
             |> Templatify
-
+            
         let componentsModule = Angular.Module("components", [||])
         let tabsController =
             componentsModule

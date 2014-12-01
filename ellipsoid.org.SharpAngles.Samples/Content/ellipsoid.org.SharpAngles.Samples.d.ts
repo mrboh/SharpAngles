@@ -3186,6 +3186,11 @@ declare module ellipsoid {
     module org {
         module SharpAngles {
             module Samples {
+                module Tests {
+                    var TestsApp : {
+                        (): __ABBREV.__SharpAngles.Module;
+                    };
+                }
                 module ThirdExample {
                     module Client {
                         interface Pane {
@@ -3271,7 +3276,7 @@ declare module ellipsoid {
 }
 declare module __ABBREV {
     
-    export import __Html = IntelliFactory.WebSharper.Html;
     export import __SharpAngles = ellipsoid.org.SharpAngles;
+    export import __Html = IntelliFactory.WebSharper.Html;
 }
 
