@@ -12297,6 +12297,12 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
         return angular.module("testsApp",[]).config(["$resource",function()
         {
          return null;
+        }]).controller("TestController",["$scope",function(scope)
+        {
+         return scope.$on("blah",function()
+         {
+          return null;
+         });
         }]);
        })
       },

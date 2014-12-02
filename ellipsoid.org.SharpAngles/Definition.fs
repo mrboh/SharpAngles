@@ -211,9 +211,9 @@ module Definition =
             let errorCallbackType = Optional (Void ^-> Void)?error
             let resClass name returnType =
                 [
-                    name            => Void ^-> PromiseClass returnType :> CodeModel.Member
-                    name            => successCallbackType * Optional errorCallbackType ^-> returnType :> CodeModel.Member
-                    name            => Object?``params`` * Optional successCallbackType * Optional errorCallbackType ^-> PromiseClass returnType :> CodeModel.Member
+                    name            =>| Void ^-> PromiseClass returnType :> CodeModel.Member
+                    name            =>| successCallbackType * Optional errorCallbackType ^-> returnType :> CodeModel.Member
+                    name            =>| Object?``params`` * Optional successCallbackType * Optional errorCallbackType ^-> PromiseClass returnType :> CodeModel.Member
                 ]
             let classDef =
                 [ "$get"; "$query"; "$save"; "$remove"; "$delete" ]
@@ -469,32 +469,32 @@ module Definition =
         |=> RootScopeService
         |+> Protocol [
             "item"                  =@ Any |> Indexed String
-            "$apply"                => Void ^-> Any
-            "$apply"                => String?exp ^-> Any
-            "$apply"                => (Scope?scope ^-> Any)?exp ^-> Any
-            "$applyAsync"           => Void ^-> Any
-            "$applyAsync"           => String?exp ^-> Any
-            "$applyAsync"           => (Scope?scope ^-> Any)?exp ^-> Any
-            "$broadcast"            => String?name *+ Any ^-> AngularEvent
-            "$destroy"              => Void ^-> Void
-            "$digest"               => Void ^-> Void
-            "$emit"                 => String?name *+ Any ^-> AngularEvent
-            "$eval"                 => Void ^-> Any
-            "$eval"                 => String?expression * Optional Object?locals ^-> Any
-            "$eval"                 => (Scope?scope ^-> Any)?expression * Optional Object?locals ^-> Any
-            "$evalAsync"            => Void ^-> Any
-            "$evalAsync"            => String?expression * Optional Object?locals ^-> Any
-            "$evalAsync"            => (Scope?scope ^-> Any)?expression * Optional Object?locals ^-> Any
-            "$new"                  => Optional Bool?isolate * Optional Scope?parent ^-> Scope
-            "$on"                   => String?name * (AngularEvent?event *+ Any ^-> Any)?listener ^-> Function
-            "$watch"                => (String + (Scope?scope ^-> Any))?watchExpression * Optional (String + (Any?newValue * Any?oldValue * Scope?scope ^-> Any))?listener * Optional Bool?objectEquality ^-> Function
-            "$watchCollection"      => (String + (Scope?scope ^-> Any))?watchExpression * (Any?newValue * Any?oldValue * Scope?scope ^-> Any)?listener ^-> Function
-            "$watchGroup"           => ArrayOf Any * (Any?newValue * Any?oldValue * Scope?scope ^-> Any)?listener ^-> Function      // Has another override but it (?) amounts to the same thing
-            "$parent"               =? Scope
-            "$root"                 =? RootScopeService
-            "$id"                   =? Number
-            "$$isolateBindings"     =? Any
-            "$$phase"               =? Any
+            "$apply"                =>| Void ^-> Any
+            "$apply"                =>| String?exp ^-> Any
+            "$apply"                =>| (Scope?scope ^-> Any)?exp ^-> Any
+            "$applyAsync"           =>| Void ^-> Any
+            "$applyAsync"           =>| String?exp ^-> Any
+            "$applyAsync"           =>| (Scope?scope ^-> Any)?exp ^-> Any
+            "$broadcast"            =>| String?name *+ Any ^-> AngularEvent
+            "$destroy"              =>| Void ^-> Void
+            "$digest"               =>| Void ^-> Void
+            "$emit"                 =>| String?name *+ Any ^-> AngularEvent
+            "$eval"                 =>| Void ^-> Any
+            "$eval"                 =>| String?expression * Optional Object?locals ^-> Any
+            "$eval"                 =>| (Scope?scope ^-> Any)?expression * Optional Object?locals ^-> Any
+            "$evalAsync"            =>| Void ^-> Any
+            "$evalAsync"            =>| String?expression * Optional Object?locals ^-> Any
+            "$evalAsync"            =>| (Scope?scope ^-> Any)?expression * Optional Object?locals ^-> Any
+            "$new"                  =>| Optional Bool?isolate * Optional Scope?parent ^-> Scope
+            "$on"                   =>| String?name * (AngularEvent?event *+ Any ^-> Any)?listener ^-> Function
+            "$watch"                =>| (String + (Scope?scope ^-> Any))?watchExpression * Optional (String + (Any?newValue * Any?oldValue * Scope?scope ^-> Any))?listener * Optional Bool?objectEquality ^-> Function
+            "$watchCollection"      =>| (String + (Scope?scope ^-> Any))?watchExpression * (Any?newValue * Any?oldValue * Scope?scope ^-> Any)?listener ^-> Function
+            "$watchGroup"           =>| ArrayOf Any * (Any?newValue * Any?oldValue * Scope?scope ^-> Any)?listener ^-> Function      // Has another override but it (?) amounts to the same thing
+            "$parent"               =?| Scope
+            "$root"                 =?| RootScopeService
+            "$id"                   =?| Number
+            "$$isolateBindings"     =?| Any
+            "$$phase"               =?| Any
         ]
 
     let ScopeClass =
@@ -506,7 +506,7 @@ module Definition =
         Class "ng.ServiceProvider"
         |=> ServiceProvider
         |+> Protocol [
-            "$get"                   =? Any
+            "$get"                   =?| Any
         ]
 
     let TimeoutServiceClass =
@@ -603,8 +603,8 @@ module Definition =
         Class "ng.route.CurrentRouteLocals"
         |=> CurrentRouteLocals
         |+> Protocol [
-            "$scope"                =? Scope
-            "$template"             =? String
+            "$scope"                =?| Scope
+            "$template"             =?| String
         ]
 
     let RouteClass =

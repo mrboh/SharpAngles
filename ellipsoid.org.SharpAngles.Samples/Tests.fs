@@ -11,4 +11,9 @@ module Tests =
                .Config(("$resource",
                             fun (resource: Resource.ResourceFactory<string>) -> 
                                 ()
-    ))
+               ))
+               .Controller("TestController",
+                                ("$scope",
+                                    fun (scope: Scope) ->
+                                        scope.On("blah", fun x -> ())
+               ))

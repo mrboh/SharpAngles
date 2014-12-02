@@ -31,3 +31,17 @@ module Common =
     let ArrayOf x = Type.ArrayOf x    
     let ParamArrayOf x = !+ x
     let FunctionOf x y z = x -* y ^-> z
+
+    let dollarToCapitalised s =
+        let capitaliser firstLetter remainder =
+            firstLetter.ToString().ToUpper() + new string [| for c in remainder -> c |]
+        match (s |> Seq.toList) with
+            | '$' :: '$' :: firstLetter :: remainder -> capitaliser firstLetter remainder
+            | '$' :: firstLetter :: remainder -> capitaliser firstLetter remainder
+            | _ -> s
+
+    // Operators to turn a dollarised function/property name (e.g. $get) into a capitalised .NET name (e.g. Get)
+    let (=>|) x y = x => y |> WithSourceName (dollarToCapitalised x)
+    let (=?|) x y = x =? y |> WithSourceName (dollarToCapitalised x)
+    let (=!|) x y = x =! y |> WithSourceName (dollarToCapitalised x)
+    let (=@|) x y = x =@ y |> WithSourceName (dollarToCapitalised x)
