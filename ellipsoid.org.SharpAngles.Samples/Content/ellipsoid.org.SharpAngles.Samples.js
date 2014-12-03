@@ -12294,10 +12294,22 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
       Tests:{
        TestsApp:Runtime.Field(function()
        {
-        return angular.module("testsApp",[]).config(["$resource",function()
+        return angular.module("testsApp",["ui.router"]).config(["$resource",function()
         {
          return null;
-        }]).controller("TestController",["$scope",function(scope)
+        }]).config(["$stateProvider","$urlRouterProvider",Runtime.Tupled(function(tupledArg)
+        {
+         return tupledArg[0].state("state1",{
+          url:"/state1",
+          templateUrl:"partials/state1.html"
+         }).state("state1.list",{
+          url:"/list",
+          templateUrl:"partials/state1.list.html"
+         }).state("state2",{
+          url:"/state2",
+          templateUrl:"partials/state2.html"
+         });
+        })]).controller("TestController",["$scope",function(scope)
         {
          return scope.$on("blah",function()
          {

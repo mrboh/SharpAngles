@@ -14,6 +14,7 @@ module Common =
 
     let Any = T<obj>
     let Bool = T<bool>
+    let Config = T<obj> // Expressed by {}
     let Date = T<Date>
     let Dictionary t1 t2 = T<System.Collections.Generic.Dictionary<_,_>>.[t1,t2]
     let Document = T<Document>
@@ -23,7 +24,7 @@ module Common =
     let JQuery = T<JQuery>
     let Number = T<float>
     let Object = T<obj>
-    let Config = T<obj> // Expressed by {}
+    let RegExp = T<obj>
     let String = T<string>
     let Void = T<unit>
 

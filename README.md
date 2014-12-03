@@ -1,11 +1,11 @@
 SharpAngles
 ===========
 
-WebSharper bindings for Angular
+WebSharper bindings for Angular and Angular UI
 
 ## Overview
 
-Experimental WebSharper bindings for Angular JS plus sample project showing their implementation based on the examples
+Experimental WebSharper bindings for Angular JS/UI plus sample project showing their implementation based on the examples
 available on the [Angular website][1]. SharpAngles makes it possible to construct single page apps entirely in F#. Bindings
 are based on the [DefinitelyTyped Angular definitions][2] for TypeScript. Angular modules currently implemented:
 
@@ -17,6 +17,9 @@ are based on the [DefinitelyTyped Angular definitions][2] for TypeScript. Angula
 * angular-route: **yes**
 * angular-sanitize: **no**
 * angular-scenario: **no**
+
+* angular-ui-router: **yes**
+* angular-ui-anythingelse: **no**
 
 ## Usage
 

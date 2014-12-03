@@ -17,7 +17,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuget", "nuget", "{C1E02FCD-1742-486E-88EB-C973755F90F8}"
 	ProjectSection(SolutionItems) = preProject
 		nuget\ellipsoid.org.SharpAngles.nupkg = nuget\ellipsoid.org.SharpAngles.nupkg
+		nuget\ellipsoid.org.SharpAngles.UI.nupkg = nuget\ellipsoid.org.SharpAngles.UI.nupkg
 	EndProjectSection
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "ellipsoid.org.SharpAngles.UI", "ellipsoid.org.SharpAngles.UI\ellipsoid.org.SharpAngles.UI.fsproj", "{B8265F2C-0A46-4FA8-A3B6-A3E9F9539B9F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +36,10 @@ Global
 		{7F9497D1-3703-4CF1-B4C6-0FBE360307A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7F9497D1-3703-4CF1-B4C6-0FBE360307A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7F9497D1-3703-4CF1-B4C6-0FBE360307A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8265F2C-0A46-4FA8-A3B6-A3E9F9539B9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8265F2C-0A46-4FA8-A3B6-A3E9F9539B9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8265F2C-0A46-4FA8-A3B6-A3E9F9539B9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8265F2C-0A46-4FA8-A3B6-A3E9F9539B9F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
