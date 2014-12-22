@@ -25,3 +25,5 @@ module Tests =
                                     fun (scope: Scope) ->
                                         scope.On("blah", fun x -> ())
                ))
+               .Run(("$state", fun (state: StateService) -> state.TransitionTo("foo")))
+               .Run(("$sce", fun (sce: SCEService) -> ()))

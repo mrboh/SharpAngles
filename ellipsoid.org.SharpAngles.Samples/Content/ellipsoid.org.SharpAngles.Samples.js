@@ -12315,6 +12315,12 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
          {
           return null;
          });
+        }]).run(["$state",function(state)
+        {
+         return state.transitionTo("foo");
+        }]).run(["$sce",function()
+        {
+         return null;
         }]);
        })
       },

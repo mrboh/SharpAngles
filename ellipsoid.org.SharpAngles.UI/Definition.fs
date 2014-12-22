@@ -89,8 +89,9 @@ module Definition =
         |=> StateService
         |+> Protocol [
             "go"                    => String?``to`` * Optional Config?``params`` * Optional StateOptions?options ^-> T<Promise<_>>
-            "transitionTo"          => String?state * Optional Config?``params`` * Optional Bool?updateLocation ^-> Void
-            "transitionTo"          => String?state * Optional Config?``params`` * Optional StateOptions?options ^-> Void
+            // Combined both transitionTo declarations to prevent doubling up of method signatures
+            "transitionTo"          => String?state * Optional Config?``params`` * Optional (Bool + StateOptions)?updateLocationOrOptions ^-> Void
+            // "transitionTo"          => String?state * Optional Config?``params`` * Optional StateOptions?options ^-> Void
             "includes"              => String?state * Config?``params`` ^-> Bool
             "is"                    => (String + State)?state * Optional Config?``params`` ^-> Bool
             "href"                  => (String + State)?state * Optional Config?``params`` * Optional HrefOptions?options ^-> String

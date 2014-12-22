@@ -82,10 +82,10 @@ module Definition =
     let RootElementService = Type.New ()
     let RootScopeService = Type.New ()
     let Scope = Type.New ()
-    let SCEDelegateProvider = Type.New ()
-    let SCEDelegateService = Type.New ()
-    let SCEProvider = Type.New ()
-    let SCEService = Type.New ()
+    let SceDelegateProvider = Type.New ()
+    let SceDelegateService = Type.New ()
+    let SceProvider = Type.New ()
+    let SceService = Type.New ()
     let ServiceProvider = Type.New ()
     let TemplateCacheService = Type.New ()
     let TemplateLinkingFunction = Type.New ()
@@ -497,6 +497,48 @@ module Definition =
             "$$phase"               =?| Any
         ]
 
+    let SceDelegateProviderClass =
+        Class "ng.SCEDelegateProvider"
+        |=> Inherits ServiceProvider
+        |=> SceDelegateProvider
+        |+> Protocol [
+            "resourceUrlBlacklist"  => (ArrayOf Any)?blacklist ^-> Void
+            "resourceUrlWhitelist"  => (ArrayOf Any)?whitelist ^-> Void
+        ]
+
+    let SceDelegateServiceClass =
+        Class "ng.SCEDelegateService"
+        |=> SceDelegateService
+        |+> Protocol [
+            "getTrusted"            => String?``type`` * Any?mayBeTrusted ^-> Any
+            "trustAs"               => String?``type`` * Any?value ^-> Any
+            "valueOf"               => Any?value ^-> Any
+        ]
+
+    let SceProviderClass =
+        Class "ng.SCEProvider"
+        |=> Inherits ServiceProvider
+        |=> SceProvider
+        |+> Protocol [
+            "enabled"               => Bool?value ^-> Void
+        ]
+
+    let SceServiceClass =
+        let simplify baseName ofType =
+            [ "Css"; "Html"; "Js"; "ResourceUrl"; "Url" ]
+            |> List.map (fun e -> baseName + e => ofType :> CodeModel.Member)
+        Class "ng.SCEService"
+        |=> SceService
+        |+> Protocol [
+            "getTrusted"            => String?``type`` * Any?mayBeTrusted ^-> Any
+            "parse"                 => String?``type`` * String?expression ^-> (Any?context * Any?locals ^-> Any)
+            "trustAs"               => String?``type`` * Any?value ^-> Any
+            "isEnabled"             => Void ^-> Bool
+        ]
+        |+> Protocol (simplify "getTrusted" (Any?value ^-> Any))
+        |+> Protocol (simplify "parseAs" (String?expression ^-> (Any?context * Any?locals ^-> Any)))
+        |+> Protocol (simplify "trustAs" (Any?value ^-> Any))
+
     let ScopeClass =
         Class "ng.Scope"
         |=> Inherits RootScopeService
@@ -741,6 +783,10 @@ module Definition =
                 LogServiceClass
                 Generic - PromiseClass
                 RootScopeServiceClass
+                SceDelegateProviderClass
+                SceDelegateServiceClass
+                SceProviderClass
+                SceServiceClass
                 ScopeClass
                 ServiceProviderClass
                 TimeoutServiceClass
