@@ -20,6 +20,10 @@ module Tests =
                                         .State("state1.list", StateConfig(Url = "/list", TemplateUrl = "partials/state1.list.html"))
                                     .State("state2", StateConfig(Url = "/state2", TemplateUrl = "partials/state2.html"))
                ))
+               .Config(("$urlMatcherFactory",
+                            fun (urlMatcherFactory: UrlMatcherFactory) ->
+                                urlMatcherFactory.StrictMode(false)
+               ))
                .Controller("TestController",
                                 ("$scope",
                                     fun (scope: Scope) ->

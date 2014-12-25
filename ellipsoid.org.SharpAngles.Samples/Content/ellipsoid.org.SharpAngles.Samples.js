@@ -12309,7 +12309,10 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
           url:"/state2",
           templateUrl:"partials/state2.html"
          });
-        })]).controller("TestController",["$scope",function(scope)
+        })]).config(["$urlMatcherFactory",function(urlMatcherFactory)
+        {
+         return urlMatcherFactory.strictMode(false);
+        }]).controller("TestController",["$scope",function(scope)
         {
          return scope.$on("blah",function()
          {

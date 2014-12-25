@@ -20,6 +20,7 @@ module Definition =
     let UIViewScrollProvider = Type.New ()
     let UrlMatcher = Type.New ()
     let UrlMatcherFactory = Type.New ()
+    let UrlMatcherFactoryProvider = Type.New ()
     let UrlRouterProvider = Type.New ()
     let UrlRouterService = Type.New ()
 
@@ -123,8 +124,10 @@ module Definition =
         Class "ng.ui.UrlMatcherFactory"
         |=> UrlMatcherFactory
         |+> Protocol [
+            "caseInsensitive"       => Optional Bool ^-> Bool
             "compile"               => String?pattern ^-> UrlMatcher
             "isMatcher"             => Any?o ^-> Bool
+            "strictMode"            => Optional Bool ^-> Bool
         ]
 
     let UrlRouterProviderClass =

@@ -4,4 +4,4 @@ open IntelliFactory.WebSharper.InterfaceGenerator
 
 module Resources =
     
-    let AngularUIRouter = Resource "AngularUIRouter" "//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.11/angular-ui-router.min.js"
+    let AngularUIRouter = Resource "AngularUIRouter" "//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.13/angular-ui-router.min.js"
