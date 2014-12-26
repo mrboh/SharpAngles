@@ -308,6 +308,22 @@ declare module IntelliFactory {
                 <_M1, _M2, _M3>(arr1: _M1[], arr2: _M2[], arr3: _M3[]): any[];
             };
         }
+        module AsyncProxy {
+            var get_DefaultCancellationToken : {
+                (): __ABBREV.__WebSharper.CancellationTokenProxy;
+            };
+            var get_CancellationToken : {
+                (): any;
+            };
+        }
+        module CancellationTokenSource {
+            var CreateLinkedTokenSource1 : {
+                (tokens: __ABBREV.__WebSharper.CancellationTokenProxy[]): void;
+            };
+            var CreateLinkedTokenSource : {
+                (t1: __ABBREV.__WebSharper.CancellationTokenProxy, t2: __ABBREV.__WebSharper.CancellationTokenProxy): void;
+            };
+        }
         module Char {
             var GetNumericValue : {
                 (c: number): number;
@@ -329,6 +345,9 @@ declare module IntelliFactory {
             };
             var IsUpper : {
                 (c: number): boolean;
+            };
+            var Parse : {
+                (s: string): number;
             };
         }
         module List {
@@ -985,6 +1004,21 @@ declare module IntelliFactory {
                 }, s: __ABBREV.__WebSharper.seq<_M1>): __ABBREV.__WebSharper.seq<_M1>;
             };
         }
+        module Control {
+            var createEvent : {
+                <_M1, _M2>(add: {
+                    (x: _M2): void;
+                }, remove: {
+                    (x: _M2): void;
+                }, create: {
+                    (x: {
+                        (x: __ABBREV.__WebSharper.ObjectProxy): {
+                            (x: _M1): void;
+                        };
+                    }): _M2;
+                }): any;
+            };
+        }
         module Queue {
             interface QueueProxy<_T1> {
             }
@@ -1289,19 +1323,32 @@ declare module IntelliFactory {
         }
         interface AsyncProxy {
         }
+        interface CancellationTokenProxy {
+        }
+        interface ActionProxy {
+        }
+        interface CancellationTokenRegistrationProxy {
+            Dispose(): void;
+        }
+        interface CancellationTokenSource {
+            Cancel(): void;
+            Cancel1(throwOnFirstException: boolean): void;
+            CancelAfter(delay: number): void;
+            get_IsCancellationRequested(): boolean;
+        }
         interface AsyncBuilderProxy {
         }
         interface Char {
         }
-        interface ChoiceProxy21<_T1, _T2> {
+        interface ChoiceProxy11<_T1, _T2> {
         }
-        interface ChoiceProxy11<_T1, _T2, _T3> {
+        interface ChoiceProxy3<_T1, _T2, _T3> {
         }
-        interface ChoiceProxy3<_T1, _T2, _T3, _T4> {
+        interface ChoiceProxy1<_T1, _T2, _T3, _T4> {
         }
-        interface ChoiceProxy1<_T1, _T2, _T3, _T4, _T5> {
+        interface ChoiceProxy2<_T1, _T2, _T3, _T4, _T5> {
         }
-        interface ChoiceProxy2<_T1, _T2, _T3, _T4, _T5, _T6> {
+        interface ChoiceProxy4<_T1, _T2, _T3, _T4, _T5, _T6> {
         }
         interface ChoiceProxy<_T1, _T2, _T3, _T4, _T5, _T6, _T7> {
         }
@@ -1316,6 +1363,14 @@ declare module IntelliFactory {
         interface MatchFailureExceptionProxy {
         }
         interface IndexOutOfRangeExceptionProxy {
+        }
+        interface OperationCanceledExceptionProxy {
+        }
+        interface ArgumentExceptionProxy {
+        }
+        interface InvalidOperationExceptionProxy {
+        }
+        interface AggregateException {
         }
         interface IDisposableProxy {
             Dispose(): void;
@@ -1341,6 +1396,8 @@ declare module IntelliFactory {
         interface Math {
         }
         interface OptionProxy<_T1> {
+        }
+        interface PrintfFormat {
         }
         interface TimeSpanProxy {
         }
@@ -1883,6 +1940,13 @@ declare module __ABBREV {
 declare module IntelliFactory {
     module WebSharper {
         module Control {
+            module MailboxProcessor {
+                var Start : {
+                    (initial: {
+                        (x: __ABBREV.__Control.MailboxProcessor<any>): any;
+                    }, token: __ABBREV.__WebSharper.OptionProxy<__ABBREV.__WebSharper.CancellationTokenProxy>): __ABBREV.__Control.MailboxProcessor<any>;
+                };
+            }
             module EventModule {
                 var Choose : {
                     <_M1, _M2, _M3>(c: {
@@ -1919,7 +1983,7 @@ declare module IntelliFactory {
                 };
                 var Split : {
                     <_M1, _M2, _M3, _M4>(f: {
-                        (x: _M1): __ABBREV.__WebSharper.ChoiceProxy21<_M2, _M3>;
+                        (x: _M1): __ABBREV.__WebSharper.ChoiceProxy11<_M2, _M3>;
                     }, e: any): any;
                 };
             }
@@ -1941,7 +2005,7 @@ declare module IntelliFactory {
                 };
                 var Split : {
                     <_M1, _M2, _M3>(f: {
-                        (x: _M1): __ABBREV.__WebSharper.ChoiceProxy21<_M2, _M3>;
+                        (x: _M1): __ABBREV.__WebSharper.ChoiceProxy11<_M2, _M3>;
                     }, e: __ABBREV.__Control.IObservableProxy<_M1>): any;
                 };
             }
@@ -1955,13 +2019,45 @@ declare module IntelliFactory {
             }
             interface FSharpEvent<_T1> {
             }
+            interface IDelegateEventProxy<_T1> {
+                AddHandler(x0: _T1): void;
+                RemoveHandler(x0: _T1): void;
+            }
+            interface ChannelProxy<_T1> {
+            }
+            interface TimeoutExceptionProxy {
+            }
+            interface MailboxProcessor<_T1> {
+                Start(): void;
+                TryReceive(timeout: __ABBREV.__WebSharper.OptionProxy<number>): any;
+                Receive(timeout: __ABBREV.__WebSharper.OptionProxy<number>): any;
+                PostAndTryAsyncReply<_M1>(msgf: {
+                    (x: __ABBREV.__Control.ChannelProxy<_M1>): _T1;
+                }, timeout: __ABBREV.__WebSharper.OptionProxy<number>): any;
+                PostAndAsyncReply<_M1>(msgf: {
+                    (x: __ABBREV.__Control.ChannelProxy<_M1>): _T1;
+                }, timeout: __ABBREV.__WebSharper.OptionProxy<number>): any;
+                TryScan<_M1>(scanner: {
+                    (x: _T1): __ABBREV.__WebSharper.OptionProxy<any>;
+                }, timeout: __ABBREV.__WebSharper.OptionProxy<number>): any;
+                Scan<_M1>(scanner: {
+                    (x: _T1): __ABBREV.__WebSharper.OptionProxy<any>;
+                }, timeout: __ABBREV.__WebSharper.OptionProxy<number>): any;
+                startAsync(a: any): void;
+                resume(): void;
+                dequeue(): _T1;
+                get_Error(): any;
+                get_DefaultTimeout(): number;
+                set_DefaultTimeout(v: number): void;
+                get_CurrentQueueLength(): number;
+            }
         }
     }
 }
 declare module __ABBREV {
     
-    export import __WebSharper = IntelliFactory.WebSharper;
     export import __Control = IntelliFactory.WebSharper.Control;
+    export import __WebSharper = IntelliFactory.WebSharper;
 }
 
 declare module IntelliFactory {

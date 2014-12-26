@@ -9,7 +9,7 @@
     <Name>ellipsoid.org.SharpAngles.UI</Name>
     <RootNamespace>ellipsoid.org.SharpAngles.UiRouter</RootNamespace>
     <AssemblyName>ellipsoid.org.SharpAngles.UI</AssemblyName>
-    <NuGetPackageImportStamp>afd76d6a</NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>ac3829ac</NuGetPackageImportStamp>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -46,13 +46,6 @@
     </Otherwise>
   </Choose>
   <Import Project="$(FSharpTargetsPath)" />
-  <Import Project="..\packages\WebSharper.2.5.134.72\build\WebSharper.targets" Condition="Exists('..\packages\WebSharper.2.5.134.72\build\WebSharper.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\WebSharper.2.5.134.72\build\WebSharper.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\WebSharper.2.5.134.72\build\WebSharper.targets'))" />
-  </Target>
   <ItemGroup>
     <Compile Include="Resources.fs" />
     <Compile Include="..\ellipsoid.org.SharpAngles\Common.fs">
@@ -63,7 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="ellipsoid.org.SharpAngles">
-      <HintPath>..\packages\ellipsoid.org.SharpAngles.0.0.13\lib\ellipsoid.org.SharpAngles.dll</HintPath>
+      <HintPath>..\packages\ellipsoid.org.SharpAngles.0.1.1-alpha\lib\ellipsoid.org.SharpAngles.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="mscorlib" />
@@ -71,4 +64,11 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
   </ItemGroup>
+  <Import Project="..\packages\WebSharper.3.0.3.76-alpha\build\WebSharper.targets" Condition="Exists('..\packages\WebSharper.3.0.3.76-alpha\build\WebSharper.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\WebSharper.3.0.3.76-alpha\build\WebSharper.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\WebSharper.3.0.3.76-alpha\build\WebSharper.targets'))" />
+  </Target>
 </Project>
