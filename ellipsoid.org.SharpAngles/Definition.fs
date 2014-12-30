@@ -669,7 +669,7 @@ module Definition =
         |=> RouteProvider
         |=> Inherits ServiceProvider
         |+> Protocol [
-            "otherwise"             => Route?``params`` ^-> RouteProvider
+            "otherwise"             => (Route + String)?``params`` ^-> RouteProvider
             "when"                  => String?path * Route?route ^-> RouteProvider
         ]
 
