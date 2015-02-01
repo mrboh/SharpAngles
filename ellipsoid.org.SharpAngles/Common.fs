@@ -1,7 +1,7 @@
 ﻿namespace ellipsoid.org.SharpAngles
 
-open IntelliFactory.WebSharper.Dom
-open IntelliFactory.WebSharper.EcmaScript
+open IntelliFactory.WebSharper.JavaScript
+open IntelliFactory.WebSharper.JavaScript.Dom
 open IntelliFactory.WebSharper.InterfaceGenerator
 open IntelliFactory.WebSharper.JQuery
 

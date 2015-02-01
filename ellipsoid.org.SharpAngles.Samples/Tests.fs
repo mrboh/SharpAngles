@@ -1,11 +1,15 @@
 namespace ellipsoid.org.SharpAngles.Samples
 
 open ellipsoid.org.SharpAngles
+open ellipsoid.org.SharpAngles.Route
 open ellipsoid.org.SharpAngles.UI
 open IntelliFactory.WebSharper
 
 [<JavaScript>]
 module Tests =
+
+    type TestRouteParams =
+        { test: string }
 
     let TestsApp = 
         Angular.Module("testsApp", [| "ui.router" |])
@@ -13,6 +17,10 @@ module Tests =
                             fun (resource: Resource.ResourceFactory<string>) -> 
                                 ()
                ))
+               .Config(("$routeProvider",
+                            fun (routeProvider: RouteProvider) ->
+                                routeProvider.When("/foo", RouteConfig(TemplateUrl = fun (p: TestRouteParams) -> sprintf "/foo/bar/%s" p.test))
+                ))
                .Config(("$stateProvider", "$urlRouterProvider",
                             fun (stateProvider: StateProvider, urlRouterProvider: UrlRouterProvider) ->
                                 stateProvider

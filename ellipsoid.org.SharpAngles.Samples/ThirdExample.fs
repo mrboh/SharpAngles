@@ -2,7 +2,8 @@ namespace ellipsoid.org.SharpAngles.Samples.ThirdExample
 
 open ellipsoid.org.SharpAngles
 open IntelliFactory.WebSharper
-open IntelliFactory.WebSharper.Html
+open IntelliFactory.WebSharper.Html.Client
+open IntelliFactory.WebSharper.JavaScript
 open IntelliFactory.WebSharper.JQuery
     
 [<JavaScript>]

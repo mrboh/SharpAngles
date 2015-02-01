@@ -749,8 +749,8 @@ module Definition =
                 "controller", Any
                 "controllerAs", String
                 "name", String
-                "template", String
-                "templateUrl", String
+                "template", String + (Any ^-> String)
+                "templateUrl", String + (Any ^-> String)    // This simply results in TemplateUrl being typed as an obj
                 "resolve", Dictionary String Any
                 "redirectTo", Any
                 "reloadOnSearch", Bool

@@ -2,6 +2,7 @@ namespace ellipsoid.org.SharpAngles.Samples.FirstExample
 
 open ellipsoid.org.SharpAngles
 open IntelliFactory.WebSharper
+open IntelliFactory.WebSharper.JavaScript
 
 module Server =
 

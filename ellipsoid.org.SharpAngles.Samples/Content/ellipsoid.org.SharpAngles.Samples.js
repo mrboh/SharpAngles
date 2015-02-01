@@ -187,9 +187,10 @@ if (!Date.now) {
     };
 }
 ;
+var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n:n}function f(n){return o.lastIndex=0,o.test(n)?'"'+n.replace(o,function(n){var t=s[n];return typeof t=="string"?t:"\\u"+("0000"+n.charCodeAt(0).toString(16)).slice(-4)})+'"':'"'+n+'"'}function r(i,e){var s,l,h,a,v=n,c,o=e[i];o&&typeof o=="object"&&typeof o.toJSON=="function"&&(o=o.toJSON(i)),typeof t=="function"&&(o=t.call(e,i,o));switch(typeof o){case"string":return f(o);case"number":return isFinite(o)?String(o):"null";case"boolean":case"null":return String(o);case"object":if(!o)return"null";if(n+=u,c=[],Object.prototype.toString.apply(o)==="[object Array]"){for(a=o.length,s=0;s<a;s+=1)c[s]=r(s,o)||"null";return h=c.length===0?"[]":n?"[\n"+n+c.join(",\n"+n)+"\n"+v+"]":"["+c.join(",")+"]",n=v,h}if(t&&typeof t=="object")for(a=t.length,s=0;s<a;s+=1)typeof t[s]=="string"&&(l=t[s],h=r(l,o),h&&c.push(f(l)+(n?": ":":")+h));else for(l in o)Object.prototype.hasOwnProperty.call(o,l)&&(h=r(l,o),h&&c.push(f(l)+(n?": ":":")+h));return h=c.length===0?"{}":n?"{\n"+n+c.join(",\n"+n)+"\n"+v+"}":"{"+c.join(",")+"}",n=v,h}}typeof Date.prototype.toJSON!="function"&&(Date.prototype.toJSON=function(){return isFinite(this.valueOf())?this.getUTCFullYear()+"-"+i(this.getUTCMonth()+1)+"-"+i(this.getUTCDate())+"T"+i(this.getUTCHours())+":"+i(this.getUTCMinutes())+":"+i(this.getUTCSeconds())+"Z":null},String.prototype.toJSON=Number.prototype.toJSON=Boolean.prototype.toJSON=function(){return this.valueOf()});var e=/[\u0000\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,o=/[\\\"\x00-\x1f\x7f-\x9f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,n,u,s={"\b":"\\b","\t":"\\t","\n":"\\n","\f":"\\f","\r":"\\r",'"':'\\"',"\\":"\\\\"},t;typeof JSON.stringify!="function"&&(JSON.stringify=function(i,f,e){var o;if(n="",u="",typeof e=="number")for(o=0;o<e;o+=1)u+=" ";else typeof e=="string"&&(u=e);if(t=f,f&&typeof f!="function"&&(typeof f!="object"||typeof f.length!="number"))throw new Error("JSON.stringify");return r("",{"":i})}),typeof JSON.parse!="function"&&(JSON.parse=function(n,t){function r(n,i){var f,e,u=n[i];if(u&&typeof u=="object")for(f in u)Object.prototype.hasOwnProperty.call(u,f)&&(e=r(u,f),e!==undefined?u[f]=e:delete u[f]);return t.call(n,i,u)}var i;if(n=String(n),e.lastIndex=0,e.test(n)&&(n=n.replace(e,function(n){return"\\u"+("0000"+n.charCodeAt(0).toString(16)).slice(-4)})),/^[\],:{}\s]*$/.test(n.replace(/\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g,"@").replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g,"]").replace(/(?:^|:|,)(?:\s*\[)+/g,"")))return i=eval("("+n+")"),typeof t=="function"?r({"":i},""):i;throw new SyntaxError("JSON.parse");})}();;
 (function()
 {
- var Global=this,Runtime=this.IntelliFactory.Runtime,WebSharper,Arrays,Operators,Number,IntrinsicFunctionProxy,Array,Seq,Unchecked,Enumerator,Arrays2D,Concurrency,AggregateException,Option,clearTimeout,setTimeout,CancellationTokenSource,Char,Util,Lazy,Error,Date,JavaScript,Scheduler,T,Json,List,T1,Math,Strings,PrintfHelpers,Remoting,XhrProvider,AsyncProxy,JSON,Enumerable,String,RegExp;
+ var Global=this,Runtime=this.IntelliFactory.Runtime,WebSharper,Arrays,Operators,Number,IntrinsicFunctionProxy,Array,Seq,Unchecked,Enumerator,Arrays2D,Concurrency,AggregateException,Option,clearTimeout,setTimeout,CancellationTokenSource,Char,Util,Lazy,Error,Date,console,Scheduler,T,Html,Client,Activator,document,jQuery,Json,JSON,JavaScript,JSModule,HtmlContentExtensions,SingleNode,List,T1,Math,Strings,PrintfHelpers,Remoting,XhrProvider,AsyncProxy,AjaxRemotingProvider,window,Enumerable,String,RegExp;
  Runtime.Define(Global,{
   IntelliFactory:{
    WebSharper:{
@@ -936,11 +937,7 @@ if (!Date.now) {
       return this.c;
      }
     },{
-     CreateLinkedTokenSource:function(t1,t2)
-     {
-      return CancellationTokenSource.CreateLinkedTokenSource1([t1,t2]);
-     },
-     CreateLinkedTokenSource1:function(tokens)
+     CreateLinkedTokenSource:function(tokens)
      {
       var cts,action;
       cts=CancellationTokenSource.New();
@@ -958,6 +955,10 @@ if (!Date.now) {
        return;
       };
       return Arrays.iter(action,tokens);
+     },
+     CreateLinkedTokenSource1:function(t1,t2)
+     {
+      return CancellationTokenSource.CreateLinkedTokenSource([t1,t2]);
      },
      New:function()
      {
@@ -1521,7 +1522,9 @@ if (!Date.now) {
       {
       },function(exn)
       {
-       return JavaScript.LogMore(["WebSharper: Uncaught asynchronous exception",exn]);
+       var ps;
+       ps=[exn];
+       return console?console.log.apply(console,["WebSharper: Uncaught asynchronous exception"].concat(ps)):undefined;
       },function()
       {
       },ctOpt);
@@ -1902,6 +1905,80 @@ if (!Date.now) {
       return x;
      }
     },
+    Guid:Runtime.Class({},{
+     NewGuid:function()
+     {
+      var $0=this,$this=this;
+      return"xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g,function(c)
+      {
+       var r=Global.Math.random()*16|0,v=c=="x"?r:r&0x3|0x8;
+       return v.toString(16);
+      });
+     }
+    }),
+    Html:{
+     Client:{
+      Activator:{
+       Activate:Runtime.Field(function()
+       {
+        var _,meta;
+        if(Activator.hasDocument())
+         {
+          meta=document.getElementById("websharper-data");
+          _=meta?jQuery(document).ready(function()
+          {
+           var text,obj,x,action;
+           text=meta.getAttribute("content");
+           obj=Json.Activate(JSON.parse(text));
+           x=JSModule.GetFields(obj);
+           action=Runtime.Tupled(function(tupledArg)
+           {
+            var k,v,p,old;
+            k=tupledArg[0];
+            v=tupledArg[1];
+            p=v.get_Body();
+            old=document.getElementById(k);
+            return p.ReplaceInDom(old);
+           });
+           return Arrays.iter(action,x);
+          }):null;
+         }
+        else
+         {
+          _=null;
+         }
+        return _;
+       }),
+       hasDocument:function()
+       {
+        var $0=this,$this=this;
+        return typeof Global.document!=="undefined";
+       }
+      },
+      HtmlContentExtensions:{
+       "IControlBody.SingleNode.Static":function(node)
+       {
+        return SingleNode.New(node);
+       },
+       SingleNode:Runtime.Class({
+        ReplaceInDom:function(old)
+        {
+         var value;
+         value=this.node.parentNode.replaceChild(this.node,old);
+         return;
+        }
+       },{
+        New:function(node)
+        {
+         var r;
+         r=Runtime.New(this,{});
+         r.node=node;
+         return r;
+        }
+       })
+      }
+     }
+    },
     IntrinsicFunctionProxy:{
      Array2DZeroCreate:function(n,m)
      {
@@ -1991,51 +2068,69 @@ if (!Date.now) {
      }
     },
     JavaScript:{
-     Delete:function($x,$field)
-     {
-      var $0=this,$this=this;
-      return delete $x[$field];
-     },
-     ForEach:function($x,$iter)
-     {
-      var $0=this,$this=this;
-      for(var k in $x){
-       if($iter(k))
-        break;
+     JSModule:{
+      Delete:function($x,$field)
+      {
+       var $0=this,$this=this;
+       return delete $x[$field];
+      },
+      ForEach:function($x,$iter)
+      {
+       var $0=this,$this=this;
+       for(var k in $x){
+        if($iter(k))
+         break;
+       }
+      },
+      GetFieldNames:function($o)
+      {
+       var $0=this,$this=this;
+       var r=[];
+       for(var k in $o)r.push(k);
+       return r;
+      },
+      GetFieldValues:function($o)
+      {
+       var $0=this,$this=this;
+       var r=[];
+       for(var k in $o)r.push($o[k]);
+       return r;
+      },
+      GetFields:function($o)
+      {
+       var $0=this,$this=this;
+       var r=[];
+       for(var k in $o)r.push([k,$o[k]]);
+       return r;
+      },
+      Log:function($x)
+      {
+       var $0=this,$this=this;
+       if(Global.console)
+        Global.console.log($x);
+      },
+      LogMore:function($args)
+      {
+       var $0=this,$this=this;
+       if(Global.console)
+        Global.console.log.apply(Global.console,$args);
       }
      },
-     GetFieldNames:function($o)
-     {
-      var $0=this,$this=this;
-      var r=[];
-      for(var k in $o)r.push(k);
-      return r;
-     },
-     GetFieldValues:function($o)
-     {
-      var $0=this,$this=this;
-      var r=[];
-      for(var k in $o)r.push($o[k]);
-      return r;
-     },
-     GetFields:function($o)
-     {
-      var $0=this,$this=this;
-      var r=[];
-      for(var k in $o)r.push([k,$o[k]]);
-      return r;
-     },
-     Log:function($x)
-     {
-      var $0=this,$this=this;
-      if(Global.console)
-       Global.console.log($x);
-     },
-     LogMore:function($args)
-     {
-      var $0=this,$this=this;
-      if(Global.console)
-       Global.console.log.apply(Global.console,$args);
+     Pervasives:{
+      NewFromList:function(fields)
+      {
+       var r,enumerator,forLoopVar,v,k;
+       r={};
+       enumerator=Enumerator.Get(fields);
+       while(enumerator.MoveNext())
+        {
+         forLoopVar=enumerator.get_Current();
+         v=forLoopVar[1];
+         k=forLoopVar[0];
+         r[k]=v;
+        }
+       return r;
+      }
      }
     },
     Json:{
@@ -2106,7 +2201,7 @@ if (!Date.now) {
      {
       var r;
       r=new ty();
-      JavaScript.ForEach(obj,function(k)
+      JSModule.ForEach(obj,function(k)
       {
        r[k]=obj[k];
        return false;
@@ -2126,7 +2221,7 @@ if (!Date.now) {
         if(matchValue==="object")
          {
           r={};
-          JavaScript.ForEach(x,function(y)
+          JSModule.ForEach(x,function(y)
           {
            r[y]=f(x[y]);
            return false;
@@ -3078,22 +3173,6 @@ if (!Date.now) {
       return _;
      }
     },
-    Pervasives:{
-     NewFromList:function(fields)
-     {
-      var r,enumerator,forLoopVar,v,k;
-      r={};
-      enumerator=Enumerator.Get(fields);
-      while(enumerator.MoveNext())
-       {
-        forLoopVar=enumerator.get_Current();
-        v=forLoopVar[1];
-        k=forLoopVar[0];
-        r[k]=v;
-       }
-      return r;
-     }
-    },
     PrintfHelpers:{
      padNumLeft:function(s,l)
      {
@@ -3128,7 +3207,7 @@ if (!Date.now) {
        s=Global.String(o1);
        if(s==="[object Object]")
         {
-         x=JavaScript.GetFields(o1);
+         x=JSModule.GetFields(o1);
          mapping=Runtime.Tupled(function(tupledArg)
          {
           var k,v;
@@ -3237,112 +3316,179 @@ if (!Date.now) {
       return Arrays.blit(a,0,array,index,IntrinsicFunctionProxy.GetLength(a));
      }
     },
+    Random:Runtime.Class({
+     Next:function()
+     {
+      return Math.floor(Math.random()*2147483648);
+     },
+     Next1:function(maxValue)
+     {
+      return maxValue<0?Operators.FailWith("'maxValue' must be greater than zero."):Math.floor(Math.random()*maxValue);
+     },
+     Next2:function(minValue,maxValue)
+     {
+      var _,maxValue1;
+      if(minValue>maxValue)
+       {
+        _=Operators.FailWith("'minValue' cannot be greater than maxValue.");
+       }
+      else
+       {
+        maxValue1=maxValue-minValue;
+        _=minValue+Math.floor(Math.random()*maxValue1);
+       }
+      return _;
+     },
+     NextBytes:function(buffer)
+     {
+      var i;
+      for(i=0;i<=IntrinsicFunctionProxy.GetLength(buffer)-1;i++){
+       IntrinsicFunctionProxy.SetArray(buffer,i,Math.floor(Math.random()*256));
+      }
+      return;
+     }
+    },{
+     New:function()
+     {
+      return Runtime.New(this,{});
+     }
+    }),
     Remoting:{
      AjaxProvider:Runtime.Field(function()
      {
       return XhrProvider.New();
      }),
-     Async:function(m,data)
-     {
-      var headers,payload,f;
-      headers=Remoting.makeHeaders(m);
-      payload=Remoting.makePayload(data);
-      f=function()
+     AjaxRemotingProvider:Runtime.Class({},{
+      Async:function(m,data)
       {
-       var x,f1;
-       x=AsyncProxy.get_CancellationToken();
-       f1=function(_arg1)
+       var headers,payload,f;
+       headers=Remoting.makeHeaders(m);
+       payload=Remoting.makePayload(data);
+       f=function()
        {
-        var callback,x2;
-        callback=Runtime.Tupled(function(tupledArg)
+        var x,f1;
+        x=AsyncProxy.get_CancellationToken();
+        f1=function(_arg1)
         {
-         var ok,err,cc,waiting,callback1,reg,ok1,err1,arg00;
-         ok=tupledArg[0];
-         err=tupledArg[1];
-         cc=tupledArg[2];
-         waiting={
-          contents:true
-         };
-         callback1=function()
+         var callback,x2;
+         callback=Runtime.Tupled(function(tupledArg)
          {
-          var _;
-          if(waiting.contents)
-           {
-            waiting.contents=false;
-            _=cc(new Error("OperationCanceledException"));
-           }
-          else
-           {
-            _=null;
-           }
-          return _;
-         };
-         reg=Concurrency.Register(_arg1,function()
-         {
-          return callback1();
+          var ok,err,cc,waiting,callback1,reg,ok1,err1,arg00;
+          ok=tupledArg[0];
+          err=tupledArg[1];
+          cc=tupledArg[2];
+          waiting={
+           contents:true
+          };
+          callback1=function()
+          {
+           var _;
+           if(waiting.contents)
+            {
+             waiting.contents=false;
+             _=cc(new Error("OperationCanceledException"));
+            }
+           else
+            {
+             _=null;
+            }
+           return _;
+          };
+          reg=Concurrency.Register(_arg1,function()
+          {
+           return callback1();
+          });
+          ok1=function(x1)
+          {
+           var _;
+           if(waiting.contents)
+            {
+             waiting.contents=false;
+             reg.Dispose();
+             _=ok(Json.Activate(JSON.parse(x1)));
+            }
+           else
+            {
+             _=null;
+            }
+           return _;
+          };
+          err1=function(e)
+          {
+           var _;
+           if(waiting.contents)
+            {
+             waiting.contents=false;
+             reg.Dispose();
+             _=err(e);
+            }
+           else
+            {
+             _=null;
+            }
+           return _;
+          };
+          arg00=Remoting.EndPoint();
+          return Remoting.AjaxProvider().Async(arg00,headers,payload,ok1,err1);
          });
-         ok1=function(x1)
-         {
-          var _;
-          if(waiting.contents)
-           {
-            waiting.contents=false;
-            reg.Dispose();
-            _=ok(Json.Activate(JSON.parse(x1)));
-           }
-          else
-           {
-            _=null;
-           }
-          return _;
-         };
-         err1=function(e)
-         {
-          var _;
-          if(waiting.contents)
-           {
-            waiting.contents=false;
-            reg.Dispose();
-            _=err(e);
-           }
-          else
-           {
-            _=null;
-           }
-          return _;
-         };
-         arg00=Remoting.EndPoint();
-         return Remoting.AjaxProvider().Async(arg00,headers,payload,ok1,err1);
-        });
-        x2=Concurrency.FromContinuations(callback);
-        return x2;
+         x2=Concurrency.FromContinuations(callback);
+         return x2;
+        };
+        return Concurrency.Bind(x,f1);
        };
-       return Concurrency.Bind(x,f1);
-      };
-      return Concurrency.Delay(f);
-     },
-     Call:function(m,data)
-     {
-      var arg00,arg10,arg20,data1;
-      arg00=Remoting.EndPoint();
-      arg10=Remoting.makeHeaders(m);
-      arg20=Remoting.makePayload(data);
-      data1=Remoting.AjaxProvider().Sync(arg00,arg10,arg20);
-      return Json.Activate(JSON.parse(data1));
-     },
+       return Concurrency.Delay(f);
+      },
+      Send:function(m,data)
+      {
+       var computation,computation1,t;
+       computation=AjaxRemotingProvider.Async(m,data);
+       computation1=Concurrency.Ignore(computation);
+       t={
+        $:0
+       };
+       return Concurrency.Start(computation1,t);
+      },
+      Sync:function(m,data)
+      {
+       var arg00,arg10,arg20,data1;
+       arg00=Remoting.EndPoint();
+       arg10=Remoting.makeHeaders(m);
+       arg20=Remoting.makePayload(data);
+       data1=Remoting.AjaxProvider().Sync(arg00,arg10,arg20);
+       return Json.Activate(JSON.parse(data1));
+      }
+     }),
      EndPoint:Runtime.Field(function()
      {
       return"?";
      }),
-     Send:function(m,data)
+     UseHttps:function()
      {
-      var computation,computation1,t;
-      computation=Remoting.Async(m,data);
-      computation1=Concurrency.Ignore(computation);
-      t={
-       $:0
-      };
-      return Concurrency.Start(computation1,t);
+      var _,_this,_1,_this1,_2,matchValue;
+      try
+      {
+       _this=window.location.href;
+       if(!Strings.StartsWith(_this,"https://"))
+        {
+         _this1=window.location.href;
+         _2=Strings.Replace(_this1,"http://","https://");
+         Remoting.EndPoint=function()
+         {
+          return _2;
+         };
+         _1=true;
+        }
+       else
+        {
+         _1=false;
+        }
+       _=_1;
+      }
+      catch(matchValue)
+      {
+       _=false;
+      }
+      return _;
      },
      XhrProvider:Runtime.Class({
       Async:function(url,headers,data,ok,err)
@@ -3374,6 +3520,7 @@ if (!Date.now) {
      {
       var $0=this,$this=this;
       var xhr=new Global.XMLHttpRequest();
+      xhr.withCredentials=true;
       xhr.open("POST",$url,$async);
       for(var h in $headers){
        xhr.setRequestHeader(h,$headers[h]);
@@ -4731,6 +4878,16 @@ if (!Date.now) {
       var $0=this,$this=this;
       return $s.replace(/^\s+/,"").replace(/\s+$/,"");
      },
+     TrimEnd:function($s)
+     {
+      var $0=this,$this=this;
+      return $s.replace(/\s+$/,"");
+     },
+     TrimStart:function($s)
+     {
+      var $0=this,$this=this;
+      return $s.replace(/^\s+/,"");
+     },
      collect:function(f,s)
      {
       return Arrays.init(s.length,function(i)
@@ -4813,7 +4970,7 @@ if (!Date.now) {
          }
         else
          {
-          _1=matchValue==="function"?Operators.FailWith("Cannot compare function values."):matchValue==="boolean"?a<b?-1:1:matchValue==="number"?a<b?-1:1:matchValue==="string"?a<b?-1:1:a===null?-1:b===null?1:"CompareTo"in a?a.CompareTo(b):(a instanceof Array?b instanceof Array:false)?Unchecked.compareArrays(a,b):(a instanceof Date?b instanceof Date:false)?Unchecked.compareDates(a,b):Unchecked.compareArrays(JavaScript.GetFields(a),JavaScript.GetFields(b));
+          _1=matchValue==="function"?Operators.FailWith("Cannot compare function values."):matchValue==="boolean"?a<b?-1:1:matchValue==="number"?a<b?-1:1:matchValue==="string"?a<b?-1:1:a===null?-1:b===null?1:"CompareTo"in a?a.CompareTo(b):(a instanceof Array?b instanceof Array:false)?Unchecked.compareArrays(a,b):(a instanceof Date?b instanceof Date:false)?Unchecked.compareDates(a,b):Unchecked.compareArrays(JSModule.GetFields(a),JSModule.GetFields(b));
          }
         _=_1;
        }
@@ -4829,7 +4986,7 @@ if (!Date.now) {
       else
        {
         matchValue=typeof a;
-        _=matchValue==="object"?a===null?false:b===null?false:"Equals"in a?a.Equals(b):(a instanceof Array?b instanceof Array:false)?Unchecked.arrayEquals(a,b):(a instanceof Date?b instanceof Date:false)?Unchecked.dateEquals(a,b):Unchecked.arrayEquals(JavaScript.GetFields(a),JavaScript.GetFields(b)):false;
+        _=matchValue==="object"?a===null?false:b===null?false:"Equals"in a?a.Equals(b):(a instanceof Array?b instanceof Array:false)?Unchecked.arrayEquals(a,b):(a instanceof Date?b instanceof Date:false)?Unchecked.dateEquals(a,b):Unchecked.arrayEquals(JSModule.GetFields(a),JSModule.GetFields(b)):false;
        }
       return _;
      },
@@ -4924,7 +5081,7 @@ if (!Date.now) {
         h={
          contents:0
         };
-        JavaScript.ForEach(o,function(key)
+        JSModule.ForEach(o,function(key)
         {
          h.contents=op_PlusPlus(op_PlusPlus(h.contents,Unchecked.hashString(key)),Unchecked.Hash(o[key]));
          return false;
@@ -4999,10 +5156,20 @@ if (!Date.now) {
   Lazy=Runtime.Safe(WebSharper.Lazy);
   Error=Runtime.Safe(Global.Error);
   Date=Runtime.Safe(Global.Date);
-  JavaScript=Runtime.Safe(WebSharper.JavaScript);
+  console=Runtime.Safe(Global.console);
   Scheduler=Runtime.Safe(Concurrency.Scheduler);
   T=Runtime.Safe(Enumerator.T);
+  Html=Runtime.Safe(WebSharper.Html);
+  Client=Runtime.Safe(Html.Client);
+  Activator=Runtime.Safe(Client.Activator);
+  document=Runtime.Safe(Global.document);
+  jQuery=Runtime.Safe(Global.jQuery);
   Json=Runtime.Safe(WebSharper.Json);
+  JSON=Runtime.Safe(Global.JSON);
+  JavaScript=Runtime.Safe(WebSharper.JavaScript);
+  JSModule=Runtime.Safe(JavaScript.JSModule);
+  HtmlContentExtensions=Runtime.Safe(Client.HtmlContentExtensions);
+  SingleNode=Runtime.Safe(HtmlContentExtensions.SingleNode);
   List=Runtime.Safe(WebSharper.List);
   T1=Runtime.Safe(List.T);
   Math=Runtime.Safe(Global.Math);
@@ -5011,7 +5178,8 @@ if (!Date.now) {
   Remoting=Runtime.Safe(WebSharper.Remoting);
   XhrProvider=Runtime.Safe(Remoting.XhrProvider);
   AsyncProxy=Runtime.Safe(WebSharper.AsyncProxy);
-  JSON=Runtime.Safe(Global.JSON);
+  AjaxRemotingProvider=Runtime.Safe(Remoting.AjaxRemotingProvider);
+  window=Runtime.Safe(Global.window);
   Enumerable=Runtime.Safe(WebSharper.Enumerable);
   String=Runtime.Safe(Global.String);
   return RegExp=Runtime.Safe(Global.RegExp);
@@ -5020,6 +5188,7 @@ if (!Date.now) {
  {
   Remoting.EndPoint();
   Remoting.AjaxProvider();
+  Activator.Activate();
   Concurrency.scheduler();
   Concurrency.defCTS();
   Concurrency.GetCT();
@@ -5029,7 +5198,7 @@ if (!Date.now) {
 
 (function()
 {
- var Global=this,Runtime=this.IntelliFactory.Runtime,WebSharper,IntrinsicFunctionProxy,ok,Unchecked,JavaScript,Testing,Pervasives,TestBuilder,test,Random,Arrays,Math,NaN1,Infinity1,List,String,Seq;
+ var Global=this,Runtime=this.IntelliFactory.Runtime,WebSharper,IntrinsicFunctionProxy,ok,Unchecked,console,Testing,Pervasives,TestBuilder,test,Random,Arrays,Math,NaN1,Infinity1,List,String,Seq;
  Runtime.Define(Global,{
   IntelliFactory:{
    WebSharper:{
@@ -5065,10 +5234,14 @@ if (!Date.now) {
      Pervasives:{
       Is:function(a,b)
       {
-       var _;
+       var _,ps;
        if(!Unchecked.Equals(a,b))
         {
-         JavaScript.Log(["Equality test failed.",a,b]);
+         ps=[a,b];
+         if(console)
+          {
+           console.log.apply(console,["Equality test failed."].concat(ps));
+          }
          _=ok(false,"Equality test failed.");
         }
        else
@@ -5079,10 +5252,14 @@ if (!Date.now) {
       },
       Isnt:function(a,b)
       {
-       var _;
+       var _,ps;
        if(Unchecked.Equals(a,b))
         {
-         JavaScript.Log(["Inequality test failed.",a,b]);
+         ps=[a,b];
+         if(console)
+          {
+           console.log.apply(console,["Inequality test failed."].concat(ps));
+          }
          _=ok(false,"Inequality test failed.");
         }
        else
@@ -5382,7 +5559,7 @@ if (!Date.now) {
   IntrinsicFunctionProxy=Runtime.Safe(WebSharper.IntrinsicFunctionProxy);
   ok=Runtime.Safe(Global.ok);
   Unchecked=Runtime.Safe(WebSharper.Unchecked);
-  JavaScript=Runtime.Safe(WebSharper.JavaScript);
+  console=Runtime.Safe(Global.console);
   Testing=Runtime.Safe(WebSharper.Testing);
   Pervasives=Runtime.Safe(Testing.Pervasives);
   TestBuilder=Runtime.Safe(Pervasives.TestBuilder);
@@ -5410,980 +5587,912 @@ if (!Date.now) {
  });
 }());
 
-var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n:n}function f(n){return o.lastIndex=0,o.test(n)?'"'+n.replace(o,function(n){var t=s[n];return typeof t=="string"?t:"\\u"+("0000"+n.charCodeAt(0).toString(16)).slice(-4)})+'"':'"'+n+'"'}function r(i,e){var s,l,h,a,v=n,c,o=e[i];o&&typeof o=="object"&&typeof o.toJSON=="function"&&(o=o.toJSON(i)),typeof t=="function"&&(o=t.call(e,i,o));switch(typeof o){case"string":return f(o);case"number":return isFinite(o)?String(o):"null";case"boolean":case"null":return String(o);case"object":if(!o)return"null";if(n+=u,c=[],Object.prototype.toString.apply(o)==="[object Array]"){for(a=o.length,s=0;s<a;s+=1)c[s]=r(s,o)||"null";return h=c.length===0?"[]":n?"[\n"+n+c.join(",\n"+n)+"\n"+v+"]":"["+c.join(",")+"]",n=v,h}if(t&&typeof t=="object")for(a=t.length,s=0;s<a;s+=1)typeof t[s]=="string"&&(l=t[s],h=r(l,o),h&&c.push(f(l)+(n?": ":":")+h));else for(l in o)Object.prototype.hasOwnProperty.call(o,l)&&(h=r(l,o),h&&c.push(f(l)+(n?": ":":")+h));return h=c.length===0?"{}":n?"{\n"+n+c.join(",\n"+n)+"\n"+v+"}":"{"+c.join(",")+"}",n=v,h}}typeof Date.prototype.toJSON!="function"&&(Date.prototype.toJSON=function(){return isFinite(this.valueOf())?this.getUTCFullYear()+"-"+i(this.getUTCMonth()+1)+"-"+i(this.getUTCDate())+"T"+i(this.getUTCHours())+":"+i(this.getUTCMinutes())+":"+i(this.getUTCSeconds())+"Z":null},String.prototype.toJSON=Number.prototype.toJSON=Boolean.prototype.toJSON=function(){return this.valueOf()});var e=/[\u0000\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,o=/[\\\"\x00-\x1f\x7f-\x9f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,n,u,s={"\b":"\\b","\t":"\\t","\n":"\\n","\f":"\\f","\r":"\\r",'"':'\\"',"\\":"\\\\"},t;typeof JSON.stringify!="function"&&(JSON.stringify=function(i,f,e){var o;if(n="",u="",typeof e=="number")for(o=0;o<e;o+=1)u+=" ";else typeof e=="string"&&(u=e);if(t=f,f&&typeof f!="function"&&(typeof f!="object"||typeof f.length!="number"))throw new Error("JSON.stringify");return r("",{"":i})}),typeof JSON.parse!="function"&&(JSON.parse=function(n,t){function r(n,i){var f,e,u=n[i];if(u&&typeof u=="object")for(f in u)Object.prototype.hasOwnProperty.call(u,f)&&(e=r(u,f),e!==undefined?u[f]=e:delete u[f]);return t.call(n,i,u)}var i;if(n=String(n),e.lastIndex=0,e.test(n)&&(n=n.replace(e,function(n){return"\\u"+("0000"+n.charCodeAt(0).toString(16)).slice(-4)})),/^[\],:{}\s]*$/.test(n.replace(/\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g,"@").replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g,"]").replace(/(?:^|:|,)(?:\s*\[)+/g,"")))return i=eval("("+n+")"),typeof t=="function"?r({"":i},""):i;throw new SyntaxError("JSON.parse");})}();;
 (function()
 {
- var Global=this,Runtime=this.IntelliFactory.Runtime,WebSharper,Html,Activator,document,Default,Json,JSON,JavaScript,Arrays,Attribute,Implementation,HTML5,Element,Enumerator,Math,jQuery,Events,JQueryEventSupport,AttributeBuilder,DeprecatedTagBuilder,Html5AttributeBuilder,JQueryHtmlProvider,Html5TagBuilder,TagBuilder,Text,HTML51,EventsPervasives;
+ var Global=this,Runtime=this.IntelliFactory.Runtime,WebSharper,Html,Client,Attribute,Pagelet,Default,Implementation,Element,Enumerator,Math,document,jQuery,Events,JQueryEventSupport,AttributeBuilder,DeprecatedTagBuilder,JQueryHtmlProvider,TagBuilder,Text,EventsPervasives;
  Runtime.Define(Global,{
   IntelliFactory:{
    WebSharper:{
     Html:{
-     Activator:{
-      Activate:Runtime.Field(function()
-      {
-       var _,meta;
-       if(Activator.hasDocument())
-        {
-         meta=document.getElementById("websharper-data");
-         _=meta?Default.OnLoad(function()
-         {
-          var text,obj,x,action;
-          text=meta.getAttribute("content");
-          obj=Json.Activate(JSON.parse(text));
-          x=JavaScript.GetFields(obj);
-          action=Runtime.Tupled(function(tupledArg)
-          {
-           var k,v,p,old;
-           k=tupledArg[0];
-           v=tupledArg[1];
-           p=v.get_Body();
-           old=document.getElementById(k);
-           old.parentNode.replaceChild(p.get_Body(),old);
-           return p.Render();
-          });
-          return Arrays.iter(action,x);
-         }):null;
-        }
-       else
-        {
-         _=null;
-        }
-       return _;
-      }),
-      hasDocument:function()
-      {
-       var $0=this,$this=this;
-       return typeof Global.document!=="undefined";
-      }
-     },
-     Attribute:Runtime.Class({
-      Render:function()
-      {
-       return null;
-      },
-      get_Body:function()
-      {
-       var attr;
-       attr=this.HtmlProvider.CreateAttribute(this.Name);
-       attr.value=this.Value;
-       return attr;
-      }
-     },{
-      New:function(htmlProvider,name,value)
-      {
-       var a;
-       a=Attribute.New1(htmlProvider);
-       a.Name=name;
-       a.Value=value;
-       return a;
-      },
-      New1:function(HtmlProvider)
-      {
-       var r;
-       r=Runtime.New(this,{});
-       r.HtmlProvider=HtmlProvider;
-       return r;
-      }
-     }),
-     AttributeBuilder:Runtime.Class({
-      Class:function(x)
-      {
-       return this.NewAttr("class",x);
-      },
-      NewAttr:function(name,value)
-      {
-       var a;
-       a=Attribute.New(this.HtmlProvider,name,value);
-       return a;
-      },
-      get_CheckBox:function()
-      {
-       return this.NewAttr("type","checkbox");
-      },
-      get_Hidden:function()
-      {
-       return this.NewAttr("type","hidden");
-      },
-      get_Password:function()
-      {
-       return this.NewAttr("type","password");
-      },
-      get_Radio:function()
-      {
-       return this.NewAttr("type","radio");
-      },
-      get_Reset:function()
-      {
-       return this.NewAttr("type","reset");
-      },
-      get_Submit:function()
-      {
-       return this.NewAttr("type","submit");
-      },
-      get_TextField:function()
-      {
-       return this.NewAttr("type","textfield");
-      }
-     },{
-      New:function(HtmlProvider)
-      {
-       var r;
-       r=Runtime.New(this,{});
-       r.HtmlProvider=HtmlProvider;
-       return r;
-      }
-     }),
-     Default:{
-      A:function(x)
-      {
-       var _this;
-       _this=Default.Tags();
-       return _this.NewTag("a",x);
-      },
-      Action:function(x)
-      {
-       var _this;
-       _this=Default.Attr();
-       return _this.NewAttr("action",x);
-      },
-      Align:function(x)
-      {
-       var _this;
-       _this=Default.Attr();
-       return _this.NewAttr("align",x);
-      },
-      Alt:function(x)
-      {
-       var _this;
-       _this=Default.Attr();
-       return _this.NewAttr("alt",x);
-      },
-      Attr:Runtime.Field(function()
-      {
-       return Implementation.Attr();
-      }),
-      B:function(x)
-      {
-       var _this;
-       _this=Default.Tags();
-       return _this.NewTag("b",x);
-      },
-      Body:function(x)
-      {
-       var _this;
-       _this=Default.Tags();
-       return _this.NewTag("body",x);
-      },
-      Br:function(x)
-      {
-       var _this;
-       _this=Default.Tags();
-       return _this.NewTag("br",x);
-      },
-      Button:function(x)
-      {
-       var _this;
-       _this=Default.Tags();
-       return _this.NewTag("button",x);
-      },
-      Code:function(x)
-      {
-       var _this;
-       _this=Default.Tags();
-       return _this.NewTag("code",x);
-      },
-      Deprecated:Runtime.Field(function()
-      {
-       return Implementation.DeprecatedHtml();
-      }),
-      Div:function(x)
-      {
-       return Default.Tags().Div(x);
-      },
-      Em:function(x)
-      {
-       var _this;
-       _this=Default.Tags();
-       return _this.NewTag("em",x);
-      },
-      Form:function(x)
-      {
-       var _this;
-       _this=Default.Tags();
-       return _this.NewTag("form",x);
-      },
-      H1:function(x)
-      {
-       var _this;
-       _this=Default.Tags();
-       return _this.NewTag("h1",x);
-      },
-      H2:function(x)
-      {
-       var _this;
-       _this=Default.Tags();
-       return _this.NewTag("h2",x);
-      },
-      H3:function(x)
-      {
-       var _this;
-       _this=Default.Tags();
-       return _this.NewTag("h3",x);
-      },
-      H4:function(x)
-      {
-       var _this;
-       _this=Default.Tags();
-       return _this.NewTag("h4",x);
-      },
-      HRef:function(x)
-      {
-       var _this;
-       _this=Default.Attr();
-       return _this.NewAttr("href",x);
-      },
-      HTML5:{
-       Attr:Runtime.Field(function()
+     Client:{
+      Attribute:Runtime.Class({
+       get_Body:function()
        {
-        return HTML5.Attr();
-       }),
-       Tags:Runtime.Field(function()
-       {
-        return HTML5.Tags();
-       })
-      },
-      Head:function(x)
-      {
-       var _this;
-       _this=Default.Tags();
-       return _this.NewTag("head",x);
-      },
-      Height:function(x)
-      {
-       var _this;
-       _this=Default.Attr();
-       return _this.NewAttr("height",x);
-      },
-      Hr:function(x)
-      {
-       var _this;
-       _this=Default.Tags();
-       return _this.NewTag("hr",x);
-      },
-      I:function(x)
-      {
-       var _this;
-       _this=Default.Tags();
-       return _this.NewTag("i",x);
-      },
-      IFrame:function(x)
-      {
-       var _this;
-       _this=Default.Tags();
-       return _this.NewTag("iframe",x);
-      },
-      Id:function(x)
-      {
-       var _this;
-       _this=Default.Attr();
-       return _this.NewAttr("id",x);
-      },
-      Img:function(x)
-      {
-       var _this;
-       _this=Default.Tags();
-       return _this.NewTag("img",x);
-      },
-      Input:function(x)
-      {
-       var _this;
-       _this=Default.Tags();
-       return _this.NewTag("input",x);
-      },
-      LI:function(x)
-      {
-       var _this;
-       _this=Default.Tags();
-       return _this.NewTag("li",x);
-      },
-      Name:function(x)
-      {
-       var _this;
-       _this=Default.Attr();
-       return _this.NewAttr("name",x);
-      },
-      NewAttr:function(x)
-      {
-       return function(arg10)
-       {
-        return Default.Attr().NewAttr(x,arg10);
-       };
-      },
-      OL:function(x)
-      {
-       var _this;
-       _this=Default.Tags();
-       return _this.NewTag("ol",x);
-      },
-      OnLoad:function(init)
-      {
-       return Implementation.HtmlProvider().OnDocumentReady(init);
-      },
-      P:function(x)
-      {
-       var _this;
-       _this=Default.Tags();
-       return _this.NewTag("p",x);
-      },
-      Pre:function(x)
-      {
-       var _this;
-       _this=Default.Tags();
-       return _this.NewTag("pre",x);
-      },
-      RowSpan:function(x)
-      {
-       var _this;
-       _this=Default.Attr();
-       return _this.NewAttr("rowspan",x);
-      },
-      Script:function(x)
-      {
-       var _this;
-       _this=Default.Tags();
-       return _this.NewTag("script",x);
-      },
-      Select:function(x)
-      {
-       var _this;
-       _this=Default.Tags();
-       return _this.NewTag("select",x);
-      },
-      Selected:function(x)
-      {
-       var _this;
-       _this=Default.Attr();
-       return _this.NewAttr("selected",x);
-      },
-      Span:function(x)
-      {
-       var _this;
-       _this=Default.Tags();
-       return _this.NewTag("span",x);
-      },
-      Src:function(x)
-      {
-       var _this;
-       _this=Default.Attr();
-       return _this.NewAttr("src",x);
-      },
-      TBody:function(x)
-      {
-       var _this;
-       _this=Default.Tags();
-       return _this.NewTag("tbody",x);
-      },
-      TD:function(x)
-      {
-       var _this;
-       _this=Default.Tags();
-       return _this.NewTag("td",x);
-      },
-      TFoot:function(x)
-      {
-       var _this;
-       _this=Default.Tags();
-       return _this.NewTag("tfoot",x);
-      },
-      TH:function(x)
-      {
-       var _this;
-       _this=Default.Tags();
-       return _this.NewTag("th",x);
-      },
-      THead:function(x)
-      {
-       var _this;
-       _this=Default.Tags();
-       return _this.NewTag("thead",x);
-      },
-      TR:function(x)
-      {
-       var _this;
-       _this=Default.Tags();
-       return _this.NewTag("tr",x);
-      },
-      Table:function(x)
-      {
-       var _this;
-       _this=Default.Tags();
-       return _this.NewTag("table",x);
-      },
-      Tags:Runtime.Field(function()
-      {
-       return Implementation.Tags();
-      }),
-      Text:function(x)
-      {
-       return Default.Tags().text(x);
-      },
-      TextArea:function(x)
-      {
-       var _this;
-       _this=Default.Tags();
-       return _this.NewTag("textarea",x);
-      },
-      UL:function(x)
-      {
-       var _this;
-       _this=Default.Tags();
-       return _this.NewTag("ul",x);
-      },
-      VAlign:function(x)
-      {
-       var _this;
-       _this=Default.Attr();
-       return _this.NewAttr("valign",x);
-      },
-      Width:function(x)
-      {
-       var _this;
-       _this=Default.Attr();
-       return _this.NewAttr("width",x);
-      }
-     },
-     DeprecatedAttributeBuilder:Runtime.Class({
-      NewAttr:function(name,value)
-      {
-       var a;
-       a=Attribute.New(this.HtmlProvider,name,value);
-       return a;
-      }
-     },{
-      New:function(HtmlProvider)
-      {
-       var r;
-       r=Runtime.New(this,{});
-       r.HtmlProvider=HtmlProvider;
-       return r;
-      }
-     }),
-     DeprecatedTagBuilder:Runtime.Class({
-      NewTag:function(name,children)
-      {
-       var el,enumerator,pl;
-       el=Element.New(this.HtmlProvider,name);
-       enumerator=Enumerator.Get(children);
-       while(enumerator.MoveNext())
-        {
-         pl=enumerator.get_Current();
-         el.AppendI(pl);
-        }
-       return el;
-      }
-     },{
-      New:function(HtmlProvider)
-      {
-       var r;
-       r=Runtime.New(this,{});
-       r.HtmlProvider=HtmlProvider;
-       return r;
-      }
-     }),
-     Element:Runtime.Class({
-      AppendI:function(pl)
-      {
-       var body,_,objectArg,arg00,objectArg1,arg001,arg10,_1,r;
-       body=pl.get_Body();
-       if(body.nodeType===2)
-        {
-         objectArg=this["HtmlProvider@31"];
-         arg00=this.Body;
-         _=objectArg.AppendAttribute(arg00,body);
-        }
-       else
-        {
-         objectArg1=this["HtmlProvider@31"];
-         arg001=this.Body;
-         arg10=pl.get_Body();
-         _=objectArg1.AppendNode(arg001,arg10);
-        }
-       if(this.IsRendered)
-        {
-         _1=pl.Render();
-        }
-       else
-        {
-         r=this.RenderInternal;
-         _1=void(this.RenderInternal=function()
-         {
-          r(null);
-          return pl.Render();
-         });
-        }
-       return _1;
-      },
-      AppendN:function(node)
-      {
-       var objectArg,arg00;
-       objectArg=this["HtmlProvider@31"];
-       arg00=this.Body;
-       return objectArg.AppendNode(arg00,node);
-      },
-      OnLoad:function(f)
-      {
-       var objectArg,arg00;
-       objectArg=this["HtmlProvider@31"];
-       arg00=this.Body;
-       return objectArg.OnLoad(arg00,f);
-      },
-      Render:function()
-      {
-       var _;
-       if(!this.IsRendered)
-        {
-         this.RenderInternal.call(null,null);
-         _=void(this.IsRendered=true);
-        }
-       else
-        {
-         _=null;
-        }
-       return _;
-      },
-      get_Body:function()
-      {
-       return this.Body;
-      },
-      get_Html:function()
-      {
-       return this["HtmlProvider@31"].GetHtml(this.Body);
-      },
-      get_HtmlProvider:function()
-      {
-       return this["HtmlProvider@31"];
-      },
-      get_Id:function()
-      {
-       var objectArg,arg00,id,_,newId,objectArg1,arg001;
-       objectArg=this["HtmlProvider@31"];
-       arg00=this.Body;
-       id=objectArg.GetProperty(arg00,"id");
-       if(id===undefined?true:id==="")
-        {
-         newId="id"+Math.round(Math.random()*100000000);
-         objectArg1=this["HtmlProvider@31"];
-         arg001=this.Body;
-         objectArg1.SetProperty(arg001,"id",newId);
-         _=newId;
-        }
-       else
-        {
-         _=id;
-        }
-       return _;
-      },
-      get_Item:function(name)
-      {
-       var objectArg,arg00,objectArg1,arg001;
-       objectArg=this["HtmlProvider@31"];
-       arg00=this.Body;
-       objectArg.GetAttribute(arg00,name);
-       objectArg1=this["HtmlProvider@31"];
-       arg001=this.Body;
-       return objectArg1.GetAttribute(arg001,name);
-      },
-      get_Text:function()
-      {
-       return this["HtmlProvider@31"].GetText(this.Body);
-      },
-      get_Value:function()
-      {
-       return this["HtmlProvider@31"].GetValue(this.Body);
-      },
-      set_Html:function(x)
-      {
-       var objectArg,arg00;
-       objectArg=this["HtmlProvider@31"];
-       arg00=this.Body;
-       return objectArg.SetHtml(arg00,x);
-      },
-      set_Item:function(name,value)
-      {
-       var objectArg,arg00;
-       objectArg=this["HtmlProvider@31"];
-       arg00=this.Body;
-       return objectArg.SetAttribute(arg00,name,value);
-      },
-      set_Text:function(x)
-      {
-       var objectArg,arg00;
-       objectArg=this["HtmlProvider@31"];
-       arg00=this.Body;
-       return objectArg.SetText(arg00,x);
-      },
-      set_Value:function(x)
-      {
-       var objectArg,arg00;
-       objectArg=this["HtmlProvider@31"];
-       arg00=this.Body;
-       return objectArg.SetValue(arg00,x);
-      }
-     },{
-      New:function(html,name)
-      {
-       var el,dom;
-       el=Element.New1(html);
-       dom=document.createElement(name);
-       el.RenderInternal=function()
-       {
-       };
-       el.Body=dom;
-       el.IsRendered=false;
-       return el;
-      },
-      New1:function(HtmlProvider)
-      {
-       var r;
-       r=Runtime.New(this,{});
-       r["HtmlProvider@31"]=HtmlProvider;
-       return r;
-      }
-     }),
-     Events:{
-      JQueryEventSupport:Runtime.Class({
-       OnBlur:function(f,el)
-       {
-        return jQuery(el.get_Body()).bind("blur",function()
-        {
-         return f(el);
-        });
-       },
-       OnChange:function(f,el)
-       {
-        return jQuery(el.get_Body()).bind("change",function()
-        {
-         return f(el);
-        });
-       },
-       OnClick:function(f,el)
-       {
-        return this.OnMouse("click",f,el);
-       },
-       OnDoubleClick:function(f,el)
-       {
-        return this.OnMouse("dblclick",f,el);
-       },
-       OnError:function(f,el)
-       {
-        return jQuery(el.get_Body()).bind("error",function()
-        {
-         return f(el);
-        });
-       },
-       OnFocus:function(f,el)
-       {
-        return jQuery(el.get_Body()).bind("focus",function()
-        {
-         return f(el);
-        });
-       },
-       OnKeyDown:function(f,el)
-       {
-        var h;
-        h=function(ev)
-        {
-         return(f(el))({
-          KeyCode:ev.keyCode
-         });
-        };
-        return jQuery(el.get_Body()).bind("keydown",h);
-       },
-       OnKeyPress:function(f,el)
-       {
-        return jQuery(el.get_Body()).keypress(function(arg)
-        {
-         return(f(el))({
-          CharacterCode:arg.which
-         });
-        });
-       },
-       OnKeyUp:function(f,el)
-       {
-        var h;
-        h=function(ev)
-        {
-         return(f(el))({
-          KeyCode:ev.keyCode
-         });
-        };
-        return jQuery(el.get_Body()).bind("keyup",h);
-       },
-       OnLoad:function(f,el)
-       {
-        return jQuery(el.get_Body()).bind("load",function()
-        {
-         return f(el);
-        });
-       },
-       OnMouse:function(name,f,el)
-       {
-        var h;
-        h=function(ev)
-        {
-         return(f(el))({
-          X:ev.pageX,
-          Y:ev.pageY
-         });
-        };
-        return jQuery(el.get_Body()).bind(name,h);
-       },
-       OnMouseDown:function(f,el)
-       {
-        return this.OnMouse("mousedown",f,el);
-       },
-       OnMouseEnter:function(f,el)
-       {
-        return this.OnMouse("mouseenter",f,el);
-       },
-       OnMouseLeave:function(f,el)
-       {
-        return this.OnMouse("mouseleave",f,el);
-       },
-       OnMouseMove:function(f,el)
-       {
-        return this.OnMouse("mousemove",f,el);
-       },
-       OnMouseOut:function(f,el)
-       {
-        return this.OnMouse("mouseout",f,el);
-       },
-       OnMouseUp:function(f,el)
-       {
-        return this.OnMouse("mouseup",f,el);
-       },
-       OnResize:function(f,el)
-       {
-        return jQuery(el.get_Body()).bind("resize",function()
-        {
-         return f(el);
-        });
-       },
-       OnScroll:function(f,el)
-       {
-        return jQuery(el.get_Body()).bind("scroll",function()
-        {
-         return f(el);
-        });
-       },
-       OnSelect:function(f,el)
-       {
-        return jQuery(el.get_Body()).bind("select",function()
-        {
-         return f(el);
-        });
-       },
-       OnSubmit:function(f,el)
-       {
-        return jQuery(el.get_Body()).bind("submit",function()
-        {
-         return f(el);
-        });
-       },
-       OnUnLoad:function(f,el)
-       {
-        return jQuery(el.get_Body()).bind("unload",function()
-        {
-         return f(el);
-        });
+        var attr;
+        attr=this.HtmlProvider.CreateAttribute(this.Name);
+        attr.value=this.Value;
+        return attr;
        }
       },{
-       New:function()
+       New:function(HtmlProvider)
        {
-        return Runtime.New(this,{});
+        var r;
+        r=Runtime.New(this,Pagelet.New());
+        r.HtmlProvider=HtmlProvider;
+        return r;
+       },
+       New1:function(htmlProvider,name,value)
+       {
+        var a;
+        a=Attribute.New(htmlProvider);
+        a.Name=name;
+        a.Value=value;
+        return a;
        }
-      })
-     },
-     EventsPervasives:{
-      Events:Runtime.Field(function()
-      {
-       return JQueryEventSupport.New();
-      })
-     },
-     Html5AttributeBuilder:Runtime.Class({
-      NewAttr:function(name,value)
-      {
-       var a;
-       a=Attribute.New(this.HtmlProvider,name,value);
-       return a;
-      }
-     },{
-      New:function(HtmlProvider)
-      {
-       var r;
-       r=Runtime.New(this,{});
-       r.HtmlProvider=HtmlProvider;
-       return r;
-      }
-     }),
-     Html5TagBuilder:Runtime.Class({
-      NewTag:function(name,children)
-      {
-       var el,enumerator,pl;
-       el=Element.New(this.HtmlProvider,name);
-       enumerator=Enumerator.Get(children);
-       while(enumerator.MoveNext())
-        {
-         pl=enumerator.get_Current();
-         el.AppendI(pl);
-        }
-       return el;
-      }
-     },{
-      New:function(HtmlProvider)
-      {
-       var r;
-       r=Runtime.New(this,{});
-       r.HtmlProvider=HtmlProvider;
-       return r;
-      }
-     }),
-     Implementation:{
-      Attr:Runtime.Field(function()
-      {
-       return AttributeBuilder.New(Implementation.HtmlProvider());
       }),
-      DeprecatedHtml:Runtime.Field(function()
-      {
-       return DeprecatedTagBuilder.New(Implementation.HtmlProvider());
+      AttributeBuilder:Runtime.Class({
+       Class:function(x)
+       {
+        return this.NewAttr("class",x);
+       },
+       NewAttr:function(name,value)
+       {
+        var a;
+        a=Attribute.New1(this.HtmlProvider,name,value);
+        return a;
+       }
+      },{
+       New:function(HtmlProvider)
+       {
+        var r;
+        r=Runtime.New(this,{});
+        r.HtmlProvider=HtmlProvider;
+        return r;
+       }
       }),
-      HTML5:{
+      Default:{
+       A:function(x)
+       {
+        var _this;
+        _this=Default.Tags();
+        return _this.NewTag("a",x);
+       },
+       Action:function(x)
+       {
+        var _this;
+        _this=Default.Attr();
+        return _this.NewAttr("action",x);
+       },
+       Align:function(x)
+       {
+        var _this;
+        _this=Default.Attr();
+        return _this.NewAttr("align",x);
+       },
+       Alt:function(x)
+       {
+        var _this;
+        _this=Default.Attr();
+        return _this.NewAttr("alt",x);
+       },
        Attr:Runtime.Field(function()
        {
-        return Html5AttributeBuilder.New(HTML5.Html5Provider());
+        return Implementation.Attr();
        }),
-       Html5Provider:Runtime.Field(function()
+       B:function(x)
+       {
+        var _this;
+        _this=Default.Tags();
+        return _this.NewTag("b",x);
+       },
+       Body:function(x)
+       {
+        var _this;
+        _this=Default.Tags();
+        return _this.NewTag("body",x);
+       },
+       Br:function(x)
+       {
+        var _this;
+        _this=Default.Tags();
+        return _this.NewTag("br",x);
+       },
+       Button:function(x)
+       {
+        var _this;
+        _this=Default.Tags();
+        return _this.NewTag("button",x);
+       },
+       Code:function(x)
+       {
+        var _this;
+        _this=Default.Tags();
+        return _this.NewTag("code",x);
+       },
+       Deprecated:Runtime.Field(function()
+       {
+        return Implementation.DeprecatedHtml();
+       }),
+       Div:function(x)
+       {
+        return Default.Tags().Div(x);
+       },
+       Em:function(x)
+       {
+        var _this;
+        _this=Default.Tags();
+        return _this.NewTag("em",x);
+       },
+       Form:function(x)
+       {
+        var _this;
+        _this=Default.Tags();
+        return _this.NewTag("form",x);
+       },
+       H1:function(x)
+       {
+        var _this;
+        _this=Default.Tags();
+        return _this.NewTag("h1",x);
+       },
+       H2:function(x)
+       {
+        var _this;
+        _this=Default.Tags();
+        return _this.NewTag("h2",x);
+       },
+       H3:function(x)
+       {
+        var _this;
+        _this=Default.Tags();
+        return _this.NewTag("h3",x);
+       },
+       H4:function(x)
+       {
+        var _this;
+        _this=Default.Tags();
+        return _this.NewTag("h4",x);
+       },
+       HRef:function(x)
+       {
+        var _this;
+        _this=Default.Attr();
+        return _this.NewAttr("href",x);
+       },
+       Head:function(x)
+       {
+        var _this;
+        _this=Default.Tags();
+        return _this.NewTag("head",x);
+       },
+       Height:function(x)
+       {
+        var _this;
+        _this=Default.Attr();
+        return _this.NewAttr("height",x);
+       },
+       Hr:function(x)
+       {
+        var _this;
+        _this=Default.Tags();
+        return _this.NewTag("hr",x);
+       },
+       I:function(x)
+       {
+        var _this;
+        _this=Default.Tags();
+        return _this.NewTag("i",x);
+       },
+       IFrame:function(x)
+       {
+        var _this;
+        _this=Default.Tags();
+        return _this.NewTag("iframe",x);
+       },
+       Id:function(x)
+       {
+        var _this;
+        _this=Default.Attr();
+        return _this.NewAttr("id",x);
+       },
+       Img:function(x)
+       {
+        var _this;
+        _this=Default.Tags();
+        return _this.NewTag("img",x);
+       },
+       Input:function(x)
+       {
+        var _this;
+        _this=Default.Tags();
+        return _this.NewTag("input",x);
+       },
+       LI:function(x)
+       {
+        var _this;
+        _this=Default.Tags();
+        return _this.NewTag("li",x);
+       },
+       Name:function(x)
+       {
+        var _this;
+        _this=Default.Attr();
+        return _this.NewAttr("name",x);
+       },
+       NewAttr:function(x)
+       {
+        return function(arg10)
+        {
+         return Default.Attr().NewAttr(x,arg10);
+        };
+       },
+       OL:function(x)
+       {
+        var _this;
+        _this=Default.Tags();
+        return _this.NewTag("ol",x);
+       },
+       OnLoad:function(init)
+       {
+        return Implementation.HtmlProvider().OnDocumentReady(init);
+       },
+       P:function(x)
+       {
+        var _this;
+        _this=Default.Tags();
+        return _this.NewTag("p",x);
+       },
+       Pre:function(x)
+       {
+        var _this;
+        _this=Default.Tags();
+        return _this.NewTag("pre",x);
+       },
+       RowSpan:function(x)
+       {
+        var _this;
+        _this=Default.Attr();
+        return _this.NewAttr("rowspan",x);
+       },
+       Script:function(x)
+       {
+        var _this;
+        _this=Default.Tags();
+        return _this.NewTag("script",x);
+       },
+       Select:function(x)
+       {
+        var _this;
+        _this=Default.Tags();
+        return _this.NewTag("select",x);
+       },
+       Selected:function(x)
+       {
+        var _this;
+        _this=Default.Attr();
+        return _this.NewAttr("selected",x);
+       },
+       Span:function(x)
+       {
+        var _this;
+        _this=Default.Tags();
+        return _this.NewTag("span",x);
+       },
+       Src:function(x)
+       {
+        var _this;
+        _this=Default.Attr();
+        return _this.NewAttr("src",x);
+       },
+       TBody:function(x)
+       {
+        var _this;
+        _this=Default.Tags();
+        return _this.NewTag("tbody",x);
+       },
+       TD:function(x)
+       {
+        var _this;
+        _this=Default.Tags();
+        return _this.NewTag("td",x);
+       },
+       TFoot:function(x)
+       {
+        var _this;
+        _this=Default.Tags();
+        return _this.NewTag("tfoot",x);
+       },
+       TH:function(x)
+       {
+        var _this;
+        _this=Default.Tags();
+        return _this.NewTag("th",x);
+       },
+       THead:function(x)
+       {
+        var _this;
+        _this=Default.Tags();
+        return _this.NewTag("thead",x);
+       },
+       TR:function(x)
+       {
+        var _this;
+        _this=Default.Tags();
+        return _this.NewTag("tr",x);
+       },
+       Table:function(x)
+       {
+        var _this;
+        _this=Default.Tags();
+        return _this.NewTag("table",x);
+       },
+       Tags:Runtime.Field(function()
+       {
+        return Implementation.Tags();
+       }),
+       Text:function(x)
+       {
+        return Default.Tags().text(x);
+       },
+       TextArea:function(x)
+       {
+        var _this;
+        _this=Default.Tags();
+        return _this.NewTag("textarea",x);
+       },
+       UL:function(x)
+       {
+        var _this;
+        _this=Default.Tags();
+        return _this.NewTag("ul",x);
+       },
+       VAlign:function(x)
+       {
+        var _this;
+        _this=Default.Attr();
+        return _this.NewAttr("valign",x);
+       },
+       Width:function(x)
+       {
+        var _this;
+        _this=Default.Attr();
+        return _this.NewAttr("width",x);
+       }
+      },
+      DeprecatedAttributeBuilder:Runtime.Class({
+       NewAttr:function(name,value)
+       {
+        var a;
+        a=Attribute.New1(this.HtmlProvider,name,value);
+        return a;
+       }
+      },{
+       New:function(HtmlProvider)
+       {
+        var r;
+        r=Runtime.New(this,{});
+        r.HtmlProvider=HtmlProvider;
+        return r;
+       }
+      }),
+      DeprecatedTagBuilder:Runtime.Class({
+       NewTag:function(name,children)
+       {
+        var el,enumerator,pl;
+        el=Element.New(this.HtmlProvider,name);
+        enumerator=Enumerator.Get(children);
+        while(enumerator.MoveNext())
+         {
+          pl=enumerator.get_Current();
+          el.AppendI(pl);
+         }
+        return el;
+       }
+      },{
+       New:function(HtmlProvider)
+       {
+        var r;
+        r=Runtime.New(this,{});
+        r.HtmlProvider=HtmlProvider;
+        return r;
+       }
+      }),
+      Element:Runtime.Class({
+       AppendI:function(pl)
+       {
+        var body,_,objectArg,arg00,objectArg1,arg001,arg10,_1,r;
+        body=pl.get_Body();
+        if(body.nodeType===2)
+         {
+          objectArg=this["HtmlProvider@33"];
+          arg00=this.get_Body();
+          _=objectArg.AppendAttribute(arg00,body);
+         }
+        else
+         {
+          objectArg1=this["HtmlProvider@33"];
+          arg001=this.get_Body();
+          arg10=pl.get_Body();
+          _=objectArg1.AppendNode(arg001,arg10);
+         }
+        if(this.IsRendered)
+         {
+          _1=pl.Render();
+         }
+        else
+         {
+          r=this.RenderInternal;
+          _1=void(this.RenderInternal=function()
+          {
+           r(null);
+           return pl.Render();
+          });
+         }
+        return _1;
+       },
+       AppendN:function(node)
+       {
+        var objectArg,arg00;
+        objectArg=this["HtmlProvider@33"];
+        arg00=this.get_Body();
+        return objectArg.AppendNode(arg00,node);
+       },
+       OnLoad:function(f)
+       {
+        var objectArg,arg00;
+        objectArg=this["HtmlProvider@33"];
+        arg00=this.get_Body();
+        return objectArg.OnLoad(arg00,f);
+       },
+       Render:function()
+       {
+        var _;
+        if(!this.IsRendered)
+         {
+          this.RenderInternal.call(null,null);
+          _=void(this.IsRendered=true);
+         }
+        else
+         {
+          _=null;
+         }
+        return _;
+       },
+       get_Body:function()
+       {
+        return this.Dom;
+       },
+       get_Html:function()
+       {
+        return this["HtmlProvider@33"].GetHtml(this.get_Body());
+       },
+       get_HtmlProvider:function()
+       {
+        return this["HtmlProvider@33"];
+       },
+       get_Id:function()
+       {
+        var objectArg,arg00,id,_,newId,objectArg1,arg001;
+        objectArg=this["HtmlProvider@33"];
+        arg00=this.get_Body();
+        id=objectArg.GetProperty(arg00,"id");
+        if(id===undefined?true:id==="")
+         {
+          newId="id"+Math.round(Math.random()*100000000);
+          objectArg1=this["HtmlProvider@33"];
+          arg001=this.get_Body();
+          objectArg1.SetProperty(arg001,"id",newId);
+          _=newId;
+         }
+        else
+         {
+          _=id;
+         }
+        return _;
+       },
+       get_Item:function(name)
+       {
+        var objectArg,arg00,objectArg1,arg001;
+        objectArg=this["HtmlProvider@33"];
+        arg00=this.get_Body();
+        objectArg.GetAttribute(arg00,name);
+        objectArg1=this["HtmlProvider@33"];
+        arg001=this.get_Body();
+        return objectArg1.GetAttribute(arg001,name);
+       },
+       get_Text:function()
+       {
+        return this["HtmlProvider@33"].GetText(this.get_Body());
+       },
+       get_Value:function()
+       {
+        return this["HtmlProvider@33"].GetValue(this.get_Body());
+       },
+       set_Html:function(x)
+       {
+        var objectArg,arg00;
+        objectArg=this["HtmlProvider@33"];
+        arg00=this.get_Body();
+        return objectArg.SetHtml(arg00,x);
+       },
+       set_Item:function(name,value)
+       {
+        var objectArg,arg00;
+        objectArg=this["HtmlProvider@33"];
+        arg00=this.get_Body();
+        return objectArg.SetAttribute(arg00,name,value);
+       },
+       set_Text:function(x)
+       {
+        var objectArg,arg00;
+        objectArg=this["HtmlProvider@33"];
+        arg00=this.get_Body();
+        return objectArg.SetText(arg00,x);
+       },
+       set_Value:function(x)
+       {
+        var objectArg,arg00;
+        objectArg=this["HtmlProvider@33"];
+        arg00=this.get_Body();
+        return objectArg.SetValue(arg00,x);
+       }
+      },{
+       New:function(html,name)
+       {
+        var el,dom;
+        el=Element.New1(html);
+        dom=document.createElement(name);
+        el.RenderInternal=function()
+        {
+        };
+        el.Dom=dom;
+        el.IsRendered=false;
+        return el;
+       },
+       New1:function(HtmlProvider)
+       {
+        var r;
+        r=Runtime.New(this,Pagelet.New());
+        r["HtmlProvider@33"]=HtmlProvider;
+        return r;
+       }
+      }),
+      Events:{
+       JQueryEventSupport:Runtime.Class({
+        OnBlur:function(f,el)
+        {
+         return jQuery(el.get_Body()).bind("blur",function()
+         {
+          return f(el);
+         });
+        },
+        OnChange:function(f,el)
+        {
+         return jQuery(el.get_Body()).bind("change",function()
+         {
+          return f(el);
+         });
+        },
+        OnClick:function(f,el)
+        {
+         return this.OnMouse("click",f,el);
+        },
+        OnDoubleClick:function(f,el)
+        {
+         return this.OnMouse("dblclick",f,el);
+        },
+        OnError:function(f,el)
+        {
+         return jQuery(el.get_Body()).bind("error",function()
+         {
+          return f(el);
+         });
+        },
+        OnFocus:function(f,el)
+        {
+         return jQuery(el.get_Body()).bind("focus",function()
+         {
+          return f(el);
+         });
+        },
+        OnKeyDown:function(f,el)
+        {
+         var h;
+         h=function(ev)
+         {
+          return(f(el))({
+           KeyCode:ev.keyCode
+          });
+         };
+         return jQuery(el.get_Body()).bind("keydown",h);
+        },
+        OnKeyPress:function(f,el)
+        {
+         return jQuery(el.get_Body()).keypress(function(arg)
+         {
+          return(f(el))({
+           CharacterCode:arg.which
+          });
+         });
+        },
+        OnKeyUp:function(f,el)
+        {
+         var h;
+         h=function(ev)
+         {
+          return(f(el))({
+           KeyCode:ev.keyCode
+          });
+         };
+         return jQuery(el.get_Body()).bind("keyup",h);
+        },
+        OnLoad:function(f,el)
+        {
+         return jQuery(el.get_Body()).bind("load",function()
+         {
+          return f(el);
+         });
+        },
+        OnMouse:function(name,f,el)
+        {
+         var h;
+         h=function(ev)
+         {
+          return(f(el))({
+           X:ev.pageX,
+           Y:ev.pageY
+          });
+         };
+         return jQuery(el.get_Body()).bind(name,h);
+        },
+        OnMouseDown:function(f,el)
+        {
+         return this.OnMouse("mousedown",f,el);
+        },
+        OnMouseEnter:function(f,el)
+        {
+         return this.OnMouse("mouseenter",f,el);
+        },
+        OnMouseLeave:function(f,el)
+        {
+         return this.OnMouse("mouseleave",f,el);
+        },
+        OnMouseMove:function(f,el)
+        {
+         return this.OnMouse("mousemove",f,el);
+        },
+        OnMouseOut:function(f,el)
+        {
+         return this.OnMouse("mouseout",f,el);
+        },
+        OnMouseUp:function(f,el)
+        {
+         return this.OnMouse("mouseup",f,el);
+        },
+        OnResize:function(f,el)
+        {
+         return jQuery(el.get_Body()).bind("resize",function()
+         {
+          return f(el);
+         });
+        },
+        OnScroll:function(f,el)
+        {
+         return jQuery(el.get_Body()).bind("scroll",function()
+         {
+          return f(el);
+         });
+        },
+        OnSelect:function(f,el)
+        {
+         return jQuery(el.get_Body()).bind("select",function()
+         {
+          return f(el);
+         });
+        },
+        OnSubmit:function(f,el)
+        {
+         return jQuery(el.get_Body()).bind("submit",function()
+         {
+          return f(el);
+         });
+        },
+        OnUnLoad:function(f,el)
+        {
+         return jQuery(el.get_Body()).bind("unload",function()
+         {
+          return f(el);
+         });
+        }
+       },{
+        New:function()
+        {
+         return Runtime.New(this,{});
+        }
+       })
+      },
+      EventsPervasives:{
+       Events:Runtime.Field(function()
+       {
+        return JQueryEventSupport.New();
+       })
+      },
+      Implementation:{
+       Attr:Runtime.Field(function()
+       {
+        return AttributeBuilder.New(Implementation.HtmlProvider());
+       }),
+       DeprecatedHtml:Runtime.Field(function()
+       {
+        return DeprecatedTagBuilder.New(Implementation.HtmlProvider());
+       }),
+       HtmlProvider:Runtime.Field(function()
        {
         return JQueryHtmlProvider.New();
        }),
+       JQueryHtmlProvider:Runtime.Class({
+        AddClass:function(node,cls)
+        {
+         return jQuery(node).addClass(cls);
+        },
+        AppendAttribute:function(node,attr)
+        {
+         var arg10,arg20;
+         arg10=attr.nodeName;
+         arg20=attr.value;
+         return this.SetAttribute(node,arg10,arg20);
+        },
+        AppendNode:function(node,el)
+        {
+         return jQuery(node).append(jQuery(el));
+        },
+        Clear:function(node)
+        {
+         return jQuery(node).contents().detach();
+        },
+        CreateAttribute:function(str)
+        {
+         return document.createAttribute(str);
+        },
+        CreateElement:function(name)
+        {
+         return document.createElement(name);
+        },
+        CreateTextNode:function(str)
+        {
+         return document.createTextNode(str);
+        },
+        GetAttribute:function(node,name)
+        {
+         return jQuery(node).attr(name);
+        },
+        GetHtml:function(node)
+        {
+         return jQuery(node).html();
+        },
+        GetProperty:function(node,name)
+        {
+         var x;
+         x=jQuery(node).attr(name);
+         return x;
+        },
+        GetText:function(node)
+        {
+         return node.textContent;
+        },
+        GetValue:function(node)
+        {
+         var x;
+         x=jQuery(node).val();
+         return x;
+        },
+        HasAttribute:function(node,name)
+        {
+         return jQuery(node).attr(name)!=null;
+        },
+        OnDocumentReady:function(f)
+        {
+         return jQuery(document).ready(f);
+        },
+        OnLoad:function(node,f)
+        {
+         return jQuery(node).ready(f);
+        },
+        Remove:function(node)
+        {
+         return jQuery(node).remove();
+        },
+        RemoveAttribute:function(node,name)
+        {
+         return jQuery(node).removeAttr(name);
+        },
+        RemoveClass:function(node,cls)
+        {
+         return jQuery(node).removeClass(cls);
+        },
+        SetAttribute:function(node,name,value)
+        {
+         return jQuery(node).attr(name,value);
+        },
+        SetCss:function(node,name,prop)
+        {
+         return jQuery(node).css(name,prop);
+        },
+        SetHtml:function(node,text)
+        {
+         return jQuery(node).html(text);
+        },
+        SetProperty:function(node,name,value)
+        {
+         var x;
+         x=jQuery(node).prop(name,value);
+         return x;
+        },
+        SetStyle:function(node,style)
+        {
+         return jQuery(node).attr("style",style);
+        },
+        SetText:function(node,text)
+        {
+         node.textContent=text;
+        },
+        SetValue:function(node,value)
+        {
+         return jQuery(node).val(value);
+        }
+       },{
+        New:function()
+        {
+         return Runtime.New(this,{});
+        }
+       }),
        Tags:Runtime.Field(function()
        {
-        return Html5TagBuilder.New(HTML5.Html5Provider());
+        return TagBuilder.New(Implementation.HtmlProvider());
        })
       },
-      HtmlProvider:Runtime.Field(function()
-      {
-       return JQueryHtmlProvider.New();
-      }),
-      JQueryHtmlProvider:Runtime.Class({
-       AddClass:function(node,cls)
+      Operators:{
+       OnAfterRender:function(f,w)
        {
-        return jQuery(node).addClass(cls);
+        var r;
+        r=w.Render;
+        w.Render=function()
+        {
+         r.apply(w);
+         return f(w);
+        };
+        return;
        },
-       AppendAttribute:function(node,attr)
+       OnBeforeRender:function(f,w)
        {
-        var arg10,arg20;
-        arg10=attr.nodeName;
-        arg20=attr.value;
-        return this.SetAttribute(node,arg10,arg20);
+        var r;
+        r=w.Render;
+        w.Render=function()
+        {
+         f(w);
+         return r.apply(w);
+        };
+        return;
        },
-       AppendNode:function(node,el)
+       add:function(el,inner)
        {
-        return jQuery(node).append(jQuery(el));
+        var enumerator,pl;
+        enumerator=Enumerator.Get(inner);
+        while(enumerator.MoveNext())
+         {
+          pl=enumerator.get_Current();
+          el.AppendI(pl);
+         }
+        return el;
+       }
+      },
+      Pagelet:Runtime.Class({
+       AppendTo:function(targetId)
+       {
+        var target,value;
+        target=document.getElementById(targetId);
+        value=target.appendChild(this.get_Body());
+        return this.Render();
        },
-       Clear:function(node)
+       Render:function()
        {
-        return jQuery(node).contents().detach();
+        return null;
        },
-       CreateAttribute:function(str)
+       ReplaceInDom:function(node)
        {
-        return document.createAttribute(str);
-       },
-       CreateElement:function(name)
-       {
-        return document.createElement(name);
-       },
-       CreateTextNode:function(str)
-       {
-        return document.createTextNode(str);
-       },
-       GetAttribute:function(node,name)
-       {
-        return jQuery(node).attr(name);
-       },
-       GetHtml:function(node)
-       {
-        return jQuery(node).html();
-       },
-       GetProperty:function(node,name)
-       {
-        var x;
-        x=jQuery(node).attr(name);
-        return x;
-       },
-       GetText:function(node)
-       {
-        return node.textContent;
-       },
-       GetValue:function(node)
-       {
-        var x;
-        x=jQuery(node).val();
-        return x;
-       },
-       HasAttribute:function(node,name)
-       {
-        return jQuery(node).attr(name)!=null;
-       },
-       OnDocumentReady:function(f)
-       {
-        return jQuery(document).ready(f);
-       },
-       OnLoad:function(node,f)
-       {
-        return jQuery(node).ready(f);
-       },
-       Remove:function(node)
-       {
-        return jQuery(node).remove();
-       },
-       RemoveAttribute:function(node,name)
-       {
-        return jQuery(node).removeAttr(name);
-       },
-       RemoveClass:function(node,cls)
-       {
-        return jQuery(node).removeClass(cls);
-       },
-       SetAttribute:function(node,name,value)
-       {
-        return jQuery(node).attr(name,value);
-       },
-       SetCss:function(node,name,prop)
-       {
-        return jQuery(node).css(name,prop);
-       },
-       SetHtml:function(node,text)
-       {
-        return jQuery(node).html(text);
-       },
-       SetProperty:function(node,name,value)
-       {
-        var x;
-        x=jQuery(node).prop(name,value);
-        return x;
-       },
-       SetStyle:function(node,style)
-       {
-        return jQuery(node).attr("style",style);
-       },
-       SetText:function(node,text)
-       {
-        node.textContent=text;
-       },
-       SetValue:function(node,value)
-       {
-        return jQuery(node).val(value);
+        var value;
+        value=node.parentNode.replaceChild(this.get_Body(),node);
+        return this.Render();
        }
       },{
        New:function()
@@ -6391,97 +6500,51 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
         return Runtime.New(this,{});
        }
       }),
-      Tags:Runtime.Field(function()
-      {
-       return TagBuilder.New(Implementation.HtmlProvider());
+      TagBuilder:Runtime.Class({
+       Div:function(x)
+       {
+        return this.NewTag("div",x);
+       },
+       NewTag:function(name,children)
+       {
+        var el,enumerator,pl;
+        el=Element.New(this.HtmlProvider,name);
+        enumerator=Enumerator.Get(children);
+        while(enumerator.MoveNext())
+         {
+          pl=enumerator.get_Current();
+          el.AppendI(pl);
+         }
+        return el;
+       },
+       text:function(data)
+       {
+        return Text.New(data);
+       }
+      },{
+       New:function(HtmlProvider)
+       {
+        var r;
+        r=Runtime.New(this,{});
+        r.HtmlProvider=HtmlProvider;
+        return r;
+       }
+      }),
+      Text:Runtime.Class({
+       get_Body:function()
+       {
+        return document.createTextNode(this.text);
+       }
+      },{
+       New:function(text)
+       {
+        var r;
+        r=Runtime.New(this,Pagelet.New());
+        r.text=text;
+        return r;
+       }
       })
-     },
-     Operators:{
-      OnAfterRender:function(f,w)
-      {
-       var r;
-       r=w.Render;
-       w.Render=function()
-       {
-        r.apply(w);
-        return f(w);
-       };
-       return;
-      },
-      OnBeforeRender:function(f,w)
-      {
-       var r;
-       r=w.Render;
-       w.Render=function()
-       {
-        f(w);
-        return r.apply(w);
-       };
-       return;
-      },
-      add:function(el,inner)
-      {
-       var enumerator,pl;
-       enumerator=Enumerator.Get(inner);
-       while(enumerator.MoveNext())
-        {
-         pl=enumerator.get_Current();
-         el.AppendI(pl);
-        }
-       return el;
-      }
-     },
-     PageletExtensions:{
-      "IPagelet.AppendTo":function(p,targetId)
-      {
-       var target,value;
-       target=document.getElementById(targetId);
-       value=target.appendChild(p.get_Body());
-       return p.Render();
-      }
-     },
-     TagBuilder:Runtime.Class({
-      Div:function(x)
-      {
-       return this.NewTag("div",x);
-      },
-      NewTag:function(name,children)
-      {
-       var el,enumerator,pl;
-       el=Element.New(this.HtmlProvider,name);
-       enumerator=Enumerator.Get(children);
-       while(enumerator.MoveNext())
-        {
-         pl=enumerator.get_Current();
-         el.AppendI(pl);
-        }
-       return el;
-      },
-      text:function(data)
-      {
-       return Runtime.New(Text,{
-        text:data
-       });
-      }
-     },{
-      New:function(HtmlProvider)
-      {
-       var r;
-       r=Runtime.New(this,{});
-       r.HtmlProvider=HtmlProvider;
-       return r;
-      }
-     }),
-     Text:Runtime.Class({
-      Render:function()
-      {
-       return null;
-      },
-      get_Body:function()
-      {
-       return document.createTextNode(this.text);
-      }
-     })
+     }
     }
    }
   }
@@ -6490,48 +6553,38 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   WebSharper=Runtime.Safe(Global.IntelliFactory.WebSharper);
   Html=Runtime.Safe(WebSharper.Html);
-  Activator=Runtime.Safe(Html.Activator);
-  document=Runtime.Safe(Global.document);
-  Default=Runtime.Safe(Html.Default);
-  Json=Runtime.Safe(WebSharper.Json);
-  JSON=Runtime.Safe(Global.JSON);
-  JavaScript=Runtime.Safe(WebSharper.JavaScript);
-  Arrays=Runtime.Safe(WebSharper.Arrays);
-  Attribute=Runtime.Safe(Html.Attribute);
-  Implementation=Runtime.Safe(Html.Implementation);
-  HTML5=Runtime.Safe(Implementation.HTML5);
-  Element=Runtime.Safe(Html.Element);
+  Client=Runtime.Safe(Html.Client);
+  Attribute=Runtime.Safe(Client.Attribute);
+  Pagelet=Runtime.Safe(Client.Pagelet);
+  Default=Runtime.Safe(Client.Default);
+  Implementation=Runtime.Safe(Client.Implementation);
+  Element=Runtime.Safe(Client.Element);
   Enumerator=Runtime.Safe(WebSharper.Enumerator);
   Math=Runtime.Safe(Global.Math);
+  document=Runtime.Safe(Global.document);
   jQuery=Runtime.Safe(Global.jQuery);
-  Events=Runtime.Safe(Html.Events);
+  Events=Runtime.Safe(Client.Events);
   JQueryEventSupport=Runtime.Safe(Events.JQueryEventSupport);
-  AttributeBuilder=Runtime.Safe(Html.AttributeBuilder);
-  DeprecatedTagBuilder=Runtime.Safe(Html.DeprecatedTagBuilder);
-  Html5AttributeBuilder=Runtime.Safe(Html.Html5AttributeBuilder);
+  AttributeBuilder=Runtime.Safe(Client.AttributeBuilder);
+  DeprecatedTagBuilder=Runtime.Safe(Client.DeprecatedTagBuilder);
   JQueryHtmlProvider=Runtime.Safe(Implementation.JQueryHtmlProvider);
-  Html5TagBuilder=Runtime.Safe(Html.Html5TagBuilder);
-  TagBuilder=Runtime.Safe(Html.TagBuilder);
-  Text=Runtime.Safe(Html.Text);
-  HTML51=Runtime.Safe(Default.HTML5);
-  return EventsPervasives=Runtime.Safe(Html.EventsPervasives);
+  TagBuilder=Runtime.Safe(Client.TagBuilder);
+  Text=Runtime.Safe(Client.Text);
+  return EventsPervasives=Runtime.Safe(Client.EventsPervasives);
  });
  Runtime.OnLoad(function()
  {
+  Runtime.Inherit(Attribute,Pagelet);
+  Runtime.Inherit(Element,Pagelet);
+  Runtime.Inherit(Text,Pagelet);
   Implementation.Tags();
   Implementation.HtmlProvider();
-  HTML5.Tags();
-  HTML5.Html5Provider();
-  HTML5.Attr();
   Implementation.DeprecatedHtml();
   Implementation.Attr();
   EventsPervasives.Events();
   Default.Tags();
-  HTML51.Tags();
-  HTML51.Attr();
   Default.Deprecated();
   Default.Attr();
-  Activator.Activate();
   return;
  });
 }());
@@ -8090,7 +8143,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
 
 (function()
 {
- var Global=this,Runtime=this.IntelliFactory.Runtime,WebSharper,Collections,BalancedTree,Operators,IntrinsicFunctionProxy,Seq,List,T,Arrays,JavaScript,Enumerator,DictionaryUtil,Dictionary,Unchecked,FSharpMap,Pair,Option,MapUtil,FSharpSet,SetModule,SetUtil,Array,HashSet,HashSetUtil,HashSet1,LinkedList,EnumeratorProxy,ListProxy,ResizeArray,ResizeArrayProxy;
+ var Global=this,Runtime=this.IntelliFactory.Runtime,WebSharper,Collections,BalancedTree,Operators,IntrinsicFunctionProxy,Seq,List,T,Arrays,JavaScript,JSModule,Enumerator,DictionaryUtil,Dictionary,Unchecked,FSharpMap,Pair,Option,MapUtil,FSharpSet,SetModule,SetUtil,Array,HashSet,HashSetUtil,HashSet1,LinkedList,EnumeratorProxy,ListProxy,ResizeArray,ResizeArrayProxy;
  Runtime.Define(Global,{
   IntelliFactory:{
    WebSharper:{
@@ -8375,7 +8428,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
       GetEnumerator:function()
       {
        var s;
-       s=JavaScript.GetFieldValues(this.data);
+       s=JSModule.GetFieldValues(this.data);
        return Enumerator.Get(s);
       },
       Remove:function(k)
@@ -8384,7 +8437,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
        h=this.hash.call(null,k);
        if(this.data.hasOwnProperty(h))
         {
-         JavaScript.Delete(this.data,h);
+         JSModule.Delete(this.data,h);
          this.count=this.count-1;
          _=true;
         }
@@ -9746,6 +9799,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   T=Runtime.Safe(List.T);
   Arrays=Runtime.Safe(WebSharper.Arrays);
   JavaScript=Runtime.Safe(WebSharper.JavaScript);
+  JSModule=Runtime.Safe(JavaScript.JSModule);
   Enumerator=Runtime.Safe(WebSharper.Enumerator);
   DictionaryUtil=Runtime.Safe(Collections.DictionaryUtil);
   Dictionary=Runtime.Safe(Collections.Dictionary);
@@ -10384,10 +10438,10 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
 
 (function()
 {
- var Global=this,Runtime=this.IntelliFactory.Runtime,Formlet,Base,Formlet1,Form,Tree,Edit,Result,WebSharper,List,T,LayoutUtils,Tree1,Util,Seq,Enumerator,Unchecked;
+ var Global=this,Runtime=this.IntelliFactory.Runtime,Formlets,Base,Formlet,Form,Tree,Edit,Result,WebSharper,List,T,LayoutUtils,Tree1,Util,Seq,Enumerator,Unchecked;
  Runtime.Define(Global,{
   IntelliFactory:{
-   Formlet:{
+   Formlets:{
     Base:{
      D:Runtime.Class({
       Dispose:function()
@@ -10414,7 +10468,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
       MapResult:function(f)
       {
        var _this=this;
-       return Runtime.New(Formlet1,{
+       return Runtime.New(Formlet,{
         Layout:this.Layout,
         Build1:function()
         {
@@ -10657,7 +10711,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
        {
         return _this.BuildForm(f(null));
        };
-       return Runtime.New(Formlet1,{
+       return Runtime.New(Formlet,{
         Layout:_this.L.Delay(function()
         {
          return f(null).get_Layout();
@@ -11008,7 +11062,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
          State:state
         });
        };
-       return Runtime.New(Formlet1,{
+       return Runtime.New(Formlet,{
         Layout:formlet.get_Layout(),
         Build1:Build,
         Utils:_this.U
@@ -11034,7 +11088,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
       },
       New:function(build)
       {
-       return Runtime.New(Formlet1,{
+       return Runtime.New(Formlet,{
         Layout:this.L.Default(),
         Build1:build,
         Utils:this.U
@@ -11389,7 +11443,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
       },
       WithLayout:function(layout,formlet)
       {
-       return Runtime.New(Formlet1,{
+       return Runtime.New(Formlet,{
         Layout:layout,
         Build1:function()
         {
@@ -12380,9 +12434,9 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  });
  Runtime.OnInit(function()
  {
-  Formlet=Runtime.Safe(Global.IntelliFactory.Formlet);
-  Base=Runtime.Safe(Formlet.Base);
-  Formlet1=Runtime.Safe(Base.Formlet);
+  Formlets=Runtime.Safe(Global.IntelliFactory.Formlets);
+  Base=Runtime.Safe(Formlets.Base);
+  Formlet=Runtime.Safe(Base.Formlet);
   Form=Runtime.Safe(Base.Form);
   Tree=Runtime.Safe(Base.Tree);
   Edit=Runtime.Safe(Tree.Edit);
@@ -12405,11 +12459,11 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
 
 (function()
 {
- var Global=this,Runtime=this.IntelliFactory.Runtime,WebSharper,Formlet,Body,Html,Default,List,Controls,Reactive,HotStream,Formlet1,Base,Result,T,Operators,jQuery,EventsPervasives,Data,Formlet2,Operators1,CssConstants,Math,Seq,Utils,Tree,Edit,Form,Arrays,IntrinsicFunctionProxy,FormletProvider,Formlet3,Util,LayoutProvider,LayoutUtils,Reactive1,Validator,ValidatorProvidor,RegExp,Collections,Dictionary,ElementStore,Enhance,FormButtonConfiguration,FormContainerConfiguration,Padding,ManyConfiguration,ValidationFrameConfiguration,ValidationIconConfiguration,JSON,FormletBuilder,Layout,FormRowConfiguration,LabelConfiguration,Padding1,Enumerator;
+ var Global=this,Runtime=this.IntelliFactory.Runtime,WebSharper,Formlets,Body,Html,Client,Default,List,Controls,Reactive,HotStream,Formlets1,Base,Result,T,Operators,jQuery,EventsPervasives,Data,Formlet,Operators1,CssConstants,Math,Seq,Utils,Tree,Edit,Form,Arrays,IntrinsicFunctionProxy,FormletProvider,Formlet1,Pagelet,Util,LayoutProvider,LayoutUtils,Reactive1,Validator,ValidatorProvidor,RegExp,Collections,Dictionary,ElementStore,Enhance,FormButtonConfiguration,FormContainerConfiguration,Padding,ManyConfiguration,ValidationFrameConfiguration,ValidationIconConfiguration,JSON,FormletBuilder,Layout,FormRowConfiguration,LabelConfiguration,Padding1,Enumerator;
  Runtime.Define(Global,{
   IntelliFactory:{
    WebSharper:{
-    Formlet:{
+    Formlets:{
      Body:Runtime.Class({},{
       New:function(el,l)
       {
@@ -12464,7 +12518,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
           var _1,arg0,arg001;
           if(!readOnly)
            {
-            arg0=jQuery(cb.Body).prop("checked");
+            arg0=jQuery(cb.get_Body()).prop("checked");
             arg001=Runtime.New(Result,{
              $:0,
              $0:arg0
@@ -12482,14 +12536,14 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
         body=x;
         if(def)
          {
-          objectArg=body["HtmlProvider@31"];
-          arg002=body.Body;
+          objectArg=body["HtmlProvider@33"];
+          arg002=body.get_Body();
           _2=objectArg.SetAttribute(arg002,"defaultChecked","true");
          }
         else
          {
-          objectArg1=body["HtmlProvider@31"];
-          arg003=body.Body;
+          objectArg1=body["HtmlProvider@33"];
+          arg003=body.get_Body();
           _2=objectArg1.RemoveAttribute(arg003,"checked");
          }
         reset=function()
@@ -12497,17 +12551,17 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
          var _1,objectArg2,arg001,objectArg3,arg004,objectArg4,arg005;
          if(def)
           {
-           objectArg2=body["HtmlProvider@31"];
-           arg001=body.Body;
+           objectArg2=body["HtmlProvider@33"];
+           arg001=body.get_Body();
            _1=objectArg2.SetProperty(arg001,"checked",true);
           }
          else
           {
-           objectArg3=body["HtmlProvider@31"];
-           arg004=body.Body;
+           objectArg3=body["HtmlProvider@33"];
+           arg004=body.get_Body();
            objectArg3.RemoveAttribute(arg004,"checked");
-           objectArg4=body["HtmlProvider@31"];
-           arg005=body.Body;
+           objectArg4=body["HtmlProvider@33"];
+           arg005=body.get_Body();
            _1=objectArg4.SetProperty(arg005,"checked",false);
           }
          return state.Trigger(Runtime.New(Result,{
@@ -12549,11 +12603,11 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
         {
          return[b1,v];
         };
-        formlet=Formlet2.WithLabel(label,x);
-        return Formlet2.Map(f,formlet);
+        formlet=Formlet.WithLabel(label,x);
+        return Formlet.Map(f,formlet);
        });
        fs=List.map(mapping,values);
-       x2=Formlet2.Sequence(fs);
+       x2=Formlet.Sequence(fs);
        chooser=Runtime.Tupled(function(tupledArg)
        {
         var b,v;
@@ -12570,7 +12624,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
        {
         return List.choose(chooser,list);
        };
-       return Formlet2.Map(f1,x2);
+       return Formlet.Map(f1,x2);
       },
       ElementButton:function(genElem)
       {
@@ -12708,7 +12762,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
         };
        };
        EventsPervasives.Events().OnKeyUp(arg001,control);
-       control.Body.oninput=up;
+       control.Dom.oninput=up;
        return;
       },
       Password:function(value)
@@ -12813,8 +12867,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
          var _1,objectArg,arg00,defIx1,_2,objectArg1,arg001,objectArg2,arg002;
          if(def.$==0)
           {
-           objectArg=rb["HtmlProvider@31"];
-           arg00=rb.Body;
+           objectArg=rb["HtmlProvider@33"];
+           arg00=rb.get_Body();
            objectArg.RemoveAttribute(arg00,"checked");
            _1=state.Trigger(Runtime.New(Result,{
             $:1,
@@ -12828,8 +12882,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
            defIx1=def.$0;
            if(defIx1===ix)
             {
-             objectArg1=rb["HtmlProvider@31"];
-             arg001=rb.Body;
+             objectArg1=rb["HtmlProvider@33"];
+             arg001=rb.get_Body();
              objectArg1.SetProperty(arg001,"checked",true);
              _2=state.Trigger(Runtime.New(Result,{
               $:0,
@@ -12838,8 +12892,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
             }
            else
             {
-             objectArg2=rb["HtmlProvider@31"];
-             arg002=rb.Body;
+             objectArg2=rb["HtmlProvider@33"];
+             arg002=rb.get_Body();
              _2=objectArg2.SetProperty(arg002,"checked",false);
             }
            _1=_2;
@@ -12917,7 +12971,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
          State:state
         });
        };
-       return Formlet2.New(f);
+       return Formlet.New(f);
       },
       ReadOnlyCheckbox:function(def)
       {
@@ -12991,8 +13045,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
         {
          var value,objectArg,arg00;
          value=Global.String(sIx);
-         objectArg=body["HtmlProvider@31"];
-         arg00=body.Body;
+         objectArg=body["HtmlProvider@33"];
+         arg00=body.get_Body();
          objectArg.SetProperty(arg00,"value",value);
          return state.Trigger(sValue);
         };
@@ -13081,36 +13135,28 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
       Formlet:Runtime.Class({
        Build:function()
        {
-        return this.BuildInternal.call(null,null);
+        return this.buildInternal.call(null,null);
        },
        MapResult:function(f)
        {
         var x,_this=this;
-        x=Runtime.New(Formlet3,{
-         BuildInternal:function()
+        x=Formlet1.New(function()
+        {
+         var form,objectArg,arg00,arg10;
+         form=_this.buildInternal.call(null,null);
+         objectArg=_this.utils.Reactive;
+         arg00=form.State;
+         arg10=function(x1)
          {
-          var form,objectArg,arg00,arg10;
-          form=_this.BuildInternal.call(null,null);
-          objectArg=_this.Utils.Reactive;
-          arg00=form.State;
-          arg10=function(x1)
-          {
-           return f(x1);
-          };
-          return Runtime.New(Form,{
-           Body:form.Body,
-           Dispose1:form.Dispose1,
-           Notify:form.Notify,
-           State:objectArg.Select(arg00,arg10)
-          });
-         },
-         LayoutInternal:_this.LayoutInternal,
-         ElementInternal:{
-          $:0
-         },
-         FormletBase:_this.FormletBase,
-         Utils:_this.Utils
-        });
+          return f(x1);
+         };
+         return Runtime.New(Form,{
+          Body:form.Body,
+          Dispose1:form.Dispose1,
+          Notify:form.Notify,
+          State:objectArg.Select(arg00,arg10)
+         });
+        },_this.layoutInternal,_this.formletBase,_this.utils);
         return x;
        },
        Render:function()
@@ -13122,10 +13168,10 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
        Run:function(f)
        {
         var matchValue,_,formlet,form,value,matchValue1,el,_1,patternInput,body,body1,el1;
-        matchValue=this.ElementInternal;
+        matchValue=this.get_ElementInternal();
         if(matchValue.$==0)
          {
-          formlet=this.FormletBase.ApplyLayout(this);
+          formlet=this.formletBase.ApplyLayout(this);
           form=formlet.Build();
           value=Util.subscribeTo(form.State,function(res)
           {
@@ -13146,10 +13192,10 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
             _1=body1.Element;
            }
           el=_1;
-          this.ElementInternal={
+          this.set_ElementInternal({
            $:1,
            $0:el
-          };
+          });
           _=el;
          }
         else
@@ -13165,9 +13211,32 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
         {
         }).get_Body();
        },
+       get_ElementInternal:function()
+       {
+        return this["ElementInternal@"];
+       },
        get_Layout:function()
        {
-        return this.LayoutInternal;
+        return this.layoutInternal;
+       },
+       set_ElementInternal:function(v)
+       {
+        this["ElementInternal@"]=v;
+        return;
+       }
+      },{
+       New:function(buildInternal,layoutInternal,formletBase,utils)
+       {
+        var r;
+        r=Runtime.New(this,Pagelet.New());
+        r.buildInternal=buildInternal;
+        r.layoutInternal=layoutInternal;
+        r.formletBase=formletBase;
+        r.utils=utils;
+        r["ElementInternal@"]={
+         $:0
+        };
+        return r;
        }
       }),
       Layout:Runtime.Field(function()
@@ -13215,18 +13284,10 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
       OfIFormlet:function(formlet)
       {
        var f2;
-       f2=Runtime.New(Formlet3,{
-        BuildInternal:function()
-        {
-         return formlet.Build();
-        },
-        LayoutInternal:formlet.get_Layout(),
-        ElementInternal:{
-         $:0
-        },
-        FormletBase:Data.BaseFormlet(),
-        Utils:Data.UtilsProvider()
-       });
+       f2=Formlet1.New(function()
+       {
+        return formlet.Build();
+       },formlet.get_Layout(),Data.BaseFormlet(),Data.UtilsProvider());
        return Data.PropagateRenderFrom(formlet,f2);
       },
       PropagateRenderFrom:function(f1,f2)
@@ -13304,9 +13365,9 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
      Enhance:{
       Cancel:function(formlet,isCancel)
       {
-       return Formlet2.Replace(formlet,function(value)
+       return Formlet.Replace(formlet,function(value)
        {
-        return isCancel(value)?Formlet2.Empty():Formlet2.Return(value);
+        return isCancel(value)?Formlet.Empty():Formlet.Return(value);
        });
       },
       CustomMany:function(config,formlet)
@@ -13318,7 +13379,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
          $:0
         }))]));
        });
-       addButton=Formlet2.InitWith(1,formlet1);
+       addButton=Formlet.InitWith(1,formlet1);
        f=function()
        {
        };
@@ -13328,10 +13389,10 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
          $:0
         }))]));
        });
-       c=Formlet2.Map(f,formlet2);
-       x=Formlet2.WithCancelation(formlet,c);
+       c=Formlet.Map(f,formlet2);
+       x=Formlet.WithCancelation(formlet,c);
        l=Data.Layout().get_Horizontal();
-       x1=Formlet2.WithLayout(l,x);
+       x1=Formlet.WithLayout(l,x);
        delF=Enhance.Deletable(x1);
        manyF=function()
        {
@@ -13344,9 +13405,9 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
         {
          return delF;
         });
-        formlet4=Formlet2.Map(f1,formlet3);
-        formlet5=Formlet2.WithLayoutOrDefault(formlet4);
-        return Formlet2.ApplyLayout(formlet5);
+        formlet4=Formlet.Map(f1,formlet3);
+        formlet5=Formlet.WithLayoutOrDefault(formlet4);
+        return Formlet.ApplyLayout(formlet5);
        };
        resetS=HotStream.New(Runtime.New(Result,{
         $:0,
@@ -13361,7 +13422,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
          $0:null
         }));
        };
-       _builder_=Formlet2.Do();
+       _builder_=Formlet.Do();
        formlet7=_builder_.Delay(function()
        {
         return _builder_.Bind(resetF,function()
@@ -13369,7 +13430,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
          return _builder_.ReturnFrom(manyF(null));
         });
        });
-       return Formlet2.WithNotification(reset,formlet7);
+       return Formlet.WithNotification(reset,formlet7);
       },
       Deletable:function(formlet)
       {
@@ -13379,14 +13440,14 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
         if(value.$==1)
          {
           value1=value.$0;
-          _=Formlet2.Return({
+          _=Formlet.Return({
            $:1,
            $0:value1
           });
          }
         else
          {
-          _=Formlet2.ReturnEmpty({
+          _=Formlet.ReturnEmpty({
            $:0
           });
          }
@@ -13474,8 +13535,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
         submit=x1;
         if(!enabled)
          {
-          objectArg=submit["HtmlProvider@31"];
-          arg001=submit.Body;
+          objectArg=submit["HtmlProvider@33"];
+          arg001=submit.get_Body();
           _=objectArg.AddClass(arg001,"disabledButton");
          }
         else
@@ -13486,8 +13547,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
         if(matchValue.$==1)
          {
           style=matchValue.$0;
-          objectArg1=submit["HtmlProvider@31"];
-          arg002=submit.Body;
+          objectArg1=submit["HtmlProvider@33"];
+          arg002=submit.get_Body();
           _1=objectArg1.SetStyle(arg002,style);
          }
         else
@@ -13498,8 +13559,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
         if(matchValue1.$==1)
          {
           cls=matchValue1.$0;
-          objectArg2=submit["HtmlProvider@31"];
-          arg003=submit.Body;
+          objectArg2=submit["HtmlProvider@33"];
+          arg003=submit.get_Body();
           _2=objectArg2.AddClass(arg003,cls);
          }
         else
@@ -13555,10 +13616,10 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
        {
         return Seq.choose(chooser,source);
        };
-       formlet=Formlet2.Map(f1,add);
-       formlet1=Formlet2.SelectMany(formlet);
-       formlet2=Formlet2.FlipBody(formlet1);
-       return Formlet2.Map(f2,formlet2);
+       formlet=Formlet.Map(f1,add);
+       formlet1=Formlet.SelectMany(formlet);
+       formlet2=Formlet.FlipBody(formlet1);
+       return Formlet.Map(f2,formlet2);
       },
       Padding:Runtime.Class({},{
        get_Default:function()
@@ -13588,7 +13649,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
         if(res.$==1)
          {
           fs=res.$0;
-          arg0=Formlet2.FailWith(fs);
+          arg0=Formlet.FailWith(fs);
           _=Runtime.New(Result,{
            $:0,
            $0:arg0
@@ -13604,8 +13665,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
          }
         return _;
        };
-       x=Formlet2.MapResult(f1,formlet);
-       return Formlet2.Switch(x);
+       x=Formlet.MapResult(f1,formlet);
+       return Formlet.Switch(x);
       },
       ValidationFrameConfiguration:Runtime.Class({},{
        get_Default:function()
@@ -13643,17 +13704,17 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
        f=function(el)
        {
         var objectArg,arg00;
-        objectArg=el["HtmlProvider@31"];
-        arg00=el.Body;
+        objectArg=el["HtmlProvider@33"];
+        arg00=el.get_Body();
         objectArg.AddClass(arg00,css);
         return el;
        };
-       return Formlet2.MapElement(f,formlet);
+       return Formlet.MapElement(f,formlet);
       },
       WithCustomFormContainer:function(fc,formlet)
       {
        var x,f;
-       x=Formlet2.ApplyLayout(formlet);
+       x=Formlet.ApplyLayout(formlet);
        f=function(formEl)
        {
         var x1,d,f1,description,x2,d1,f2,tb,cell,f3,o,x3,f4,value,f5,value1,f6,value2,f7,value3,f8,value4,action,matchValue,_1,style,objectArg1,arg002,matchValue1,_2,cls,objectArg2,arg003;
@@ -13706,8 +13767,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
         {
          var arg00,objectArg,arg001;
          arg00="border-color: "+color;
-         objectArg=cell["HtmlProvider@31"];
-         arg001=cell.Body;
+         objectArg=cell["HtmlProvider@33"];
+         arg001=cell.get_Body();
          return objectArg.SetStyle(arg001,arg00);
         };
         o=fc.BorderColor;
@@ -13750,8 +13811,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
          else
           {
            v=value5.$0;
-           objectArg=cell["HtmlProvider@31"];
-           arg00=cell.Body;
+           objectArg=cell["HtmlProvider@33"];
+           arg00=cell.get_Body();
            _=objectArg.SetCss(arg00,name,v);
           }
          return _;
@@ -13765,8 +13826,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
         else
          {
           style=matchValue.$0;
-          objectArg1=cell["HtmlProvider@31"];
-          arg002=cell.Body;
+          objectArg1=cell["HtmlProvider@33"];
+          arg002=cell.get_Body();
           _1=objectArg1.SetStyle(arg002,style);
          }
         matchValue1=fc.CssClass;
@@ -13777,13 +13838,13 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
         else
          {
           cls=matchValue1.$0;
-          objectArg2=cell["HtmlProvider@31"];
-          arg003=cell.Body;
+          objectArg2=cell["HtmlProvider@33"];
+          arg003=cell.get_Body();
           _2=objectArg2.AddClass(arg003,cls);
          }
         return Default.Table(List.ofArray([Default.TBody(List.ofArray([Default.TR(List.ofArray([cell]))]))]));
        };
-       return Formlet2.MapElement(f,x);
+       return Formlet.MapElement(f,x);
       },
       WithCustomResetButton:function(buttonConf,formlet)
       {
@@ -13828,7 +13889,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
             });
            };
            formlet1=Enhance.InputButton(submitConf,false);
-           _=Formlet2.MapResult(f,formlet1);
+           _=Formlet.MapResult(f,formlet1);
           }
          else
           {
@@ -13838,19 +13899,19 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
             return value;
            };
            formlet2=Enhance.InputButton(submitConf,true);
-           _=Formlet2.Map(f1,formlet2);
+           _=Formlet.Map(f1,formlet2);
           }
          submit=_;
-         _builder_=Formlet2.Do();
+         _builder_=Formlet.Do();
          reset1=_builder_.Delay(function()
          {
-          return _builder_.Bind(Formlet2.LiftResult(Enhance.InputButton(resetConf,true)),function(_arg1)
+          return _builder_.Bind(Formlet.LiftResult(Enhance.InputButton(resetConf,true)),function(_arg1)
           {
            _arg1.$==0?reset(null):null;
            return _builder_.Return(null);
           });
          });
-         x=Data.$(Data.$(Formlet2.Return(function(v)
+         x=Data.$(Data.$(Formlet.Return(function(v)
          {
           return function()
           {
@@ -13858,7 +13919,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
           };
          }),submit),reset1);
          l=Data.Layout().get_Horizontal();
-         return Formlet2.WithLayout(l,x);
+         return Formlet.WithLayout(l,x);
         };
        };
        return Enhance.WithSubmitAndReset(formlet,submitReset);
@@ -13892,7 +13953,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
         };
         enabled=res.$==0?true:false;
         formlet1=Enhance.InputButton(buttonConf1,enabled);
-        return Formlet2.Map(f,formlet1);
+        return Formlet.Map(f,formlet1);
        });
       },
       WithCustomValidationFrame:function(vc,formlet)
@@ -13917,8 +13978,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
              if(matchValue.$==1)
               {
                cls=matchValue.$0;
-               objectArg=panel["HtmlProvider@31"];
-               arg00=panel.Body;
+               objectArg=panel["HtmlProvider@33"];
+               arg00=panel.get_Body();
                _1=objectArg.RemoveClass(arg00,cls);
               }
              else
@@ -13929,8 +13990,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
              if(matchValue1.$==1)
               {
                cls1=matchValue1.$0;
-               objectArg1=panel["HtmlProvider@31"];
-               arg001=panel.Body;
+               objectArg1=panel["HtmlProvider@33"];
+               arg001=panel.get_Body();
                _2=objectArg1.AddClass(arg001,cls1);
               }
              else
@@ -13941,14 +14002,14 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
              if(matchValue2.$==1)
               {
                style=matchValue2.$0;
-               objectArg2=panel["HtmlProvider@31"];
-               arg002=panel.Body;
+               objectArg2=panel["HtmlProvider@33"];
+               arg002=panel.get_Body();
                _3=objectArg2.SetStyle(arg002,style);
               }
              else
               {
-               objectArg3=panel["HtmlProvider@31"];
-               arg003=panel.Body;
+               objectArg3=panel["HtmlProvider@33"];
+               arg003=panel.get_Body();
                _3=objectArg3.SetStyle(arg003,"");
               }
              _=_3;
@@ -13959,8 +14020,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
              if(matchValue3.$==1)
               {
                cls2=matchValue3.$0;
-               objectArg4=panel["HtmlProvider@31"];
-               arg004=panel.Body;
+               objectArg4=panel["HtmlProvider@33"];
+               arg004=panel.get_Body();
                _4=objectArg4.RemoveClass(arg004,cls2);
               }
              else
@@ -13971,8 +14032,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
              if(matchValue4.$==1)
               {
                cls3=matchValue4.$0;
-               objectArg5=panel["HtmlProvider@31"];
-               arg005=panel.Body;
+               objectArg5=panel["HtmlProvider@33"];
+               arg005=panel.get_Body();
                _5=objectArg5.AddClass(arg005,cls3);
               }
              else
@@ -13983,14 +14044,14 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
              if(matchValue5.$==1)
               {
                style1=matchValue5.$0;
-               objectArg6=panel["HtmlProvider@31"];
-               arg006=panel.Body;
+               objectArg6=panel["HtmlProvider@33"];
+               arg006=panel.get_Body();
                _6=objectArg6.SetStyle(arg006,style1);
               }
              else
               {
-               objectArg7=panel["HtmlProvider@31"];
-               arg007=panel.Body;
+               objectArg7=panel["HtmlProvider@33"];
+               arg007=panel.get_Body();
                _6=objectArg7.SetStyle(arg007,"");
               }
              _=_6;
@@ -14008,7 +14069,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
       WithCustomValidationIcon:function(vic,formlet)
       {
        var formlet1,valid,_builder_,f1,formlet2,x1,l;
-       formlet1=Formlet2.WithLayoutOrDefault(formlet);
+       formlet1=Formlet.WithLayoutOrDefault(formlet);
        valid=function(res)
        {
         var genElem;
@@ -14040,16 +14101,16 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
           }
          return _;
         };
-        return Formlet2.OfElement(genElem);
+        return Formlet.OfElement(genElem);
        };
-       _builder_=Formlet2.Do();
+       _builder_=Formlet.Do();
        f1=function(arg00)
        {
         return Result.Join(arg00);
        };
        formlet2=_builder_.Delay(function()
        {
-        return _builder_.Bind(Formlet2.LiftResult(formlet1),function(_arg1)
+        return _builder_.Bind(Formlet.LiftResult(formlet1),function(_arg1)
         {
          return _builder_.Bind(valid(_arg1),function()
          {
@@ -14057,27 +14118,27 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
          });
         });
        });
-       x1=Formlet2.MapResult(f1,formlet2);
+       x1=Formlet.MapResult(f1,formlet2);
        l=Data.Layout().get_Horizontal();
-       return Formlet2.WithLayout(l,x1);
+       return Formlet.WithLayout(l,x1);
       },
       WithErrorFormlet:function(f,formlet)
       {
        var _builder_,f1,formlet1;
-       _builder_=Formlet2.Do();
+       _builder_=Formlet.Do();
        f1=function(arg00)
        {
         return Result.Join(arg00);
        };
        formlet1=_builder_.Delay(function()
        {
-        return _builder_.Bind(Formlet2.LiftResult(formlet),function(_arg1)
+        return _builder_.Bind(Formlet.LiftResult(formlet),function(_arg1)
         {
          var _,msgs,_builder_1;
          if(_arg1.$==1)
           {
            msgs=_arg1.$0;
-           _builder_1=Formlet2.Do();
+           _builder_1=Formlet.Do();
            _=_builder_1.Delay(function()
            {
             return _builder_1.Bind(f(msgs),function()
@@ -14089,19 +14150,19 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
          else
           {
            _arg1.$0;
-           _=Formlet2.Return(_arg1);
+           _=Formlet.Return(_arg1);
           }
          return _builder_.ReturnFrom(_);
         });
        });
-       return Formlet2.MapResult(f1,formlet1);
+       return Formlet.MapResult(f1,formlet1);
       },
       WithErrorSummary:function(label,formlet)
       {
        var errrFormlet,_builder_,f1,formlet1;
        errrFormlet=function(fs)
        {
-        return Formlet2.OfElement(function()
+        return Formlet.OfElement(function()
         {
          var x,x1,_this,mapping,x2,_this1;
          x1=List.ofArray([Default.Text(label)]);
@@ -14116,14 +14177,14 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
          return _this1.NewTag("fieldset",x);
         });
        };
-       _builder_=Formlet2.Do();
+       _builder_=Formlet.Do();
        f1=function(arg00)
        {
         return Result.Join(arg00);
        };
        formlet1=_builder_.Delay(function()
        {
-        return _builder_.Bind(Formlet2.LiftResult(formlet),function(_arg1)
+        return _builder_.Bind(Formlet.LiftResult(formlet),function(_arg1)
         {
          var _,fs,f,formlet2;
          if(_arg1.$==1)
@@ -14134,17 +14195,17 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
             return _arg1;
            };
            formlet2=errrFormlet(fs);
-           _=Formlet2.Map(f,formlet2);
+           _=Formlet.Map(f,formlet2);
           }
          else
           {
            _arg1.$0;
-           _=Formlet2.Return(_arg1);
+           _=Formlet.Return(_arg1);
           }
          return _builder_.ReturnFrom(_);
         });
        });
-       return Formlet2.MapResult(f1,formlet1);
+       return Formlet.MapResult(f1,formlet1);
       },
       WithFormContainer:function(formlet)
       {
@@ -14218,7 +14279,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
           enc2=matchValue2.$0;
           if(enc2==="multipart/form-data")
            {
-            value=jQuery(form.Body).attr("encoding","multipart/form-data");
+            value=jQuery(form.get_Body()).attr("encoding","multipart/form-data");
             _3=void value;
            }
           else
@@ -14235,15 +14296,15 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
        {
         var data;
         data=JSON.stringify(value);
-        jQuery(hiddenField.Body).val(data);
-        return jQuery(submitButton.Body).click();
+        jQuery(hiddenField.get_Body()).val(data);
+        return jQuery(submitButton.get_Body()).click();
        };
-       formlet1=Formlet2.Map(f1,formlet);
+       formlet1=Formlet.Map(f1,formlet);
        return Default.Div(List.ofArray([form1,formlet1]));
       },
       WithLabel:function(labelGen,formlet)
       {
-       return Formlet2.WithLabel({
+       return Formlet.WithLabel({
         $:1,
         $0:labelGen
        },formlet);
@@ -14276,7 +14337,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
          Label:Label
         });
        };
-       return Formlet2.MapBody(f,formlet);
+       return Formlet.MapBody(f,formlet);
       },
       WithLabelAndInfo:function(label,info,formlet)
       {
@@ -14294,9 +14355,9 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
       WithLabelConfiguration:function(lc,formlet)
       {
        var x,l;
-       x=Formlet2.ApplyLayout(formlet);
+       x=Formlet.ApplyLayout(formlet);
        l=Data.Layout().LabelLayout(lc);
-       return Formlet2.WithLayout(l,x);
+       return Formlet.WithLayout(l,x);
       },
       WithLabelLeft:function(formlet)
       {
@@ -14326,7 +14387,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
          Label:Label
         });
        };
-       return Formlet2.MapBody(f,formlet);
+       return Formlet.MapBody(f,formlet);
       },
       WithLegend:function(label,formlet)
       {
@@ -14356,7 +14417,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
          }
         });
        };
-       return Formlet2.MapBody(f,formlet);
+       return Formlet.MapBody(f,formlet);
       },
       WithResetAction:function(f,formlet)
       {
@@ -14376,9 +14437,9 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
          State:form.State
         });
        };
-       x=Formlet2.New(f1);
+       x=Formlet.New(f1);
        l=formlet.get_Layout();
-       x1=Formlet2.WithLayout(l,x);
+       x1=Formlet.WithLayout(l,x);
        x2=Data.PropagateRenderFrom(formlet,x1);
        return Data.OfIFormlet(x2);
       },
@@ -14389,13 +14450,13 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
       WithResetFormlet:function(formlet,reset)
       {
        var formlet1,x,x1,x2,formlet2,button,_builder_,f,formlet3,f2,x3;
-       formlet1=Formlet2.WithLayoutOrDefault(formlet);
-       x=Formlet2.ApplyLayout(formlet1);
-       x1=Formlet2.InitWithFailure(x);
-       x2=Formlet2.LiftResult(x1);
-       formlet2=Formlet2.WithNotificationChannel(x2);
-       button=Formlet2.LiftResult(reset);
-       _builder_=Formlet2.Do();
+       formlet1=Formlet.WithLayoutOrDefault(formlet);
+       x=Formlet.ApplyLayout(formlet1);
+       x1=Formlet.InitWithFailure(x);
+       x2=Formlet.LiftResult(x1);
+       formlet2=Formlet.WithNotificationChannel(x2);
+       button=Formlet.LiftResult(reset);
+       _builder_=Formlet.Do();
        f=function(arg00)
        {
         return Result.Join(arg00);
@@ -14414,27 +14475,27 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
          });
         }));
        });
-       f2=Formlet2.MapResult(f,formlet3);
+       f2=Formlet.MapResult(f,formlet3);
        x3=Data.PropagateRenderFrom(formlet2,f2);
        return Data.OfIFormlet(x3);
       },
       WithRowConfiguration:function(rc,formlet)
       {
        var x,l;
-       x=Formlet2.ApplyLayout(formlet);
+       x=Formlet.ApplyLayout(formlet);
        l=Data.Layout().RowLayout(rc);
-       return Formlet2.WithLayout(l,x);
+       return Formlet.WithLayout(l,x);
       },
       WithSubmitAndReset:function(formlet,submReset)
       {
        var _builder_,f2,formlet3;
-       _builder_=Formlet2.Do();
+       _builder_=Formlet.Do();
        f2=_builder_.Delay(function()
        {
         var formlet1,formlet2;
-        formlet1=Formlet2.InitWithFailure(formlet);
-        formlet2=Formlet2.LiftResult(formlet1);
-        return _builder_.Bind(Formlet2.WithNotificationChannel(formlet2),Runtime.Tupled(function(_arg1)
+        formlet1=Formlet.InitWithFailure(formlet);
+        formlet2=Formlet.LiftResult(formlet1);
+        return _builder_.Bind(Formlet.WithNotificationChannel(formlet2),Runtime.Tupled(function(_arg1)
         {
          var res,notify;
          res=_arg1[0];
@@ -14478,7 +14539,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
       WithSubmitFormlet:function(formlet,submit)
       {
        var _builder_,f,formlet1,f2,x;
-       _builder_=Formlet2.Do();
+       _builder_=Formlet.Do();
        f=function(arg00)
        {
         return Result.Join(arg00);
@@ -14486,8 +14547,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
        formlet1=_builder_.Delay(function()
        {
         var formlet2;
-        formlet2=Formlet2.InitWithFailure(formlet);
-        return _builder_.Bind(Formlet2.LiftResult(formlet2),function(_arg1)
+        formlet2=Formlet.InitWithFailure(formlet);
+        return _builder_.Bind(Formlet.LiftResult(formlet2),function(_arg1)
         {
          return _builder_.Bind(submit(_arg1),function()
          {
@@ -14495,7 +14556,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
          });
         });
        });
-       f2=Formlet2.MapResult(f,formlet1);
+       f2=Formlet.MapResult(f,formlet1);
        x=Data.PropagateRenderFrom(formlet,f2);
        return Data.OfIFormlet(x);
       },
@@ -14523,8 +14584,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
        f=function()
        {
         var formlet1,form,patternInput,body,panel;
-        formlet1=Formlet2.WithLayoutOrDefault(formlet);
-        form=Formlet2.BuildForm(formlet1);
+        formlet1=Formlet.WithLayoutOrDefault(formlet);
+        form=Formlet.BuildForm(formlet1);
         patternInput=formlet1.get_Layout().Apply.call(null,form.Body).$0;
         patternInput[1];
         body=patternInput[0];
@@ -14593,12 +14654,12 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
          Operators1.Increment(count);
          return[x,count.contents];
         };
-        formlet=Formlet2.Map(f1,f);
-        formlet1=Formlet2.InitWithFailure(formlet);
-        return Formlet2.LiftResult(formlet1);
+        formlet=Formlet.Map(f1,f);
+        formlet1=Formlet.InitWithFailure(formlet);
+        return Formlet.LiftResult(formlet1);
        };
        fs1=Seq.map(mapping,fs);
-       x1=Formlet2.Sequence(fs1);
+       x1=Formlet.Sequence(fs1);
        f2=function(xs)
        {
         var chooser,x2,projection,x3,x4,chooser1;
@@ -14643,7 +14704,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
         });
         return Seq.tryPick(chooser1,x4);
        };
-       x5=Formlet2.Map(f2,x1);
+       x5=Formlet.Map(f2,x1);
        arg00=function(x)
        {
         return x.$==1;
@@ -14653,7 +14714,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
        {
         return x.$0;
        };
-       return Formlet2.Map(f3,x6);
+       return Formlet.Map(f3,x6);
       },
       Delay:function(f)
       {
@@ -14734,7 +14795,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
        {
         return f1;
        };
-       x=Formlet2.Map(f,formlet);
+       x=Formlet.Map(f,formlet);
        objectArg=Data.BaseFormlet();
        x1=objectArg.Join(x);
        x2=Data.PropagateRenderFrom(formlet,x1);
@@ -14864,7 +14925,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
        {
         return f1;
        };
-       x=Formlet2.Map(f,formlet);
+       x=Formlet.Map(f,formlet);
        objectArg=Data.BaseFormlet();
        x1=objectArg.SelectMany(x);
        x2=Data.PropagateRenderFrom(formlet,x1);
@@ -14889,7 +14950,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
        {
         return f1;
        };
-       x=Formlet2.Map(f,formlet);
+       x=Formlet.Map(f,formlet);
        objectArg=Data.BaseFormlet();
        x1=objectArg.Switch(x);
        x2=Data.PropagateRenderFrom(formlet,x1);
@@ -15077,7 +15138,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
           var elemId,newCol,jqPanel,index,inserted;
           elemId=body.Element.get_Id();
           newCol=Default.TD(List.ofArray([Default.Table(List.ofArray([Default.TBody(List.ofArray([_this.MakeRow(rowConfig,rowIx,body)]))]))]));
-          jqPanel=jQuery(row.Body);
+          jqPanel=jQuery(row.get_Body());
           index={
            contents:0
           };
@@ -15090,7 +15151,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
            jqCol=jQuery(this);
            if(rowIx===index.contents)
             {
-             jQuery(newCol.Body).insertBefore(jqCol);
+             jQuery(newCol.get_Body()).insertBefore(jqCol);
              newCol.Render();
              _=void(inserted.contents=true);
             }
@@ -15103,7 +15164,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
           !inserted.contents?row.AppendI(newCol):null;
           return store.RegisterElement(elemId,function()
           {
-           return newCol["HtmlProvider@31"].Remove(newCol.Body);
+           return newCol["HtmlProvider@33"].Remove(newCol.get_Body());
           });
          };
         };
@@ -15179,7 +15240,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
            while(enumerator.MoveNext())
             {
              e=enumerator.get_Current();
-             e["HtmlProvider@31"].Remove(e.Body);
+             e["HtmlProvider@33"].Remove(e.get_Body());
             }
            return;
           });
@@ -15451,7 +15512,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
           var elemId,row,jqPanel,index,inserted;
           elemId=body.Element.get_Id();
           row=_this.MakeRow(rowConfig,rowIx,body);
-          jqPanel=jQuery(panel.Body);
+          jqPanel=jQuery(panel.get_Body());
           index={
            contents:0
           };
@@ -15464,7 +15525,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
            jqRow=jQuery(this);
            if(rowIx===index.contents)
             {
-             jQuery(row.Body).insertBefore(jqRow);
+             jQuery(row.get_Body()).insertBefore(jqRow);
              row.Render();
              _=void(inserted.contents=true);
             }
@@ -15477,7 +15538,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
           !inserted.contents?panel.AppendI(row):null;
           return store.RegisterElement(elemId,function()
           {
-           return row["HtmlProvider@31"].Remove(row.Body);
+           return row["HtmlProvider@33"].Remove(row.get_Body());
           });
          };
         };
@@ -15511,8 +15572,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
        var valign1,cell,objectArg,arg00;
        valign1=valign.$==1?"middle":valign.$==2?"bottom":"top";
        cell=Default.TD(List.ofArray([elem]));
-       objectArg=cell["HtmlProvider@31"];
-       arg00=cell.Body;
+       objectArg=cell["HtmlProvider@33"];
+       arg00=cell.get_Body();
        objectArg.SetCss(arg00,"vertical-align",valign1);
        return cell;
       },
@@ -15534,7 +15595,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
            $:0
           }));
           nextScreen=Utils.InTable(List.ofArray([List.ofArray([label,Default.Div(List.ofArray([bd.Element]))])]));
-          panel["HtmlProvider@31"].Clear(panel.Body);
+          panel["HtmlProvider@33"].Clear(panel.get_Body());
           panel.AppendI(nextScreen);
           return List.ofArray([nextScreen]);
          };
@@ -15622,37 +15683,39 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  Runtime.OnInit(function()
  {
   WebSharper=Runtime.Safe(Global.IntelliFactory.WebSharper);
-  Formlet=Runtime.Safe(WebSharper.Formlet);
-  Body=Runtime.Safe(Formlet.Body);
+  Formlets=Runtime.Safe(WebSharper.Formlets);
+  Body=Runtime.Safe(Formlets.Body);
   Html=Runtime.Safe(WebSharper.Html);
-  Default=Runtime.Safe(Html.Default);
+  Client=Runtime.Safe(Html.Client);
+  Default=Runtime.Safe(Client.Default);
   List=Runtime.Safe(WebSharper.List);
-  Controls=Runtime.Safe(Formlet.Controls);
+  Controls=Runtime.Safe(Formlets.Controls);
   Reactive=Runtime.Safe(Global.IntelliFactory.Reactive);
   HotStream=Runtime.Safe(Reactive.HotStream);
-  Formlet1=Runtime.Safe(Global.IntelliFactory.Formlet);
-  Base=Runtime.Safe(Formlet1.Base);
+  Formlets1=Runtime.Safe(Global.IntelliFactory.Formlets);
+  Base=Runtime.Safe(Formlets1.Base);
   Result=Runtime.Safe(Base.Result);
   T=Runtime.Safe(List.T);
-  Operators=Runtime.Safe(Html.Operators);
+  Operators=Runtime.Safe(Client.Operators);
   jQuery=Runtime.Safe(Global.jQuery);
-  EventsPervasives=Runtime.Safe(Html.EventsPervasives);
-  Data=Runtime.Safe(Formlet.Data);
-  Formlet2=Runtime.Safe(Formlet.Formlet);
+  EventsPervasives=Runtime.Safe(Client.EventsPervasives);
+  Data=Runtime.Safe(Formlets.Data);
+  Formlet=Runtime.Safe(Formlets.Formlet);
   Operators1=Runtime.Safe(WebSharper.Operators);
-  CssConstants=Runtime.Safe(Formlet.CssConstants);
+  CssConstants=Runtime.Safe(Formlets.CssConstants);
   Math=Runtime.Safe(Global.Math);
   Seq=Runtime.Safe(WebSharper.Seq);
-  Utils=Runtime.Safe(Formlet.Utils);
+  Utils=Runtime.Safe(Formlets.Utils);
   Tree=Runtime.Safe(Base.Tree);
   Edit=Runtime.Safe(Tree.Edit);
   Form=Runtime.Safe(Base.Form);
   Arrays=Runtime.Safe(WebSharper.Arrays);
   IntrinsicFunctionProxy=Runtime.Safe(WebSharper.IntrinsicFunctionProxy);
   FormletProvider=Runtime.Safe(Base.FormletProvider);
-  Formlet3=Runtime.Safe(Data.Formlet);
+  Formlet1=Runtime.Safe(Data.Formlet);
+  Pagelet=Runtime.Safe(Client.Pagelet);
   Util=Runtime.Safe(WebSharper.Util);
-  LayoutProvider=Runtime.Safe(Formlet.LayoutProvider);
+  LayoutProvider=Runtime.Safe(Formlets.LayoutProvider);
   LayoutUtils=Runtime.Safe(Base.LayoutUtils);
   Reactive1=Runtime.Safe(Reactive.Reactive);
   Validator=Runtime.Safe(Base.Validator);
@@ -15660,8 +15723,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   RegExp=Runtime.Safe(Global.RegExp);
   Collections=Runtime.Safe(WebSharper.Collections);
   Dictionary=Runtime.Safe(Collections.Dictionary);
-  ElementStore=Runtime.Safe(Formlet.ElementStore);
-  Enhance=Runtime.Safe(Formlet.Enhance);
+  ElementStore=Runtime.Safe(Formlets.ElementStore);
+  Enhance=Runtime.Safe(Formlets.Enhance);
   FormButtonConfiguration=Runtime.Safe(Enhance.FormButtonConfiguration);
   FormContainerConfiguration=Runtime.Safe(Enhance.FormContainerConfiguration);
   Padding=Runtime.Safe(Enhance.Padding);
@@ -15669,8 +15732,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   ValidationFrameConfiguration=Runtime.Safe(Enhance.ValidationFrameConfiguration);
   ValidationIconConfiguration=Runtime.Safe(Enhance.ValidationIconConfiguration);
   JSON=Runtime.Safe(Global.JSON);
-  FormletBuilder=Runtime.Safe(Formlet.FormletBuilder);
-  Layout=Runtime.Safe(Formlet.Layout);
+  FormletBuilder=Runtime.Safe(Formlets.FormletBuilder);
+  Layout=Runtime.Safe(Formlets.Layout);
   FormRowConfiguration=Runtime.Safe(Layout.FormRowConfiguration);
   LabelConfiguration=Runtime.Safe(Layout.LabelConfiguration);
   Padding1=Runtime.Safe(Layout.Padding);
@@ -15678,7 +15741,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  });
  Runtime.OnLoad(function()
  {
-  Formlet2.Do();
+  Runtime.Inherit(Formlet1,Pagelet);
+  Formlet.Do();
   Data.Validator();
   Data.RX();
   Data.Layout();
@@ -15690,7 +15754,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
 
 (function()
 {
- var Global=this,Runtime=this.IntelliFactory.Runtime,angular,WebSharper,Remoting,Arrays,Firebase,Html,Operators,Default,List,ellipsoid,org,SharpAngles,Samples,ThirdExample,Client,IntrinsicFunctionProxy,Seq,Operators1,FirstExample,Client1,SecondExample,Client2,Tests;
+ var Global=this,Runtime=this.IntelliFactory.Runtime,angular,WebSharper,Remoting,AjaxRemotingProvider,Arrays,Firebase,PrintfHelpers,Html,Client,Operators,Default,List,ellipsoid,org,SharpAngles,Samples,ThirdExample,Client1,IntrinsicFunctionProxy,Seq,Operators1,FirstExample,Client2,SecondExample,Client3,Tests;
  Runtime.Define(Global,{
   ellipsoid:{
    org:{
@@ -15702,7 +15766,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
         {
          return angular.module("todoApp",[]).controller("TodoController",["$scope",function(scope)
          {
-          scope.todos=Remoting.Call("ellipsoid.org.SharpAngles.Samples:0",[]);
+          scope.todos=AjaxRemotingProvider.Sync("ellipsoid.org.SharpAngles.Samples:0",[]);
           scope.addTodo=function()
           {
            var self,ps;
@@ -15838,6 +15902,14 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
         return angular.module("testsApp",["ui.router"]).config(["$resource",function()
         {
          return null;
+        }]).config(["$routeProvider",function(routeProvider)
+        {
+         return routeProvider.when("/foo",{
+          templateUrl:function(p)
+          {
+           return"/foo/bar/"+PrintfHelpers.toSafe(p.test);
+          }
+         });
         }]).config(["$stateProvider","$urlRouterProvider",Runtime.Tupled(function(tupledArg)
         {
          return tupledArg[0].state("state1",{
@@ -15872,13 +15944,13 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
        Client:{
         Main:Runtime.Field(function()
         {
-         var x,_tabsTemplate_51_1,x1,_paneTemplate_62_1,_componentsModule_66_1,_tabsController_67_4;
-         x=Operators.add(Default.Div(List.ofArray([Default.Attr().Class("tabbable")])),List.ofArray([Operators.add(Default.UL(List.ofArray([Default.Attr().Class("nav nav-tabs")])),List.ofArray([Operators.add(Default.LI(List.ofArray([(Client.NgRepeat())("pane in panes"),(Client.NgClass())("{active:pane.selected}")])),List.ofArray([Operators.add(Default.A(List.ofArray([Default.HRef(""),(Client.NgClick())("select(pane)")])),List.ofArray([Default.Text("{{pane.title}}")]))]))])),Default.Div(List.ofArray([Default.Attr().Class("tab-content"),(Client.NgTransclude())("")]))]));
-         _tabsTemplate_51_1=Client.Templatify(x);
-         x1=Default.Div(List.ofArray([Default.Attr().Class("tab-pane"),(Client.NgClass())("{active: selected}"),(Client.NgTransclude())("")]));
-         _paneTemplate_62_1=Client.Templatify(x1);
-         _componentsModule_66_1=angular.module("components",[]);
-         _tabsController_67_4=_componentsModule_66_1.controller("TabsCtrl",["$scope","$element",function(scope)
+         var x,_tabsTemplate_52_1,x1,_paneTemplate_63_1,_componentsModule_67_1,_tabsController_68_4;
+         x=Operators.add(Default.Div(List.ofArray([Default.Attr().Class("tabbable")])),List.ofArray([Operators.add(Default.UL(List.ofArray([Default.Attr().Class("nav nav-tabs")])),List.ofArray([Operators.add(Default.LI(List.ofArray([(Client1.NgRepeat())("pane in panes"),(Client1.NgClass())("{active:pane.selected}")])),List.ofArray([Operators.add(Default.A(List.ofArray([Default.HRef(""),(Client1.NgClick())("select(pane)")])),List.ofArray([Default.Text("{{pane.title}}")]))]))])),Default.Div(List.ofArray([Default.Attr().Class("tab-content"),(Client1.NgTransclude())("")]))]));
+         _tabsTemplate_52_1=Client1.Templatify(x);
+         x1=Default.Div(List.ofArray([Default.Attr().Class("tab-pane"),(Client1.NgClass())("{active: selected}"),(Client1.NgTransclude())("")]));
+         _paneTemplate_63_1=Client1.Templatify(x1);
+         _componentsModule_67_1=angular.module("components",[]);
+         _tabsController_68_4=_componentsModule_67_1.controller("TabsCtrl",["$scope","$element",function(scope)
          {
           scope.panes=[];
           scope.select=function(pane)
@@ -15906,14 +15978,14 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
           };
           return;
          }]);
-         _componentsModule_66_1.directive("tabs",function()
+         _componentsModule_67_1.directive("tabs",function()
          {
           return{
            restrict:"E",
            transclude:true,
            scope:{},
            controller:"TabsCtrl",
-           template:_tabsTemplate_51_1,
+           template:_tabsTemplate_52_1,
            replace:true
           };
          }).directive("pane",function()
@@ -15929,7 +16001,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
            {
             return tupledArg[3].addPane.call(null,tupledArg[0]);
            }),
-           template:_paneTemplate_62_1,
+           template:_paneTemplate_63_1,
            replace:true
           };
          });
@@ -15996,37 +16068,40 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   angular=Runtime.Safe(Global.angular);
   WebSharper=Runtime.Safe(Global.IntelliFactory.WebSharper);
   Remoting=Runtime.Safe(WebSharper.Remoting);
+  AjaxRemotingProvider=Runtime.Safe(Remoting.AjaxRemotingProvider);
   Arrays=Runtime.Safe(WebSharper.Arrays);
   Firebase=Runtime.Safe(Global.Firebase);
+  PrintfHelpers=Runtime.Safe(WebSharper.PrintfHelpers);
   Html=Runtime.Safe(WebSharper.Html);
-  Operators=Runtime.Safe(Html.Operators);
-  Default=Runtime.Safe(Html.Default);
+  Client=Runtime.Safe(Html.Client);
+  Operators=Runtime.Safe(Client.Operators);
+  Default=Runtime.Safe(Client.Default);
   List=Runtime.Safe(WebSharper.List);
   ellipsoid=Runtime.Safe(Global.ellipsoid);
   org=Runtime.Safe(ellipsoid.org);
   SharpAngles=Runtime.Safe(org.SharpAngles);
   Samples=Runtime.Safe(SharpAngles.Samples);
   ThirdExample=Runtime.Safe(Samples.ThirdExample);
-  Client=Runtime.Safe(ThirdExample.Client);
+  Client1=Runtime.Safe(ThirdExample.Client);
   IntrinsicFunctionProxy=Runtime.Safe(WebSharper.IntrinsicFunctionProxy);
   Seq=Runtime.Safe(WebSharper.Seq);
   Operators1=Runtime.Safe(WebSharper.Operators);
   FirstExample=Runtime.Safe(Samples.FirstExample);
-  Client1=Runtime.Safe(FirstExample.Client);
+  Client2=Runtime.Safe(FirstExample.Client);
   SecondExample=Runtime.Safe(Samples.SecondExample);
-  Client2=Runtime.Safe(SecondExample.Client);
+  Client3=Runtime.Safe(SecondExample.Client);
   return Tests=Runtime.Safe(Samples.Tests);
  });
  Runtime.OnLoad(function()
  {
-  Client.NgTransclude();
-  Client.NgRepeat();
-  Client.NgClick();
-  Client.NgClass();
-  Client.Main();
-  Tests.TestsApp();
-  Client2.Main();
+  Client1.NgTransclude();
+  Client1.NgRepeat();
+  Client1.NgClick();
+  Client1.NgClass();
   Client1.Main();
+  Tests.TestsApp();
+  Client3.Main();
+  Client2.Main();
   return;
  });
 }());
