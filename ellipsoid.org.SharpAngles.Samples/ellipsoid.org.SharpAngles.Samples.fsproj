@@ -140,6 +140,14 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="ellipsoid.org.SharpAngles">
+      <HintPath>..\packages\ellipsoid.org.SharpAngles.0.2.2-alpha\lib\ellipsoid.org.SharpAngles.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ellipsoid.org.SharpAngles.UI">
+      <HintPath>..\packages\ellipsoid.org.SharpAngles.UI.0.3.0-alpha\lib\ellipsoid.org.SharpAngles.UI.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="IntelliFactory.Build">
       <HintPath>..\packages\IntelliFactory.Build.0.2.55.68-alpha\lib\net45\IntelliFactory.Build.dll</HintPath>
       <Private>True</Private>
@@ -229,16 +237,6 @@
     <Reference Include="System.Data.DataSetExtensions.dll" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Web" />
-    <ProjectReference Include="..\ellipsoid.org.SharpAngles.UI\ellipsoid.org.SharpAngles.UI.fsproj">
-      <Name>ellipsoid.org.SharpAngles.UI</Name>
-      <Project>{b8265f2c-0a46-4fa8-a3b6-a3e9f9539b9f}</Project>
-      <Private>True</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\ellipsoid.org.SharpAngles\ellipsoid.org.SharpAngles.fsproj">
-      <Name>ellipsoid.org.SharpAngles</Name>
-      <Project>{4013e157-23f7-4d33-ba33-73213b7809b2}</Project>
-      <Private>True</Private>
-    </ProjectReference>
     <Reference Include="System.Web.ApplicationServices.dll" />
     <Reference Include="System.Web.DynamicData.dll" />
     <Reference Include="System.Web.Entity.dll" />

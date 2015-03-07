@@ -39,3 +39,4 @@ module Tests =
                ))
                .Run(("$state", fun (state: StateService) -> state.TransitionTo("foo")))
                .Run(("$sce", fun (sce: SCEService) -> ()))
+               .Run(("$q", fun (q: QService<string>) -> q.Defer ()))

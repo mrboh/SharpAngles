@@ -133,6 +133,17 @@ module Definition =
         =========================
     *)
 
+    let DeferredClass =
+        Generic / fun t1 ->
+            Class "ng.Deferred"
+            |=> Deferred
+            |+> Protocol [
+                "resolve"           => Optional t1?value ^-> Void
+                "reject"            => Optional Any?reason ^-> Void
+                "notify"            => Optional Any?state ^-> Void
+                "promise"           =? Promise.[t1]
+            ]
+
     let PromiseClass =
         Generic / fun t1 ->
             Class "ng.Promise"
@@ -178,6 +189,23 @@ module Definition =
                                  "compatible.")
             ]
 
+    // Currently only the generic methods of this class are implemented (i.e. not those involving Promise<any>)
+    let QServiceClass =
+        Generic / fun t1 ->
+            Class "ng.QService"
+            |+> Protocol [
+                // "all"               => 
+                "defer"             => Void ^-> Deferred.[t1]
+                // "reject"            =>
+                "when"              => Void ^-> Promise.[Void]
+                "when"              => t1?value ^-> Promise.[t1]
+                "when"              => Promise.[t1]?value ^-> Promise.[t1]
+            ]
+            // |+> [
+                // Unsure about constructor syntax
+                // Constructor ((ResolveReject.[t1]?resolve * ResolveReject.[Any]?reject) ^-> Any)?resolver
+            // ]
+
     let HttpPromiseClass =
         Generic / fun t1 ->
             let httpPromiseCallback ofType = ofType?data * Number?status * HttpHeadersGetter?headers * RequestConfig?config ^-> Void
@@ -219,7 +247,7 @@ module Definition =
                 [ "$get"; "$query"; "$save"; "$remove"; "$delete" ]
                 |> List.map (fun e ->
                     match e with
-                        | s when s <> "query" -> resClass s (PromiseClass t)
+                        | s when s <> "$query" -> resClass s (PromiseClass t)
                         | s -> resClass s (PromiseClass (ResourceArrayClass t))
                 )
                 |> List.collect (fun e -> e)
@@ -771,6 +799,7 @@ module Definition =
             Namespace "ellipsoid.org.SharpAngles" [
                 AngularStaticVersionClass
                 AttributesClass
+                Generic - DeferredClass
                 FormControllerClass
                 Generic - HttpPromiseClass
                 HttpBackendServiceClass
@@ -782,6 +811,7 @@ module Definition =
                 LogCallClass
                 LogServiceClass
                 Generic - PromiseClass
+                Generic - QServiceClass
                 RootScopeServiceClass
                 SceDelegateProviderClass
                 SceDelegateServiceClass
